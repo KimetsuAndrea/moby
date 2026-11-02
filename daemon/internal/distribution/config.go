@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"io"
-	"runtime"
 
 	c8dimages "github.com/containerd/containerd/v2/core/images"
 	"github.com/distribution/reference"
