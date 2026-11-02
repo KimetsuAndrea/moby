@@ -9,7 +9,14 @@ permissions:
 
 jobs:
   build:
+    name: Build Android ARM64 nft
     runs-on: ubuntu-24.04
+
+    env:
+      NDK_VERSION: r30
+      API: 29
+      HOST: aarch64-linux-android
+      PREFIX: ${{ github.workspace }}/android-prefix
 
     steps:
       - name: Checkout repository
@@ -23,6 +30,7 @@ jobs:
             autoconf \
             automake \
             libtool \
+            libtool-bin \
             pkg-config \
             bison \
             flex \
@@ -36,58 +44,37 @@ jobs:
             file \
             python3
 
-      - name: Install Android NDK
-        shell: bash
+      - name: Download Android NDK r30
         run: |
-          set -euxo pipefail
-
-          NDK_VERSION=r30
-          NDK_PACKAGE=android-ndk-${NDK_VERSION}-linux.zip
-
           curl -fL \
-            "https://dl.google.com/android/repository/${NDK_PACKAGE}" \
-            -o ndk.zip
+            https://dl.google.com/android/repository/android-ndk-r30-linux.zip \
+            -o android-ndk.zip
 
-          unzip -q ndk.zip
+          unzip -q android-ndk.zip
+          rm android-ndk.zip
 
-          echo "NDK=$PWD/android-ndk-${NDK_VERSION}" >> "$GITHUB_ENV"
+          echo "ANDROID_NDK_HOME=$GITHUB_WORKSPACE/android-ndk-r30" >> "$GITHUB_ENV"
+          echo "TOOLCHAIN=$GITHUB_WORKSPACE/android-ndk-r30/toolchains/llvm/prebuilt/linux-x86_64" >> "$GITHUB_ENV"
 
-      - name: Build Android ARM64 nft
-        shell: bash
+      - name: Configure Android cross compiler
         run: |
-          set -euxo pipefail
+          echo "$GITHUB_WORKSPACE/android-ndk-r30/toolchains/llvm/prebuilt/linux-x86_64/bin" >> "$GITHUB_PATH"
 
-          API=29
-          TOOL="$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin"
-
-          export CC="$TOOL/aarch64-linux-android${API}-clang"
-          export AR="$TOOL/llvm-ar"
-          export RANLIB="$TOOL/llvm-ranlib"
-          export STRIP="$TOOL/llvm-strip"
-
-          export HOST="aarch64-linux-android"
-          export PREFIX="$GITHUB_WORKSPACE/android-prefix"
-
-          export CFLAGS="-O2 -fPIC"
-          export CPPFLAGS="-I$PREFIX/include"
-          export LDFLAGS="-L$PREFIX/lib"
+          echo "CC=$GITHUB_WORKSPACE/android-ndk-r30/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android${API}-clang" >> "$GITHUB_ENV"
+          echo "AR=$GITHUB_WORKSPACE/android-ndk-r30/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar" >> "$GITHUB_ENV"
+          echo "RANLIB=$GITHUB_WORKSPACE/android-ndk-r30/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ranlib" >> "$GITHUB_ENV"
+          echo "STRIP=$GITHUB_WORKSPACE/android-ndk-r30/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip" >> "$GITHUB_ENV"
+          echo "SYSROOT=$GITHUB_WORKSPACE/android-ndk-r30/toolchains/llvm/prebuilt/linux-x86_64/sysroot" >> "$GITHUB_ENV"
 
           mkdir -p "$PREFIX"
 
-          export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
-          export PKG_CONFIG_LIBDIR="$PREFIX/lib/pkgconfig"
-          export PKG_CONFIG_ALLOW_CROSS=1
-
-          # ----------------------------------------
-          # Build libmnl
-          # ----------------------------------------
-
+      - name: Build libmnl 1.0.5
+        run: |
           curl -fL \
             https://netfilter.org/projects/libmnl/files/libmnl-1.0.5.tar.bz2 \
             -o libmnl.tar.bz2
 
           tar -xf libmnl.tar.bz2
-
           cd libmnl-1.0.5
 
           ./configure \
@@ -99,18 +86,15 @@ jobs:
           make -j2
           make install
 
-          cd "$GITHUB_WORKSPACE"
-
-          # ----------------------------------------
-          # Build libnftnl
-          # ----------------------------------------
-
+      - name: Build libnftnl 1.3.2
+        env:
+          PKG_CONFIG_PATH: ${{ github.workspace }}/android-prefix/lib/pkgconfig
+        run: |
           curl -fL \
             https://netfilter.org/projects/libnftnl/files/libnftnl-1.3.2.tar.xz \
             -o libnftnl.tar.xz
 
           tar -xf libnftnl.tar.xz
-
           cd libnftnl-1.3.2
 
           ./configure \
@@ -122,48 +106,40 @@ jobs:
           make -j2
           make install
 
-          cd "$GITHUB_WORKSPACE"
-
-          # ----------------------------------------
-          # Download nftables
-          # ----------------------------------------
-
+      - name: Download nftables 1.1.7
+        run: |
           curl -fL \
             https://netfilter.org/projects/nftables/files/nftables-1.1.7.tar.xz \
             -o nftables.tar.xz
 
           tar -xf nftables.tar.xz
 
-          cd nftables-1.1.7
-
-          # ----------------------------------------
-          # Apply Android IPv6 compatibility patches
-          # ----------------------------------------
-
+      - name: Patch nftables Android IPv6 compatibility
+        working-directory: nftables-1.1.7
+        shell: bash
+        run: |
           python3 - <<'PY'
           from pathlib import Path
           import re
 
-          # Patch include/headers.h
-          headers = Path("include/headers.h")
-          text = headers.read_text()
+          # Fix duplicate ipv6hdr definition.
+          header = Path("include/headers.h")
+          text = header.read_text()
 
-          if "#include <stdint.h>" not in text:
-              text = text.replace(
-                  "#include <netinet/in.h>",
-                  "#include <netinet/in.h>\n#include <stdint.h>",
-                  1
-              )
+          if "struct ipv6hdr" not in text:
+              raise SystemExit("Could not find struct ipv6hdr in headers.h")
 
           if "#include <linux/ipv6.h>" not in text:
-              pattern = r"struct ipv6hdr\s*\{.*?\n\};"
+              pattern = re.compile(
+                  r"struct ipv6hdr\s*\{.*?\};",
+                  re.S
+              )
 
               replacement = """#ifdef __linux__
           #include <linux/ipv6.h>
           #else
           struct ipv6hdr {
-              uint8_t version:4,
-                      priority:4;
+              uint8_t version:4, priority:4;
               uint8_t flow_lbl[3];
               uint16_t payload_len;
               uint8_t nexthdr;
@@ -173,82 +149,157 @@ jobs:
           };
           #endif"""
 
-              text, count = re.subn(
-                  pattern,
-                  replacement,
-                  text,
-                  count=1,
-                  flags=re.S
-              )
+              text, count = pattern.subn(replacement, text, count=1)
 
               if count != 1:
-                  raise SystemExit(
-                      "ERROR: Could not locate ipv6hdr definition"
-                  )
+                  raise SystemExit("Failed to patch ipv6hdr definition")
 
-          headers.write_text(text)
-          print("Patched include/headers.h")
+              header.write_text(text)
 
-          # Patch src/exthdr.c
-          exthdr = Path("src/exthdr.c")
-          text = exthdr.read_text()
+          # Fix missing IPv6 routing-header type in Android NDK.
+          source = Path("src/exthdr.c")
+          text = source.read_text()
 
           if "struct nft_ip6_rthdr0" not in text:
-              pattern = r"struct ip6_rt2_hdr\s*\{.*?\n\};"
+              marker = re.compile(
+                  r"(struct ip6_rt2_hdr\s*\{.*?\};)",
+                  re.S
+              )
 
-              compatibility = """struct nft_ip6_rthdr0 {
+              replacement = r"""\1
+
+          /* Android NDK compatibility: IPv6 routing header type 0. */
+          struct nft_ip6_rthdr0 {
               uint8_t ip6r0_nxt;
               uint8_t ip6r0_len;
               uint8_t ip6r0_type;
               uint8_t ip6r0_segleft;
               uint32_t ip6r0_reserved;
               struct in6_addr ip6r0_addr[1];
-          };"""
+          };
+          """
 
-              match = re.search(pattern, text, flags=re.S)
+              text, count = marker.subn(replacement, text, count=1)
 
-              if not match:
-                  raise SystemExit(
-                      "ERROR: Could not locate ip6_rt2_hdr definition"
-                  )
+              if count != 1:
+                  raise SystemExit("Could not insert nft_ip6_rthdr0")
 
-              text = (
-                  text[:match.end()]
-                  + "\n\n/* Android NDK IPv6 RT0 compatibility. */\n"
-                  + compatibility
-                  + text[match.end():]
-              )
-
-          old_macro = "struct ip6_rthdr0"
-          if text.count(old_macro) != 1:
-              raise SystemExit(
-                  "ERROR: Expected exactly one ip6_rthdr0 reference"
-              )
-
-          text = text.replace(
-              old_macro,
-              "struct nft_ip6_rthdr0",
-              1
+          # Use the compatibility structure for RT0_FIELD.
+          macro = re.compile(
+              r"(#define\s+RT0_FIELD\(.*?)(struct ip6_rthdr0)(.*)",
+              re.S
           )
 
-          exthdr.write_text(text)
-          print("Patched src/exthdr.c")
+          text, count = macro.subn(
+              r"\1struct nft_ip6_rthdr0\3",
+              text,
+              count=1
+          )
+
+          if count != 1:
+              if "struct nft_ip6_rthdr0" not in text:
+                  raise SystemExit("Could not patch RT0_FIELD")
+          
+          source.write_text(text)
+
+          print("IPv6 Android compatibility patches applied.")
           PY
 
-          # ----------------------------------------
-          # Verify patches
-          # ----------------------------------------
+      - name: Fix Android NDK networking symbol conflicts
+        working-directory: nftables-1.1.7
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
 
-          echo "===== headers.h ====="
-          grep -n -A18 -B2 'struct ipv6hdr' include/headers.h
+          replacements = {
+              "TCP_FLAG_FIN": "NFT_TCP_FLAG_FIN",
+              "TCP_FLAG_SYN": "NFT_TCP_FLAG_SYN",
+              "TCP_FLAG_RST": "NFT_TCP_FLAG_RST",
+              "TCP_FLAG_PSH": "NFT_TCP_FLAG_PSH",
+              "TCP_FLAG_ACK": "NFT_TCP_FLAG_ACK",
+              "TCP_FLAG_URG": "NFT_TCP_FLAG_URG",
+              "TCP_FLAG_CWR": "NFT_TCP_FLAG_CWR",
+              "ip_auth_hdr": "nft_ip_auth_hdr",
+              "ip_esp_hdr": "nft_ip_esp_hdr",
+              "ip_comp_hdr": "nft_ip_comp_hdr",
+          }
 
-          echo "===== exthdr.c ====="
-          grep -n -A12 -B3 'struct nft_ip6_rthdr0' src/exthdr.c
-          grep -n -A2 'define RT0_FIELD' src/exthdr.c
+          suffixes = {
+              ".h", ".c", ".cc", ".cpp",
+              ".y", ".l", ".ll"
+          }
 
-          # ----------------------------------------
-          # Configure nftables
-          # ----------------------------------------
+          counts = {name: 0 for name in replacements}
+          changed = 0
+
+          for path in Path(".").rglob("*"):
+              if not path.is_file():
+                  continue
+
+              if ".git" in path.parts:
+                  continue
+
+              if path.suffix not in suffixes:
+                  continue
+
+              try:
+                  original = path.read_text()
+              except UnicodeDecodeError:
+                  continue
+
+              content = original
+
+              for old, new in replacements.items():
+                  content, count = re.subn(
+                      rf"\b{re.escape(old)}\b",
+                      new,
+                      content
+                  )
+                  counts[old] += count
+
+              if content != original:
+                  path.write_text(content)
+                  changed += 1
+
+          header = Path("include/headers.h").read_text()
+
+          required = [
+              "NFT_TCP_FLAG_FIN",
+              "NFT_TCP_FLAG_SYN",
+              "NFT_TCP_FLAG_RST",
+              "NFT_TCP_FLAG_PSH",
+              "NFT_TCP_FLAG_ACK",
+              "NFT_TCP_FLAG_URG",
+              "NFT_TCP_FLAG_CWR",
+              "struct nft_ip_auth_hdr",
+              "struct nft_ip_esp_hdr",
+              "struct nft_ip_comp_hdr",
+          ]
+
+          missing = [item for item in required if item not in header]
+
+          if missing:
+              raise SystemExit(
+                  "Compatibility patch incomplete: "
+                  + ", ".join(missing)
+              )
+
+          print("Android NDK symbol compatibility patch applied.")
+          print(f"Modified files: {changed}")
+
+          for name, count in counts.items():
+              print(f"{name}: {count} replacement(s)")
+          PY
+
+      - name: Configure nftables
+        working-directory: nftables-1.1.7
+        env:
+          PKG_CONFIG_PATH: ${{ github.workspace }}/android-prefix/lib/pkgconfig
+        run: |
+          export CPPFLAGS="-I$PREFIX/include"
+          export LDFLAGS="-L$PREFIX/lib"
 
           ./configure \
             --host="$HOST" \
@@ -261,66 +312,64 @@ jobs:
             --without-json \
             --without-xtables
 
-          # ----------------------------------------
-          # Compile and install
-          # ----------------------------------------
+      - name: Build nftables
+        working-directory: nftables-1.1.7
+        run: |
+          set -o pipefail
+          make -j2 2>&1 | tee ../nftables-build.log
 
-          make -j2
+      - name: Install nftables
+        working-directory: nftables-1.1.7
+        run: |
           make install
 
-          # ----------------------------------------
-          # Find nft executable
-          # ----------------------------------------
+          mkdir -p "$GITHUB_WORKSPACE/output"
 
-          NFT="$(find "$PREFIX" \
-            -type f \
-            -name nft \
-            -perm /111 \
-            | head -n 1)"
+          NFT_BIN="$(find "$PREFIX" -type f -name nft -perm -111 | head -n 1)"
 
-          if [ -z "$NFT" ]; then
-            echo "ERROR: nft executable was not produced"
-            find "$PREFIX" -maxdepth 4 -type f
+          if [ -z "$NFT_BIN" ]; then
+            echo "ERROR: nft executable was not produced."
+            find "$PREFIX" -maxdepth 4 -type f -print
             exit 1
           fi
 
-          echo "Built executable: $NFT"
+          cp "$NFT_BIN" "$GITHUB_WORKSPACE/output/nft"
+          chmod 0755 "$GITHUB_WORKSPACE/output/nft"
 
-          # ----------------------------------------
-          # Validate executable
-          # ----------------------------------------
+      - name: Validate Android ARM64 binary
+        run: |
+          set -e
 
-          file "$NFT"
+          LLVM_READelf="$TOOLCHAIN/bin/llvm-readelf"
 
-          "$TOOL/llvm-readelf" -h "$NFT"
-          "$TOOL/llvm-readelf" -l "$NFT"
-          "$TOOL/llvm-readelf" -d "$NFT" || true
+          file output/nft
+          "$LLVM_READelf" -h output/nft
 
-          # ----------------------------------------
-          # Prepare artifact
-          # ----------------------------------------
+          "$LLVM_READelf" -h output/nft | grep -q "AArch64" || {
+            echo "ERROR: Binary is not AArch64."
+            exit 1
+          }
 
-          mkdir -p "$GITHUB_WORKSPACE/nftables-android-output"
+          "$LLVM_READelf" -h output/nft | grep -q "DYN\|EXEC" || {
+            echo "ERROR: Unexpected ELF binary type."
+            exit 1
+          }
 
-          install -m 755 \
-            "$NFT" \
-            "$GITHUB_WORKSPACE/nftables-android-output/nft"
+          echo "Android ARM64 ELF validation passed."
 
-          echo "Android ARM64 nft build completed."
-
-      - name: Upload Android nft binary
-        if: success()
+      - name: Upload nft binary
         uses: actions/upload-artifact@v4
         with:
           name: nftables-android-arm64
-          path: nftables-android-output/nft
+          path: output/nft
           if-no-files-found: error
 
-      - name: Upload diagnostic logs
+      - name: Upload build diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: nftables-android-diagnostics
+          name: nftables-build-diagnostics
           path: |
+            nftables-build.log
             nftables-1.1.7/config.log
           if-no-files-found: warn
