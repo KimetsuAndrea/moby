@@ -31,15 +31,22 @@ jobs:
             unzip \
             zip \
             file
-
+      
       - name: Install Android NDK
         run: |
-          curl -L \
-            https://dl.google.com/android/repository/android-ndk-r27c-linux.zip \
-            -o ndk.zip
-          unzip -q ndk.zip
-          echo "NDK=$PWD/android-ndk-r30" >> "$GITHUB_ENV"
+          set -euxo pipefail
 
+          NDK_VERSION=r30
+          NDK_PACKAGE=android-ndk-${NDK_VERSION}-linux.zip
+
+          curl -fL \
+            "https://dl.google.com/android/repository/${NDK_PACKAGE}" \
+            -o ndk.zip
+
+          unzip -q ndk.zip
+
+          echo "NDK=$PWD/android-ndk-${NDK_VERSION}" >> "$GITHUB_ENV"
+          
       - name: Build Android ARM64 nft
         shell: bash
         run: |
