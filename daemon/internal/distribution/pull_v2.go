@@ -537,7 +537,7 @@ func (p *puller) pullSchema2Layers(ctx context.Context, target distribution.Desc
 		configPlatform   *ocispec.Platform // for LCOW when registering downloaded layers
 	)
 
-	layerStoreOS := runtime.GOOS
+	layerStoreOS := image.HostOS()
 	if platform != nil {
 		layerStoreOS = platform.OS
 	}

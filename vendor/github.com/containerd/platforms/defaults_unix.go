@@ -24,13 +24,19 @@ import (
 	specs "github.com/opencontainers/image-spec/specs-go/v1"
 )
 
-// DefaultSpec returns the current platform's default platform specification.
 func DefaultSpec() specs.Platform {
+	os := runtime.GOOS
+
+	// Android uses the Linux kernel and runs Linux OCI container images.
+	// The Go binary is built for Android, but the container platform is Linux.
+	if os == "android" {
+		os = "linux"
+	}
+
 	return specs.Platform{
-		OS:           runtime.GOOS,
+		OS:           os,
 		Architecture: runtime.GOARCH,
-		// The Variant field will be empty if arch != ARM.
-		Variant: cpuVariant(),
+		Variant:      cpuVariant(),
 	}
 }
 

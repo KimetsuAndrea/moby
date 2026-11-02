@@ -100,7 +100,7 @@ func (l *tarexporter) Load(ctx context.Context, inTar io.ReadCloser, outStream i
 			return err
 		}
 		if err := image.CheckOS(img.OperatingSystem()); err != nil {
-			return fmt.Errorf("cannot load %s image on %s", img.OperatingSystem(), runtime.GOOS)
+			return fmt.Errorf("cannot load %s image on %s", img.OperatingSystem(), image.HostOS())
 		}
 		if l.platformMatcher != nil && !l.platformMatcher.Match(img.Platform()) {
 			continue

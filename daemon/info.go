@@ -61,7 +61,7 @@ func (daemon *Daemon) SystemInfo(ctx context.Context) (*system.Info, error) {
 		OperatingSystem:    operatingSystem(ctx),
 		OSVersion:          osVersion(ctx),
 		IndexServerAddress: registry.IndexServer,
-		OSType:             runtime.GOOS,
+		OSType:             imageinternal.HostOS(),
 		Architecture:       platform.Architecture(),
 		RegistryConfig:     doWithTrace(ctx, "registry.ServiceConfig", daemon.registryService.ServiceConfig),
 		NCPU:               doWithTrace(ctx, "runtime.NumCPU", runtime.NumCPU),
@@ -131,7 +131,7 @@ func (daemon *Daemon) SystemVersion(ctx context.Context) (system.VersionResponse
 		Version:       dockerversion.Version,
 		APIVersion:    config.MaxAPIVersion,
 		MinAPIVersion: cfg.MinAPIVersion,
-		Os:            runtime.GOOS,
+		Os:            imageinternal.HostOS(),
 		Arch:          runtime.GOARCH,
 		Components: []system.ComponentVersion{
 			{
@@ -142,7 +142,7 @@ func (daemon *Daemon) SystemVersion(ctx context.Context) (system.VersionResponse
 					"ApiVersion":    config.MaxAPIVersion,
 					"MinAPIVersion": cfg.MinAPIVersion,
 					"GoVersion":     runtime.Version(),
-					"Os":            runtime.GOOS,
+					"Os":            imageinternal.HostOS(),
 					"Arch":          runtime.GOARCH,
 					"BuildTime":     dockerversion.BuildTime,
 					"KernelVersion": kernelVer,

@@ -149,7 +149,7 @@ func platformFromConfig(c []byte) (*ocispec.Platform, error) {
 
 	os := unmarshalledConfig.OS
 	if os == "" {
-		os = runtime.GOOS
+		os = image.HostOS()
 	}
 	if err := image.CheckOS(os); err != nil {
 		return nil, errors.Wrapf(err, "image operating system %q cannot be used on this platform", os)
