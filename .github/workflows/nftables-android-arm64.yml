@@ -292,6 +292,89 @@ jobs:
           for name, count in counts.items():
               print(f"{name}: {count} replacement(s)")
           PY
+      
+      - name: Fix Android Bionic fopencookie incompatibility
+        working-directory: nftables-1.1.7
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path("src/libnftables.c")
+          text = path.read_text()
+
+          if "__BIONIC__" in text and "Bionic does not provide fopencookie" in text:
+              print("Bionic fopencookie compatibility patch already applied.")
+              raise SystemExit(0)
+
+          # Locate the cookie_write() function and the following init_cookie().
+          start = text.find("static ssize_t cookie_write(")
+          init = text.find("static int init_cookie(", start)
+
+          if start < 0 or init < 0:
+              raise SystemExit("Could not locate cookie_write/init_cookie")
+
+          # Keep cookie_write only on libc implementations with fopencookie.
+          cookie_write_block = text[start:init]
+
+          if "#ifndef __BIONIC__" not in cookie_write_block:
+              cookie_write_block = (
+                  "#ifndef __BIONIC__\n"
+                  + cookie_write_block
+                  + "#endif /* !__BIONIC__ */\n\n"
+              )
+              text = text[:start] + cookie_write_block + text[init:]
+
+          # Replace init_cookie() with a Bionic-safe implementation.
+          init = text.find("static int init_cookie(")
+          end = text.find("static int exit_cookie(", init)
+
+          if init < 0 or end < 0:
+              raise SystemExit("Could not locate init_cookie boundaries")
+
+          original = text[init:end]
+
+          opening = original.find("{")
+          if opening < 0:
+              raise SystemExit("Could not parse init_cookie function")
+
+          depth = 0
+          closing = -1
+
+          for i in range(opening, len(original)):
+              if original[i] == "{":
+                  depth += 1
+              elif original[i] == "}":
+                  depth -= 1
+                  if depth == 0:
+                      closing = i
+                      break
+
+          if closing < 0:
+              raise SystemExit("Could not find end of init_cookie function")
+
+          replacement = """static int init_cookie(struct cookie *cookie)
+          {
+          #ifdef __BIONIC__
+              /* Bionic does not provide fopencookie(). */
+              (void)cookie;
+              return 1;
+          #else
+          """ + original[opening + 1:closing] + """ 
+          #endif /* __BIONIC__ */
+          }
+          
+          """
+
+          text = text[:init] + replacement + text[end:]
+
+          if "fopencookie(cookie" not in text:
+              raise SystemExit("Unexpected source change: fopencookie call missing")
+
+          path.write_text(text)
+          print("Applied Bionic fopencookie compatibility patch.")
+          PY
 
       - name: Configure nftables
         working-directory: nftables-1.1.7
