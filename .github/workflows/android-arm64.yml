@@ -1,0 +1,68 @@
+
+name: Build Moby Android ARM64
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-arm64-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Compile Docker Engine for ARM64
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout modified Moby source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Moby ARM64 binaries
+        env:
+          DOCKER_GITCOMMIT: ${{ github.sha }}
+        run: |
+          docker buildx bake \
+            --set binary.platform=linux/arm64 \
+            binary
+
+      - name: Verify compiled daemon
+        run: |
+          set -eu
+
+          test -s bundles/binary/dockerd
+
+          echo "Build successful!"
+          file bundles/binary/dockerd
+
+          echo "Build output:"
+          ls -lah bundles/binary/
+
+      - name: Package binaries
+        run: |
+          tar -czf "$RUNNER_TEMP/moby-android-arm64.tar.gz" \
+            -C bundles/binary .
+
+          sha256sum "$RUNNER_TEMP/moby-android-arm64.tar.gz" \
+            > "$RUNNER_TEMP/moby-android-arm64.tar.gz.sha256"
+
+      - name: Upload ARM64 build
+        uses: actions/upload-artifact@v4
+        with:
+          name: moby-android-arm64-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/moby-android-arm64.tar.gz
+            ${{ runner.temp }}/moby-android-arm64.tar.gz.sha256
+          if-no-files-found: error
+          retention-days: 14
