@@ -25,14 +25,31 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
           cache: true
 
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            binutils \
+            file \
+            pkg-config
+
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools'
 
       - name: Install Android NDK
         shell: bash
@@ -45,21 +62,24 @@ jobs:
           TOOLCHAIN="$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin"
 
           test -x "$TOOLCHAIN/aarch64-linux-android24-clang"
+          test -x "$TOOLCHAIN/aarch64-linux-android24-clang++"
 
           echo "ANDROID_NDK_HOME=$NDK" >> "$GITHUB_ENV"
           echo "CC=$TOOLCHAIN/aarch64-linux-android24-clang" >> "$GITHUB_ENV"
           echo "CXX=$TOOLCHAIN/aarch64-linux-android24-clang++" >> "$GITHUB_ENV"
 
-      - name: Show build environment
+      - name: Verify Android toolchain
         shell: bash
         run: |
           set -eux
 
           go version
-          go env GOOS GOARCH CGO_ENABLED
+          go env GOHOSTOS GOHOSTARCH
+
+          echo "Android NDK: $ANDROID_NDK_HOME"
 
           "$CC" --version
-          echo "NDK: $ANDROID_NDK_HOME"
+          "$CXX" --version
 
       - name: Build Android ARM64 dockerd
         shell: bash
@@ -72,16 +92,11 @@ jobs:
           export GOARCH=arm64
           export CGO_ENABLED=1
 
-          export DOCKER_STATIC=0
-
-          # Avoid detecting host Linux systemd libraries.
           export EXCLUDE_AUTO_BUILDTAG_JOURNALD=1
 
-          # Build the dynamic daemon target.
-          # This target removes netgo, osusergo and static_build.
           ./hack/make.sh dynbinary-daemon
 
-      - name: Verify Android binary
+      - name: Verify Android daemon
         shell: bash
         run: |
           set -eux
@@ -100,12 +115,13 @@ jobs:
           grep -q 'GOARCH=arm64' build-info.txt
 
           if grep -E 'build -tags=.*netgo' build-info.txt; then
-            echo "ERROR: netgo is still enabled!"
+            echo "ERROR: netgo is still enabled"
             exit 1
           fi
 
-          echo "===== ELF interpreter ====="
-          readelf -l "$BINARY" | grep -i interpreter || true
+          echo "===== ELF information ====="
+          readelf -h "$BINARY"
+          readelf -l "$BINARY" || true
 
           echo "Android ARM64 build verification passed."
 
@@ -117,9 +133,10 @@ jobs:
           mkdir -p "$RUNNER_TEMP/android-dockerd"
 
           cp bundles/dynbinary-daemon/dockerd \
-             "$RUNNER_TEMP/android-dockerd/"
+            "$RUNNER_TEMP/android-dockerd/"
 
-          cp build-info.txt "$RUNNER_TEMP/android-dockerd/"
+          cp build-info.txt \
+            "$RUNNER_TEMP/android-dockerd/"
 
           tar -czf "$RUNNER_TEMP/moby-android-arm64.tar.gz" \
             -C "$RUNNER_TEMP/android-dockerd" .
