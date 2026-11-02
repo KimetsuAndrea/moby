@@ -13,6 +13,10 @@ concurrency:
   group: android-arm64-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  NDK_VERSION: "30.0.16248370"
+  ANDROID_API: "24"
+
 jobs:
   build:
     name: Build Docker Engine for Android ARM64
@@ -25,48 +29,33 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
-
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
           cache: true
 
-      - name: Install build dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            build-essential \
-            binutils \
-            file \
-            pkg-config
-
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v4
-        with:
-          packages: 'platform-tools'
-
+      # The runner image already ships the Android SDK, sdkmanager and a JDK,
+      # so setup-java and setup-android are not needed.
       - name: Install Android NDK
         shell: bash
         run: |
           set -eux
 
-          sdkmanager --install "ndk;27.2.12479018"
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
 
-          NDK="$ANDROID_HOME/ndk/27.2.12479018"
+          yes | "$SDKMANAGER" --licenses > /dev/null || true
+          "$SDKMANAGER" --install "ndk;${NDK_VERSION}"
+
+          NDK="$ANDROID_HOME/ndk/${NDK_VERSION}"
           TOOLCHAIN="$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin"
 
-          test -x "$TOOLCHAIN/aarch64-linux-android24-clang"
-          test -x "$TOOLCHAIN/aarch64-linux-android24-clang++"
+          test -x "$TOOLCHAIN/aarch64-linux-android${ANDROID_API}-clang"
+          test -x "$TOOLCHAIN/aarch64-linux-android${ANDROID_API}-clang++"
 
           echo "ANDROID_NDK_HOME=$NDK" >> "$GITHUB_ENV"
-          echo "CC=$TOOLCHAIN/aarch64-linux-android24-clang" >> "$GITHUB_ENV"
-          echo "CXX=$TOOLCHAIN/aarch64-linux-android24-clang++" >> "$GITHUB_ENV"
+          echo "CC=$TOOLCHAIN/aarch64-linux-android${ANDROID_API}-clang" >> "$GITHUB_ENV"
+          echo "CXX=$TOOLCHAIN/aarch64-linux-android${ANDROID_API}-clang++" >> "$GITHUB_ENV"
 
       - name: Verify Android toolchain
         shell: bash
@@ -75,11 +64,41 @@ jobs:
 
           go version
           go env GOHOSTOS GOHOSTARCH
-
           echo "Android NDK: $ANDROID_NDK_HOME"
-
           "$CC" --version
           "$CXX" --version
+
+      # Android has no /etc/resolv.conf and no /etc/nsswitch.conf. Without them Go's
+      # built-in resolver falls back to [::1]:53 and every lookup (image pulls included)
+      # fails, even though the phone is online. Use the C resolver (bionic -> netd) instead.
+      - name: Patch dockerd to use Android's DNS resolver
+        shell: bash
+        run: |
+          set -eux
+
+          cat > cmd/dockerd/android_dns.go << 'GOEOF'
+          //go:build android
+
+          package main
+
+          import (
+          	"os"
+          	"strings"
+          )
+
+          func init() {
+          	g := os.Getenv("GODEBUG")
+          	if strings.Contains(g, "netdns=") {
+          		return
+          	}
+          	if g != "" {
+          		g += ","
+          	}
+          	_ = os.Setenv("GODEBUG", g+"netdns=cgo")
+          }
+          GOEOF
+
+          gofmt -l cmd/dockerd/android_dns.go
 
       - name: Build Android ARM64 dockerd
         shell: bash
@@ -92,8 +111,11 @@ jobs:
           export GOARCH=arm64
           export CGO_ENABLED=1
 
+          # Skip graph drivers that need host-only C headers, and host journald detection
+          export DOCKER_BUILDTAGS="exclude_graphdriver_btrfs exclude_graphdriver_devicemapper"
           export EXCLUDE_AUTO_BUILDTAG_JOURNALD=1
 
+          # dynbinary-daemon strips the netgo/osusergo/static_build tags itself
           ./hack/make.sh dynbinary-daemon
 
       - name: Verify Android daemon
@@ -113,15 +135,23 @@ jobs:
 
           grep -q 'GOOS=android' build-info.txt
           grep -q 'GOARCH=arm64' build-info.txt
+          grep -q 'CGO_ENABLED=1' build-info.txt
 
-          if grep -E 'build -tags=.*netgo' build-info.txt; then
-            echo "ERROR: netgo is still enabled"
+          # `go version -m` separates fields with a tab, so match any whitespace
+          if grep -E '^[[:space:]]*build[[:space:]]+-tags=.*netgo' build-info.txt; then
+            echo "ERROR: netgo is enabled, so the cgo DNS resolver is not available"
             exit 1
           fi
 
           echo "===== ELF information ====="
           readelf -h "$BINARY"
-          readelf -l "$BINARY" || true
+          readelf -l "$BINARY" | tee elf-segments.txt
+
+          # Linked against Android's bionic, not glibc
+          grep -q '/system/bin/linker64' elf-segments.txt
+
+          # The DNS patch was compiled in
+          grep -aq 'netdns=cgo' "$BINARY"
 
           echo "Android ARM64 build verification passed."
 
@@ -132,11 +162,8 @@ jobs:
 
           mkdir -p "$RUNNER_TEMP/android-dockerd"
 
-          cp bundles/dynbinary-daemon/dockerd \
-            "$RUNNER_TEMP/android-dockerd/"
-
-          cp build-info.txt \
-            "$RUNNER_TEMP/android-dockerd/"
+          cp bundles/dynbinary-daemon/dockerd "$RUNNER_TEMP/android-dockerd/"
+          cp build-info.txt "$RUNNER_TEMP/android-dockerd/"
 
           tar -czf "$RUNNER_TEMP/moby-android-arm64.tar.gz" \
             -C "$RUNNER_TEMP/android-dockerd" .
