@@ -17,7 +17,7 @@ import (
 // ErrNotFound plugin not found
 var ErrNotFound = errors.New("plugin not found")
 
-const defaultSocketsPath = "/run/docker/plugins"
+const defaultSocketsPath = "/data/adb/docker/run/docker/plugins"
 
 // LocalRegistry defines a registry that is local (using unix socket).
 type LocalRegistry struct {
