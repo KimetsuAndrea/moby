@@ -1,4 +1,3 @@
-
 name: Build Moby Android ARM64
 
 on:
@@ -16,48 +15,119 @@ concurrency:
 
 jobs:
   build:
-    name: Compile Docker Engine for ARM64
-    runs-on: ubuntu-24.04
-    timeout-minutes: 90
+    name: Build Docker Engine for Android ARM64
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
 
     steps:
-      - name: Checkout modified Moby source
+      - name: Checkout Moby source
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
 
-      - name: Build Moby ARM64 binaries
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android NDK
+        shell: bash
+        run: |
+          set -eux
+
+          sdkmanager --install "ndk;27.2.12479018"
+
+          NDK="$ANDROID_HOME/ndk/27.2.12479018"
+          TOOLCHAIN="$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin"
+
+          test -x "$TOOLCHAIN/aarch64-linux-android24-clang"
+
+          echo "ANDROID_NDK_HOME=$NDK" >> "$GITHUB_ENV"
+          echo "CC=$TOOLCHAIN/aarch64-linux-android24-clang" >> "$GITHUB_ENV"
+          echo "CXX=$TOOLCHAIN/aarch64-linux-android24-clang++" >> "$GITHUB_ENV"
+
+      - name: Show build environment
+        shell: bash
+        run: |
+          set -eux
+
+          go version
+          go env GOOS GOARCH CGO_ENABLED
+
+          "$CC" --version
+          echo "NDK: $ANDROID_NDK_HOME"
+
+      - name: Build Android ARM64 dockerd
+        shell: bash
         env:
           DOCKER_GITCOMMIT: ${{ github.sha }}
         run: |
-          docker buildx bake \
-            --set binary.platform=linux/arm64 \
-            binary
+          set -eux
 
-      - name: Verify compiled daemon
+          export GOOS=android
+          export GOARCH=arm64
+          export CGO_ENABLED=1
+
+          export DOCKER_STATIC=0
+
+          # Avoid detecting host Linux systemd libraries.
+          export EXCLUDE_AUTO_BUILDTAG_JOURNALD=1
+
+          # Build the dynamic daemon target.
+          # This target removes netgo, osusergo and static_build.
+          ./hack/make.sh dynbinary-daemon
+
+      - name: Verify Android binary
+        shell: bash
         run: |
-          set -eu
+          set -eux
 
-          test -s bundles/binary/dockerd
+          BINARY="bundles/dynbinary-daemon/dockerd"
 
-          echo "Build successful!"
-          file bundles/binary/dockerd
+          test -s "$BINARY"
 
-          echo "Build output:"
-          ls -lah bundles/binary/
+          echo "===== Binary information ====="
+          file "$BINARY"
 
-      - name: Package binaries
+          echo "===== Go build information ====="
+          go version -m "$BINARY" | tee build-info.txt
+
+          grep -q 'GOOS=android' build-info.txt
+          grep -q 'GOARCH=arm64' build-info.txt
+
+          if grep -E 'build -tags=.*netgo' build-info.txt; then
+            echo "ERROR: netgo is still enabled!"
+            exit 1
+          fi
+
+          echo "===== ELF interpreter ====="
+          readelf -l "$BINARY" | grep -i interpreter || true
+
+          echo "Android ARM64 build verification passed."
+
+      - name: Package Android binaries
+        shell: bash
         run: |
+          set -eux
+
+          mkdir -p "$RUNNER_TEMP/android-dockerd"
+
+          cp bundles/dynbinary-daemon/dockerd \
+             "$RUNNER_TEMP/android-dockerd/"
+
+          cp build-info.txt "$RUNNER_TEMP/android-dockerd/"
+
           tar -czf "$RUNNER_TEMP/moby-android-arm64.tar.gz" \
-            -C bundles/binary .
+            -C "$RUNNER_TEMP/android-dockerd" .
 
           sha256sum "$RUNNER_TEMP/moby-android-arm64.tar.gz" \
             > "$RUNNER_TEMP/moby-android-arm64.tar.gz.sha256"
 
-      - name: Upload ARM64 build
+      - name: Upload Android ARM64 artifact
         uses: actions/upload-artifact@v4
         with:
           name: moby-android-arm64-${{ github.sha }}
