@@ -918,7 +918,7 @@ func supervisorOpts(cfg *config.Config) []supervisor.DaemonOpt {
 		opts = append(opts, supervisor.WithCRIDisabled())
 	}
 
-	if runtime.GOOS == "windows" {
+	if runtime.GOOS == "windows" || runtime.GOOS == "linux" {
 		opts = append(opts, supervisor.WithDetectLocalBinary())
 	}
 
