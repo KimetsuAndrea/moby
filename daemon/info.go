@@ -16,6 +16,7 @@ import (
 	"github.com/moby/moby/v2/daemon/command/debug"
 	"github.com/moby/moby/v2/daemon/config"
 	"github.com/moby/moby/v2/daemon/internal/filedescriptors"
+	imageinternal "github.com/moby/moby/v2/daemon/internal/image"
 	"github.com/moby/moby/v2/daemon/internal/metrics"
 	"github.com/moby/moby/v2/daemon/internal/mod"
 	"github.com/moby/moby/v2/daemon/internal/platform"
