@@ -293,6 +293,49 @@ jobs:
               print(f"{name}: {count} replacement(s)")
           PY
       
+      - name: Fix Android NDK missing IGMP constants
+        working-directory: nftables-1.1.7
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path("include/headers.h")
+          text = path.read_text()
+
+          compatibility = """
+          /* Android NDK compatibility: standard IGMP message types. */
+          #ifndef IGMP_V1_MEMBERSHIP_REPORT
+          #define IGMP_V1_MEMBERSHIP_REPORT 0x12
+          #endif
+
+          #ifndef IGMP_V2_MEMBERSHIP_REPORT
+          #define IGMP_V2_MEMBERSHIP_REPORT 0x16
+          #endif
+
+          #ifndef IGMP_V2_LEAVE_GROUP
+          #define IGMP_V2_LEAVE_GROUP 0x17
+          #endif
+          """
+
+          if "Android NDK compatibility: standard IGMP message types." not in text:
+              # Insert after the header's include directives.
+              lines = text.splitlines(keepends=True)
+              last_include = -1
+
+              for i, line in enumerate(lines):
+                  if line.lstrip().startswith("#include"):
+                      last_include = i
+
+              if last_include < 0:
+                  raise SystemExit("Could not find include directives in headers.h")
+
+              lines.insert(last_include + 1, compatibility + "\n")
+              path.write_text("".join(lines))
+
+          print("IGMP compatibility constants added.")
+          PY
+
       - name: Fix Android Bionic fopencookie incompatibility
         working-directory: nftables-1.1.7
         shell: bash
