@@ -67,6 +67,12 @@ func New(rootDir, stateDir string, opts ...DaemonOpt) (*Daemon, error) {
 			Version: 2, // FIXME(thaJeztah): update to v3 when we drop support for containerd v1.
 			Root:    rootDir,
 			State:   filepath.Join(stateDir, "daemon"),
+			Plugins: map[string]any{
+				"io.containerd.shim.v1.manager": map[string]any{
+					"socket_dir": filepath.Join(stateDir, "s"),
+				},
+			},
+
 			GRPC: config.GRPCConfig{ //nolint:staticcheck // Deprecated in config v4, but required for config v3.
 				Address:        defaultGRPCAddress(stateDir),   //nolint:staticcheck // Deprecated in config v4, but required for config v3.
 				MaxRecvMsgSize: defaults.DefaultMaxRecvMsgSize, //nolint:staticcheck // Deprecated in config v4, but required for config v3.
