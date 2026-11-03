@@ -1,0 +1,1481 @@
+~/moby $ su                                                                           :/data/data/com.termux/files/home/moby # cd
+:/ # find /data/adb /vendor_dlkm /vendor /system -name 'lkm4ctr.ko' 2>/dev/null       /data/adb/modules/docker_native/lkm4ctr.ko
+:/ # ls /vendor_dlkm/lib/modules | grep -Ei 'nf|nft|iptables|netfilter'               connfem.ko
+conninfra.ko                                                                          conninfra_mt6653.ko
+hook|nf_ct_netns_get|nf_ct_netns_put|nf_nat_setup_info)$' /proc/kallsyms            < 0000000000000000 T nf_unregister_net_hook
+0000000000000000 T nf_register_net_hook                                               0000000000000000 T nfnetlink_subsys_register
+0000000000000000 T nf_ct_netns_get                                                    0000000000000000 T nf_ct_netns_put
+0000000000000000 T nf_nat_setup_info                                                  :/ # cat /data/adb/modules/docker_native/module.prop
+id=docker_native                                                                      name=Docker Native Runtime
+version=v1.0.0                                                                        versionCode=100
+author=AI-Collaborator                                                                description=Enables native Docker support using lkm4ctr and dynamically provisions cgroups/daemons at boot.:/ #                                                             :/ # ls -lah /data/adb/modules/docker_native/                                         total 11K                                                                             drwxr-xr-x  4 root root 3.3K 2026-11-03 05:57 .
+drwxr-xr-x 13 root root 3.3K 2026-11-03 05:57 ..                                      -rw-r--r--  1 root root  11M 2026-11-03 05:56 lkm4ctr.ko
+-rw-r--r--  1 root root  205 2026-11-03 05:56 module.prop                             -rw-r--r--  1 root root 9.0K 2026-11-03 05:56 service.sh
+drwxr-xr-x  5 root root 3.3K 2026-11-03 05:56 system                                  drwxr-xr-x  2 root root 3.3K 2026-11-03 05:56 webroot
+o | grep -Ei 'cgroup|namespace|container|netfilter|iptables|nft|hook|overlay'       < author=Linux kernel contributors (vendored ipc/, kernel/*_namespace.c, kernel/nsproxy.c, fs/overlayfs; see AGENTS.md and ../README.md)                                      description=Unified lkm4ctr module: shared hook engine plus vendored namespace/IPC/mqueue/overlayfs compatibility. For providinig missing features to runnung containers on Android kernels
+description=Overlay filesystem                                                        hot reload started for "%s": quiescing hooks
+loading hook group "%s" (%d hook(s) to attempt)                                       failed to install hook[%d]: %d
+vns_uts_namespace                                                                     3overlayfs: failed to clone upperpath
+4overlayfs: fs on '%s' does not support file handles, falling back to xino=off.       3overlayfs: failed to clone lowerpath                                                 4overlayfs: failed to decode file handle (len=%d, type=%d, flags=%x, err=%i)          3overlayfs: lower data-only dirs require permission to access trusted xattrs
+user.overlay.overlay.                                                                 trusted.overlay.overlay.
+refusing stop with %d in-flight hook call(s)
+required NSFS lifetime hook lacks its unload-safety retprobe
+failed to init vendored overlayfs (%d)
+load request failed (%d); see the messages just above in this same log for exactly which hook group and underlying error blocked it, and %s/log for the full log
+3overlayfs: failed to verify index dir 'upper' xattr
+4overlayfs: suspected uncovered redirected dir found (origin=%pd2, index=%pd2).
+6overlayfs: option "volatile" is meaningless in a non-upper mount, ignoring it.
+6overlayfs: disabling metacopy due to redirect_dir=%s
+hooked %s at %px
+4overlayfs: failed to verify index (%pd2, ftype=%x, err=%i)
+4overlayfs: cannot set %s xattr on upper
+4overlayfs: incompatible overlay.protattr format (%pd2, len=%d)
+4overlayfs: newly created inode found in cache (%pd2)
+4overlayfs: d_ino too big (%.*s, ino=%llu, xinobits=%d)
+3overlayfs: conflicting options: metacopy=off,verity=%s
+vendored overlayfs override removed
+compat: init_cgroup_ns not resolved (bookkeeping only; cgroup ns unaffected; expected without CONFIG_KALLSYMS_ALL)
+4overlayfs: %s is in-use as upperdir/workdir of another mount, accessing files from both mounts will result in undefined behavior.
+4overlayfs: NFS export requires "index=on", falling back to nfs_export=off.
+3overlayfs: failed to verify index dir 'origin' xattr
+4overlayfs: failed to %s uuid (%pd2, err=%i); falling back to uuid=null.
+3overlayfs: cleanup index of '%pd2' failed (%i)
+4overlayfs: failed to get inode (%i)
+3overlayfs: only single ':' or double '::' sequences of unescaped colons in lowerdir mount option allowed.
+running kernel lacks real pid namespace core; CLONE_NEWPID/setns(pid) still perform real pid namespace isolation, with the CONFIG_PID_NS=n zap_pid_ns_processes() BUG defused at exit time (see vns_task_exit_cleanup)
+vendor_kernel_overlay
+namespaces
+[DEBUG-KMI-EXIT] exit hook post #%d pid=%d comm=%s tracked_nsproxy=%d pid_ns=%s child_reaper=%d
+6overlayfs: option "workdir=%s" is useless in a non-upper mount, ignore
+3overlayfs: lower data-only dirs require metacopy support.
+hook group "%s" unloaded
+[DEBUG-KMI-EXIT] exit hook pre #%d pid=%d comm=%s tracked_nsproxy=%d pid_ns=%s child_reaper=%d
+3overlayfs: missing 'lowerdir'
+3overlayfs: Cannot mount volatile when upperdir has an unseen error. Sync upperdir fs to clear state.
+3overlayfs: workdir and upperdir must reside under the same mount
+4overlayfs: upper fs does not support file handles, falling back to index=off.
+4overlayfs: fs on '%s' does not support file handles, falling back to index=off,nfs_export=off.
+4overlayfs: lower file '%pd' has no fs-verity digest
+3overlayfs: redirect_dir requires permission to access trusted xattrs
+required clone, pre-wakeup namespace-copy, or user-credential lifetime hooks are unavailable
+required NSFS lifetime hook(s) unavailable (%d of 2 installed)
+init_cgroup_ns
+cause: see the "failed to install hook[N]" line just above this one in this same log for the exact hook and the underlying error
+6overlayfs: "xino" feature enabled using %d upper inode bits.
+4overlayfs: failed to copy up on encode (%pd2, err=%i)
+hook group "%s" is already %s, nothing to do
+symbol for hook[%d] not found, skipping
+exit_task_namespaces
+4overlayfs: failed to create directory %s/%s (errno: %i); mounting read-only
+trusted.overlay.origin
+3overlayfs: conflicting options: metacopy=on,redirect_dir=%s
+NSFS inode lifetime hooks installed; path helper=%s, eviction=nsfs_evict
+hooks
+register_kretprobe() failed for %s: %d; refusing to install an unpinned hook
+4overlayfs: failed inode index lookup (ino=%lu, key=%.*s, err=%i);
+overlayfs: mount with '-o index=off' to disable inodes index.
+user.overlay.opaque
+user.overlay.impure
+3overlayfs: conflicting options: userxattr,redirect_dir=%s
+3overlayfs: failed to resolve '%s': %i
+failed to install uid/gid getter/setter syscall hooks (%d); unmapped global IDs may be exposed
+module_refcount()=%d after quiesce (%d diagfs mount(s), %d in-flight hook call(s) currently accounted for; must drop to 1, i.e. only this worker's own reference, before rmmod can succeed; timeout is %ums and never overrides live references)
+3overlayfs: conflicting %s path
+3overlayfs: at least 2 lowerdir are needed while upperdir nonexistent
+4overlayfs: inode number too big (%pd2, ino=%llu, xinobits=%d)
+proc namespace instantiate returned success without an inode; retaining a fail-safe module pin
+hook-
+removing hook %s (was installed at 0x%lx)
+4overlayfs: ...falling back to redirect_dir=nofollow.
+trusted.overlay.whiteout
+4overlayfs: failed to look up (%s) for ino (%i)
+module exit continuing despite procfs namespace inode pins (error %d)
+hooks:
+no hook group is registered under "%s"; this submodule either was never initialized on this kernel (e.g. it detected genuine native kernel support and never needed to hook anything) or the tag is unknown -- %s request is a no-op
+loaded (shared shadow_hook implementation)
+user namespace final put could not pin module; leaking namespace %p
+3overlayfs: missing 'workdir'
+3overlayfs: failed index dir cleanup (%i)
+3overlayfs: too many lower directories, limit is %d
+module exit continuing despite init pid namespace operations still being attached (error %d)
+NSFS lifecycle hooks left installed because inode pins remain
+could not account vendored user namespace on prepared credentials %p; retaining a fail-safe reference
+could not pin IPC namespace free worker; retaining namespace %p
+3overlayfs: workdir and upperdir must be separate subtrees
+4overlayfs: invalid origin (%pd2, ftype=%x, origin ftype=%x).
+4overlayfs: refusing to follow redirect for (%pd2)
+trusted.overlay.redirect
+3overlayfs: lookup '%s/%.*s' failed (%i)
+4overlayfs: copying fileattr: no xattr on upper
+4overlayfs: failed to lookup by real (%pd2, layer=%d, connected=%pd2, err=%i)
+failed to install get_fs_type() overlay override hook (%d)
+[DEBUG-KMI-EXIT] free_nsproxy and exit_task_namespaces hooks installed
+3overlayfs: upper fs is r/o, try multi-lower layers mount
+4overlayfs: metacopy with no lower data found - abort lookup (%pd2)
+3overlayfs: metacopy requires permission to access trusted xattrs
+3overlayfs: verity requires permission to access trusted xattrs
+module exit continuing with %d hook call(s), %d vendored nsproxy object(s), %d user namespace object(s), %d IPC namespace object(s) reported
+overlayfs: fs_context: %s%s%s
+perf_event_namespaces
+hook remove pass complete, %d hook(s) removed
+vns_nsproxy_set_add: tracking allocation failed for %p; refusing untracked namespace proxy
+4overlayfs: NFS export requires an index dir, falling back to nfs_export=off.
+3overlayfs: failed to verify upper root origin
+4overlayfs: orphan index entry (%pd2, ftype=%x, nlink=%u)
+4overlayfs: lower file '%pd' failed to load fs-verity info
+4overlayfs: cleanup linked index (%pd2, ino=%lu, nlink=%u)
+refusing stop while %d procfs namespace inode(s) retain module-owned namespace operations
+compat: unexpected free_cgroup_ns(%px); leaking cgroup namespace
+user.overlay.upper
+6overlayfs: disabling metacopy due to nfs_export=on
+failed to create module-owned namespace slab cache(s)
+refusing stop before quiesce: %d hook call(s), %d vendored nsproxy object(s), %d user namespace object(s), %d IPC namespace object(s) remain or teardown work is pending
+could not account vendored user namespace on child credentials %p; retaining a fail-safe reference
+copy_namespaces
+compat: unexpected __put_net(%px); leaking net namespace
+delete: quiesces new redirects and drains ALL in-flight hook calls (aggregate; a single call is not targetable, and a genuinely stuck call cannot be force-killed -- honest limitation)
+[DEBUG-KMI-EXIT] exit_task_namespaces hook install failed: %d
+4overlayfs: failed to set xattr on upper
+3overlayfs: failed to get anonymous bdev for upper fs
+user.overlay.origin
+trusted.overlay.impure
+vendor_kernel default ipc namespace unavailable
+could not install the observational finit_module(2) hook (%d); hot reload will still work, just without that one log line
+4overlayfs: NFS export is not supported with metadata only copy up, falling back to nfs_export=off.
+3overlayfs: Failed to create volatile/dirty file.
+4overlayfs: bad index found (index=%pd2, ftype=%x, origin ftype=%x).
+3overlayfs: cannot append lower layer
+3overlayfs: unescaped trailing colons in lowerdir mount option.
+[DEBUG-KMI-EXIT] free_nsproxy hook install failed: %d
+3overlayfs: at least one non-data lowerdir is required
+4overlayfs: metacopy file '%pd' has unsupported version
+3overlayfs: conflicting options: userxattr,metacopy=on
+still waiting after %lums: module_refcount()=%d (%d extra reference(s) remaining: %d diagfs mount(s), %d in-flight hook call(s), %d other; %lums until timeout)
+  %d in-flight shadow_hook-redirected call(s) across every submodule
+freeing untracked vendored user namespace %p
+3overlayfs: statfs failed on '%s'
+4overlayfs: upper fs needs to support d_type.
+4overlayfs: invalid index upper (%pd2, upper=%pd2).
+4overlayfs: lazy lowerdata lookup failed (%pd2, err=%i)
+trusted.overlay.nlink
+user.overlay.uuid
+user.overlay.metacopy
+4overlayfs: copying fileattr: no support on upper
+could not account vendored user namespace on kernel credentials %p; retaining a fail-safe reference
+vendored overlayfs now handles every get_fs_type("overlay") lookup
+vns_pid_namespace
+4overlayfs: The uuid=off requires a single fs for lower and upper, falling back to uuid=null.
+3overlayfs: upper fs missing required features.
+4overlayfs: failed to get origin (%i)
+4overlayfs: invalid redirect (%s)
+procfs target-PID capture hook is unavailable (%d); /proc/self aliases remain supported, but arbitrary-PID fallback stays fail-closed
+no such %s object (id %d) in the default vendored ipc namespace
+shadow_hook
+retaining user namespace cache with %d live object(s)
+4overlayfs: ...falling back to xino=off.
+4overlayfs: refusing to follow metacopy origin for (%pd2)
+trusted.overlay.metacopy
+4overlayfs: failed to lookup one by real (%pd2, layer=%d, connected=%pd2, err=%i)
+6overlayfs: option "index=on" is useless in a non-upper mount, ignore
+failed to install procfs compatibility hooks (%d); missing native namespace entries will remain ENOENT
+overlay
+3overlayfs: failed to get anonymous bdev for lowerpath
+4overlayfs: try deleting index dir or mounting with '-o index=off' to disable inodes index.
+3overlayfs: cleanup of '%pd2' failed (%i)
+4overlayfs: failed lookup after mkdir (%pd2, err=%i).
+4overlayfs: failed to retrieve upper fileattr (%pd2, err=%i)
+3overlayfs: empty lowerdir
+no such vendored namespace instance (tgid %d is not tracked by vendor_kernel)
+3overlayfs: %s is in-use as upperdir/workdir of another mount, mount with '-o index=off' to override exclusive upperdir protection.
+6overlayfs: try mounting with 'userxattr' option
+6overlayfs: option "uuid=on" requires an upper fs, falling back to uuid=null.
+3overlayfs: unrecognized mount option "%s" or missing value
+loaded (%d hook(s) installed)
+type: %s namespace
+failed to load hook group "%s": %d
+trusted.overlay.opaque
+trusted.overlay.upper
+trusted.overlay.uuid
+user.overlay.whiteout
+4overlayfs: failed to get index nlink (%pd2, err=%i)
+3overlayfs: conflicting options: nfs_export=on,index=off
+6overlayfs: disabling nfs_export due to verity=%s
+in-flight hook counter remains %d after final hook unregister: %s
+user namespace final put without the vendored workqueue; leaking namespace %p
+3overlayfs: maximum fs stacking depth exceeded
+4overlayfs: failed to get redirect (%i)
+4overlayfs: failed to encode file handle (ino=%lu, err=%i)
+3overlayfs: conflicting options: nfs_export=on,metacopy=on
+3overlayfs: regular lower layers cannot follow data lower layers
+failed to init default ipc namespace (%d)
+native /proc/self/ns/{ipc,pid} dentry compatibility is unavailable; missing native namespace entries will remain ENOENT
+compat: perf_event_namespaces not resolved (stub active)
+[DEBUG-KMI-EXIT] handed off PID namespace reaper pid=%d comm=%s pid_ns=%p
+6overlayfs: "xino=on" is useless with all layers on same fs, ignore.
+4overlayfs: failed to get metacopy (%i)
+6overlayfs: disabling nfs_export due to index=off
+3overlayfs: conflicting options: userxattr,verity=%s
+hook
+holder: in-flight shadow_hook-redirected call #%u
+type: shadow_hook_inflight_count() contributor
+detail: a hooked syscall is currently executing in another task and holds a module reference until it returns
+hook group "%s" loaded: %d/%d hook(s) installed (the rest, if any, had no matching symbol on this kernel and were skipped -- see "symbol for hook[N] not found" lines above)
+vns_user_namespace
+4overlayfs: ...falling back to uuid=null.
+4overlayfs: %s uuid detected in lower fs '%pd2', falling back to xino=%s,index=off,nfs_export=off.
+4overlayfs: failed to verify %s (%pd2, ino=%lu, err=%i)
+3overlayfs: overlay with incompat feature '%s' cannot be mounted
+6overlayfs: NFS export requires "redirect_dir=nofollow" on non-upper mount, falling back to nfs_export=off.
+6overlayfs: disabling nfs_export due to metacopy=on
+trusted.overlay.
+overlayfs: could not resolve VFS symbol '%s'; vendored overlayfs unavailable
+installed observational finit_module(2) hook (%d candidate matched)
+resolution: common causes are the resolved symbol no longer matching the expected prototype on this kernel build, or the ftrace/kprobe backend rejecting an already-hooked address (only one shadow_hook may own a given symbol at a time)
+unloading hook group "%s" (%d hook(s))
+4overlayfs: upper fs does not support tmpfile.
+4overlayfs: upper fs does not support RENAME_WHITEOUT.
+4overlayfs: invalid origin (%*phN)
+4overlayfs: metacopy file '%pd' has no digest specified
+4overlayfs: Failed to link whiteout - disabling whiteout inode sharing(nlink=%u, err=%i)
+4overlayfs: failed to set redirect (%i)
+4overlayfs: connectable file handles not supported; use 'no_subtree_check' exportfs option.
+3overlayfs: conflicting options: verity=%s,redirect_dir=%s
+inum: (opaque/unavailable for this namespace type)
+%s unload started: quiescing hooks (in-flight shadow_hook-redirected syscalls are allowed to finish, new entries are refused with -EAGAIN)
+module_refcount()=%d after quiesce (%d in-flight shadow_hook call(s) tracked); waiting up to %ums for it to drain to 1
+4overlayfs: ...falling back to metacopy=off.
+user.overlay.redirect
+3overlayfs: failed to lock workdir+upperdir
+4overlayfs: metacopy file '%pd' has too small xattr
+user.overlay.
+cause: %d extra reference(s) remain with no lkm4ctr diagfs mounted, so a shadow_hook-redirected syscall is most likely still executing in another task (%d currently tracked in-flight)
+cause: %d extra reference(s) remain with no lkm4ctr diagfs mounted; a shadow_hook-redirected syscall, held hook-created fd, or active mqueue mount (for example /dev/mqueue) may still pin the module (%d hook calls currently tracked in-flight)
+SAFE-RMMOD RULE: when this directory contains only the mount-* file(s) for the diagfs mount(s) actively keeping it busy (i.e. no hook-*/other-* remain, only the very mount you are reading through), it is safe to `umount` diagfs and then `rmmod lkm4ctr`.
+could not queue user namespace teardown for %p; leaking namespace
+4overlayfs: ...falling back to index=off.
+4overlayfs: suspected multiply redirected dir found (upper=%pd2, origin=%pd2, index=%pd2).
+user.overlay.nlink
+3overlayfs: workdir/%s already exists
+cgroup
+overlay_mounts: %d
+3overlayfs: overlapping %s path
+trusted.overlay.protattr
+user.overlay.protattr
+4overlayfs: metacopy file '%pd' has invalid xattr size
+4overlayfs: "check_copy_up" module option is obsolete
+4overlayfs: failed to retrieve lower fileattr (%pd2, err=%i)
+procfs namespace lifecycle hooks unavailable (%d); missing native namespace entries remain fail-closed
+shadow_hook_registry_set_active
+shadow_hook_install_all
+shadow_hook_is_quiescing
+shadow_hook_install
+shadow_hook_remove
+shadow_hook_resolve
+shadow_hook_remove_all
+shadow_hook_registry_snprintf
+shadow_hook_quiesce
+shadow_hook_inflight_count
+shadow_hook_registry_tag_active
+lkm4ctr.ko; the shared ftrace/kprobe hook engine and the former
+    hook-<n>                      each in-flight shadow_hook-redirected call
+                                   it where possible -- mount and hook
+                                   in-flight hooks), "other" holders cannot
+  ./v/hooks                       (0444) vendor_kernel's installed hooks.
+  ./v/namespaces                  (0444) full registry dump (every tracked
+                                   tgid->nsproxy) + overlay diag.
+  ./v/ns/<type>/                  one directory per namespace type (pid,
+                                   uts, ipc, user, net, time, mnt, cgroup).
+                                   default vendored ipc namespace, named by
+                                   hooks -> drain refcount -> unmount diagfs
+  vendored namespaces under ./v/ns/<type>/, and the live SysV IPC objects
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/super.c
+/__w/lkm4ctr/lkm4ctr/vendor/kernel/user_namespace.c
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/copy_up.c
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/util.c
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/file.c
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/inode.c
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/export.c
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/dir.c
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/params.c
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/xattrs.c
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/overlayfs.h
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/namei.c
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/readdir.c
+namespace
+dec_pid_namespaces
+VNS_DIAG_NS_CGROUP
+cgroup_root
+cgroup_taskset
+has_namespaces
+vns_copy_namespaces
+vns_exit_hook_exit
+punt_to_cgroup
+vk_msgsnd_hook
+vk_msgrcv_hook
+vk_shmget_hook
+vk_hook_mq_unlink
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/super.c
+vns_cgroupns_install
+vendor_kernel_setreuid_hook
+vns_perf_event_namespaces_real
+cgroup_subsys_state
+LKM4CTR_DIAG_NAMESPACES
+__UNIQUE_ID___addressable_shadow_hook_is_quiescing433
+shadow_hook_registry_set_active
+inc_ipc_namespaces
+vk_shmat_hook
+vendor_kernel_getgid_hook
+vendor_kernel_hook_getresgid
+vns_init_cgroup_ns_ptr
+shadow_hook_pre_handler
+shadow_hook_kprobe_api_ready
+/__w/lkm4ctr/lkm4ctr/vendor/kernel/pid_namespace.c
+/__w/lkm4ctr/lkm4ctr/vendor/kernel/user_namespace.c
+dec_user_namespaces
+vns_ipc_namespace_flush_work
+vk_hook_semctl
+vendor_kernel_clone3_hook
+vendor_kernel_hook_fork
+vendor_kernel_hook_copy_namespaces
+namespace_offset
+shadow_hook_group_count
+namespaces
+vns_exit_task_namespaces_names
+vns_exit_hook_init
+vk_hook_semtimedop
+get_cgroup_ns
+vendor_kernel_hook_unshare
+vendor_kernel_hook_openat
+__UNIQUE_ID___addressable_shadow_hook_quiesce431
+shadow_hook_quiescing
+vns_ipc_namespace_prepare_exit
+vk_hook_semop
+vk_hook_shmctl
+vendor_kernel_prepare_kernel_cred_hook
+vendor_kernel_setresgid_hook
+vendor_kernel_hook_setgid
+vendor_kernel_hook_open
+vendor_kernel_get_fs_type_hook
+sock_cgroup_data
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/copy_up.c
+vendor_kernel_hook_nsfs_evict
+vendor_kernel_hook_proc_pid_make_inode
+mem_cgroup
+shadow_hook_install_all
+shadow_hook_registry_groups
+shadow_hook_registry_tag_matches
+shadow_hook_retprobe_install
+dec_uts_namespaces
+vns_exit_task_namespaces_intercepts
+vns_call_real_exit_task_namespaces
+vk_semtimedop_hook
+vk_hook_semget
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/util.c
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/file.c
+put_cgroup_ns
+vendor_kernel_getresgid_hook
+vendor_kernel_hook_setresuid
+hooks_ipv4
+hooks
+__UNIQUE_ID___addressable_shadow_hook_resolve429
+shadow_hook_registry_add
+mem_cgroup_threshold
+vk_hook_msgctl
+vk_hook_mq_getsetattr
+vendor_kernel_hook_prepare_kernel_cred
+proc_netfilter
+lkm4ctr_hotreload_hooks_installed
+__UNIQUE_ID___addressable_shadow_hook_remove435
+shadow_hook_is_quiescing
+vk_hook_shmget
+/__w/lkm4ctr/lkm4ctr/vendor/kernel/time/namespace.c
+vns_overlay_init
+vendor_kernel_copy_creds_hook
+vendor_kernel_setuid_hook
+vendor_kernel_hook_getuid
+vendor_kernel_proc_pid_make_inode_hook
+UCOUNT_USER_NAMESPACES
+out_cgroup
+vendor_kernel_ipc_hooks
+vk_semget_hook
+vns_cgroupns_put
+vns_overlay_exit
+total_hooked
+vendor_kernel_copy_namespaces_hook
+vendor_kernel_getuid_hook
+vendor_kernel_proc_ns_dir_lookup_hook
+vendor_kernel_openat2_hook
+vns_real_exit_task_namespaces
+vk_shmctl_hook
+vk_mq_unlink_hook
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/inode.c
+vendor_kernel_required_lifecycle_hooks_ready
+vendor_kernel_hook_openat2
+vendor_kernel_hook_get_fs_type
+cgroup_rstat_cpu
+__UNIQUE_ID___addressable_shadow_hook_registry_tag_active427
+shadow_hook_teardown_all_retprobes
+shadow_hook_install
+vk_semctl_hook
+vk_hook_msgget
+vk_hook_msgrcv
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/export.c
+vendor_kernel_unshare_hook
+vendor_kernel_setresuid_hook
+nf_hook_entries
+lkm4ctr_diagfs_hooks_snprintf
+hotreload_hook_finit_module
+__UNIQUE_ID___addressable_shadow_hook_inflight_count425
+shadow_hook_resolve_retprobe_ret
+vns_exit_task_namespaces_hook
+inc_user_namespaces
+/__w/lkm4ctr/lkm4ctr/vendor/kernel/cgroup/namespace.c
+vns_nsfs_lifecycle_hooks
+vendor_kernel_hook_vfork
+vendor_kernel_hook_reboot
+vendor_kernel_hook_setreuid
+/__w/lkm4ctr/lkm4ctr/vendor/../glue/vendor_kernel_overlay.c
+hooked
+shadow_hook_redirect
+no_cgroup_owner
+mem_cgroup_threshold_ary
+mem_cgroup_reclaim_iter
+vk_shmdt_hook
+vk_mq_notify_hook
+vk_mq_getsetattr_hook
+vendor_kernel_setgid_hook
+vendor_kernel_hook_proc_ns_dir_lookup
+hotreload_hooks
+shadow_hook_remove
+vns_switch_task_namespaces
+dec_ipc_namespaces
+vk_semop_hook
+vns_default_cgroup_ns
+cgroup_base_stat
+shadow_hook_resolve
+shadow_hook_remove_all
+shadow_hook_unregister_kprobe
+shadow_hook_retprobe_ret
+UCOUNT_MNT_NAMESPACES
+inc_uts_namespaces
+vns_semundo_clone_namespace_admitted
+destroy_pid_namespace
+vns_free_cgroup_ns
+vendor_kernel_vfork_hook
+vendor_kernel_reboot_hook
+clone_hooks
+vendor_kernel_hook_getegid
+user_namespace
+shadow_hook_inflight
+shadow_hook_registry_lock
+shadow_hook_quiesce_lock
+vk_mq_timedreceive_hook
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/dir.c
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/params.c
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/xattrs.c
+vns_cgroupns_get
+vendor_kernel_clone_hook
+vendor_kernel_put_user_ns_hook
+vendor_kernel_hook_getgid
+vendor_kernel_hook_setuid
+vendor_kernel_open_hook
+has_hooks
+UCOUNT_TIME_NAMESPACES
+vns_unshare_nsproxy_namespaces
+vendor_kernel_hook_put_cred_rcu
+time_namespace
+cgroup_file
+__UNIQUE_ID___addressable_shadow_hook_registry_snprintf426
+shadow_hook_register_kprobe
+UCOUNT_IPC_NAMESPACES
+vns_copy_cgroup_ns
+inc_pid_namespaces
+vk_hook_mq_timedreceive
+vns_cgroupns_operations
+vendor_kernel_hook_wake_up_new_task
+vendor_kernel_geteuid_hook
+vendor_kernel_getegid_hook
+vendor_kernel_getresuid_hook
+vendor_kernel_hook_setregid
+vns_overlay_diag_snprintf
+cgroups
+create_pid_namespace
+mem_cgroup_per_node
+vendor_kernel_core_hooks
+vendor_kernel_hook_prepare_creds
+vendor_kernel_setregid_hook
+vendor_kernel_hook_geteuid
+shadow_hook
+shadow_hook_inflight_snprintf
+create_new_namespaces
+vk_msgctl_hook
+vk_hook_mq_open
+vns_cgroup_default_init
+perf_event_namespaces_fn_t
+__UNIQUE_ID___addressable_shadow_hook_install_all436
+vk_mq_open_hook
+vk_hook_shmat
+vendor_kernel_openat_hook
+cgroup_bpf
+shadow_hook_registry_snprintf
+shadow_hook_registry_group
+shadow_hook_registry_remove
+UCOUNT_CGROUP_NAMESPACES
+obj_cgroup
+vk_msgget_hook
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/namei.c
+vendor_kernel_hook_clone
+vendor_kernel_hook_copy_creds
+vendor_kernel_hook_getresuid
+vendor_kernel_proc_evict_inode_hook
+uts_namespace
+KMALLOC_CGROUP
+shadow_hook_lifetime_track
+shadow_hook_redirect_enter
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/readdir.c
+vendor_kernel_copy_namespaces_names
+vendor_kernel_hook_proc_evict_inode
+cgroup_namespace
+shadow_hook_quiesce
+lkm4ctr_diagfs_namespaces_snprintf
+shadow_hook_retprobe_remove
+UCOUNT_UTS_NAMESPACES
+vns_free_nsproxy_shadow_hook
+vns_put_cgroup_ns
+vns_free_nsproxy_hook
+/__w/lkm4ctr/lkm4ctr/vendor/ipc/namespace.c
+nf_hooks_egress
+vk_hook_mq_timedsend
+vendor_kernel_hook_setns
+vendor_kernel_procfs_hooks
+ipc_namespace
+shadow_hook_caller_pc
+UCOUNT_NET_NAMESPACES
+vns_exit_task_namespaces_shadow_hook
+vendor_kernel_put_cred_rcu_hook
+hooks_ipv6
+cgroup_freezer_state
+cgroup_subsys
+LKM4CTR_DIAG_HOOKS
+shadow_hook_inflight_count
+__UNIQUE_ID___addressable_shadow_hook_registry_set_active428
+shadow_hook_lifetime_hooks
+hook
+vns_namespace_stop_gate
+vns_perf_event_namespaces
+vk_hook_shmdt
+vk_hook_mq_notify
+vns_cgroupns_owner
+nsfs_evict_hook
+nsfs_path_hook
+vendor_kernel_setns_hook
+vendor_kernel_prepare_creds_hook
+vendor_kernel_hook_put_user_ns
+pid_namespace
+no_cgroup_migration
+mnt_namespace
+nf_hooks_ingress
+vk_mq_timedsend_hook
+real_copy_namespaces
+vendor_kernel_userns_hooks
+cgroup_ns
+shadow_hook_registry_tag_active
+lkm4ctr_hotreload_hooks_ensure_installed
+__UNIQUE_ID___addressable_shadow_hook_install434
+__UNIQUE_ID___addressable_shadow_hook_remove_all437
+UCOUNT_PID_NAMESPACES
+vns_exit_task_namespaces
+vendor_kernel_fork_hook
+vendor_kernel_wake_up_new_task_hook
+hooks_arp
+cgroup
+shadow_hook_registry_find_locked
+mem_cgroup_id
+mem_cgroup_thresholds
+vendor_kernel_hook_setresgid
+vendor_kernel_overlay_hooks
+finit_module_hook
+shadow_hook_ri_to_kretprobe
+vns_namespace_creation_allowed
+vk_hook_msgsnd
+free_cgroup_ns
+vns_nsfs_hooks_active
+vendor_kernel_hook_nsfs_get_path
+vendor_kernel_hook_clone3
+shadow_hook.h
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+shadow_hook.h
+src/android14-6.1/include/linux/pid_namespace.h
+shadow_hook.h
+shadow_hook.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+shadow_hook.h
+pid_namespace.c
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+user_namespace.c
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+namespace.c
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netprio_cgroup.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+shadow_hook.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+shadow_hook.h
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+src/android14-6.1/include/linux/cgroup.h
+shadow_hook.h
+src/android14-6.1/include/linux/pid_namespace.h
+shadow_hook.h
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/../../../glue
+src/android14-6.1/include/linux/user_namespace.h
+overlayfs.h
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs
+overlayfs.h
+src/android14-6.1/include/linux/user_namespace.h
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/../../../glue
+overlayfs.h
+src/android14-6.1/include/linux/user_namespace.h
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/../../../glue
+src/android14-6.1/include/linux/user_namespace.h
+overlayfs.h
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/../../../glue
+src/android14-6.1/include/linux/user_namespace.h
+overlayfs.h
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs
+src/android14-6.1/include/linux/user_namespace.h
+overlayfs.h
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/../../../glue
+src/android14-6.1/include/linux/user_namespace.h
+overlayfs.h
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs
+src/android14-6.1/include/linux/user_namespace.h
+overlayfs.h
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/../../../glue
+src/android14-6.1/include/linux/user_namespace.h
+overlayfs.h
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs/../../../glue
+src/android14-6.1/include/linux/user_namespace.h
+overlayfs.h
+/__w/lkm4ctr/lkm4ctr/vendor/fs/overlayfs
+src/android14-6.1/include/linux/user_namespace.h
+overlayfs.h
+/__w/lkm4ctr/lkm4ctr/vendor/kernel/cgroup
+/__w/lkm4ctr/lkm4ctr/vendor/kernel/cgroup/../..
+namespace.c
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+namespace.c
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+shadow_hook.h
+shadow_hook.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+shadow_hook.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+shadow_hook.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+shadow_hook.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+shadow_hook.h
+shadow_hook.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+vendor_kernel_overlay.c
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/pid_namespace.h
+shadow_hook.h
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/user_namespace.h
+src/android14-6.1/include/linux/pid_namespace.h
+src/android14-6.1/include/linux/ipc_namespace.h
+src/android14-6.1/include/net/net_namespace.h
+src/android14-6.1/include/net/netns/netfilter.h
+src/android14-6.1/include/linux/netfilter/nf_conntrack_common.h
+src/android14-6.1/include/linux/time_namespace.h
+src/android14-6.1/include/linux/cgroup.h
+src/android14-6.1/include/linux/cgroup-defs.h
+src/android14-6.1/include/linux/bpf-cgroup-defs.h
+shadow_hook.h
+vk_hook_mq_notify
+vendor_kernel_required_lifecycle_hooks_ready
+shadow_hook_kprobe_api_ready
+vk_hook_msgrcv
+vendor_kernel_hook_put_cred_rcu
+vns_cgroupns_put
+vendor_kernel_hook_reboot
+__kstrtabns_shadow_hook_inflight_count
+__crc_shadow_hook_inflight_count
+__kstrtab_shadow_hook_inflight_count
+__ksymtab_shadow_hook_inflight_count
+vns_overlay_exit
+vns_exit_hook_exit
+vns_ipc_namespace_prepare_exit
+vns_overlay_init
+vns_cgroup_default_init
+vns_exit_hook_init
+shadow_hook_inflight
+shadow_hook_retprobe_ret
+shadow_hook_resolve_retprobe_ret
+vk_hook_shmget
+vk_hook_semget
+vk_hook_msgget
+vns_cgroupns_get
+vk_hook_shmdt
+vendor_kernel_hook_nsfs_evict
+vendor_kernel_hook_openat
+vk_hook_shmat
+vns_exit_task_namespaces_intercepts
+shadow_hook_registry_groups
+vendor_kernel_hook_setns
+vns_cgroupns_operations
+vendor_kernel_hook_put_user_ns
+vns_copy_cgroup_ns
+vns_put_cgroup_ns
+vns_default_cgroup_ns
+vns_free_cgroup_ns
+vendor_kernel_overlay_hooks
+vendor_kernel_userns_hooks
+vendor_kernel_procfs_hooks
+vendor_kernel_core_hooks
+shadow_hook_lifetime_hooks
+vns_nsfs_lifecycle_hooks
+hotreload_hooks
+vendor_kernel_ipc_hooks
+vendor_kernel_copy_namespaces_names
+vns_exit_task_namespaces_names
+vns_unshare_nsproxy_namespaces
+vns_copy_namespaces
+real_copy_namespaces
+vendor_kernel_hook_copy_namespaces
+create_new_namespaces
+vns_perf_event_namespaces
+vns_exit_task_namespaces
+vns_real_exit_task_namespaces
+vns_switch_task_namespaces
+shadow_hook_teardown_all_retprobes
+vendor_kernel_hook_copy_creds
+vendor_kernel_hook_prepare_creds
+vk_hook_mq_getsetattr
+vns_init_cgroup_ns_ptr
+vns_cgroupns_owner
+shadow_hook_pre_handler
+vendor_kernel_hook_proc_ns_dir_lookup
+vk_hook_semop
+vk_hook_semtimedop
+vk_hook_mq_open
+vendor_kernel_hook_open
+vk_hook_shmctl
+vk_hook_semctl
+vk_hook_msgctl
+vns_cgroupns_install
+__kstrtabns_shadow_hook_install
+__crc_shadow_hook_install
+__kstrtab_shadow_hook_install
+__ksymtab_shadow_hook_install
+__kstrtabns_shadow_hook_install_all
+__crc_shadow_hook_install_all
+__kstrtab_shadow_hook_install_all
+__ksymtab_shadow_hook_install_all
+__kstrtabns_shadow_hook_remove_all
+__crc_shadow_hook_remove_all
+__kstrtab_shadow_hook_remove_all
+__ksymtab_shadow_hook_remove_all
+vns_perf_event_namespaces_real
+vendor_kernel_hook_wake_up_new_task
+vns_ipc_namespace_flush_work
+vendor_kernel_hook_vfork
+vendor_kernel_hook_fork
+vns_free_nsproxy_hook
+vk_mq_notify_hook
+vns_free_nsproxy_shadow_hook
+vns_exit_task_namespaces_shadow_hook
+vk_msgrcv_hook
+vendor_kernel_put_cred_rcu_hook
+vendor_kernel_reboot_hook
+vk_shmget_hook
+vk_semget_hook
+vk_msgget_hook
+vk_shmdt_hook
+nsfs_evict_hook
+vendor_kernel_openat_hook
+vk_shmat_hook
+vendor_kernel_setns_hook
+vendor_kernel_put_user_ns_hook
+vendor_kernel_copy_namespaces_hook
+vns_exit_task_namespaces_hook
+vendor_kernel_copy_creds_hook
+vendor_kernel_prepare_creds_hook
+vk_mq_getsetattr_hook
+vendor_kernel_proc_ns_dir_lookup_hook
+vk_semop_hook
+vk_semtimedop_hook
+vk_mq_open_hook
+vendor_kernel_open_hook
+vk_shmctl_hook
+vk_semctl_hook
+vk_msgctl_hook
+vendor_kernel_wake_up_new_task_hook
+vendor_kernel_vfork_hook
+vendor_kernel_fork_hook
+vk_mq_unlink_hook
+nsfs_path_hook
+vk_mq_timedreceive_hook
+vendor_kernel_unshare_hook
+vendor_kernel_get_fs_type_hook
+vendor_kernel_clone_hook
+finit_module_hook
+vendor_kernel_proc_evict_inode_hook
+vendor_kernel_proc_pid_make_inode_hook
+vk_msgsnd_hook
+vk_mq_timedsend_hook
+vendor_kernel_setuid_hook
+vendor_kernel_getuid_hook
+vendor_kernel_setresuid_hook
+vendor_kernel_getresuid_hook
+vendor_kernel_geteuid_hook
+vendor_kernel_setreuid_hook
+vendor_kernel_setgid_hook
+vendor_kernel_getgid_hook
+vendor_kernel_setresgid_hook
+vendor_kernel_getresgid_hook
+vendor_kernel_getegid_hook
+vendor_kernel_setregid_hook
+vendor_kernel_prepare_kernel_cred_hook
+vendor_kernel_clone3_hook
+vendor_kernel_openat2_hook
+vk_hook_mq_unlink
+shadow_hook_registry_lock
+shadow_hook_quiesce_lock
+vendor_kernel_hook_nsfs_get_path
+__kstrtabns_shadow_hook_is_quiescing
+__crc_shadow_hook_is_quiescing
+__kstrtab_shadow_hook_is_quiescing
+__ksymtab_shadow_hook_is_quiescing
+shadow_hook_quiescing
+__kstrtabns_shadow_hook_registry_snprintf
+__crc_shadow_hook_registry_snprintf
+__kstrtab_shadow_hook_registry_snprintf
+__ksymtab_shadow_hook_registry_snprintf
+shadow_hook_inflight_snprintf
+lkm4ctr_diagfs_hooks_snprintf
+lkm4ctr_diagfs_namespaces_snprintf
+vns_overlay_diag_snprintf
+__kstrtabns_shadow_hook_remove
+__crc_shadow_hook_remove
+__kstrtab_shadow_hook_remove
+__ksymtab_shadow_hook_remove
+__kstrtabns_shadow_hook_resolve
+__crc_shadow_hook_resolve
+__kstrtab_shadow_hook_resolve
+__ksymtab_shadow_hook_resolve
+__kstrtabns_shadow_hook_registry_set_active
+__crc_shadow_hook_registry_set_active
+__kstrtab_shadow_hook_registry_set_active
+__ksymtab_shadow_hook_registry_set_active
+vns_nsfs_hooks_active
+__kstrtabns_shadow_hook_registry_tag_active
+__crc_shadow_hook_registry_tag_active
+__kstrtab_shadow_hook_registry_tag_active
+__ksymtab_shadow_hook_registry_tag_active
+vk_hook_mq_timedreceive
+vns_namespace_stop_gate
+vendor_kernel_hook_unshare
+vendor_kernel_hook_get_fs_type
+vendor_kernel_hook_clone
+hotreload_hook_finit_module
+vendor_kernel_hook_proc_evict_inode
+vendor_kernel_hook_proc_pid_make_inode
+__kstrtabns_shadow_hook_quiesce
+__crc_shadow_hook_quiesce
+__kstrtab_shadow_hook_quiesce
+__ksymtab_shadow_hook_quiesce
+vk_hook_msgsnd
+vk_hook_mq_timedsend
+vendor_kernel_hook_setuid
+vendor_kernel_hook_getuid
+vendor_kernel_hook_setresuid
+vendor_kernel_hook_getresuid
+vendor_kernel_hook_geteuid
+vendor_kernel_hook_setreuid
+vendor_kernel_hook_setgid
+vendor_kernel_hook_getgid
+vendor_kernel_hook_setresgid
+vendor_kernel_hook_getresgid
+vendor_kernel_hook_getegid
+vendor_kernel_hook_setregid
+vns_namespace_creation_allowed
+vns_semundo_clone_namespace_admitted
+vendor_kernel_hook_prepare_kernel_cred
+lkm4ctr_hotreload_hooks_installed
+vendor_kernel_overlay.c
+user_namespace.c
+pid_namespace.c
+vendor_kernel_hook_clone3
+vendor_kernel_hook_openat2
+has_hooks
+has_namespaces
+LKM4CTR_DIAG_HOOKS
+LKM4CTR_DIAG_NAMESPACES
+shadow_hook
+shadow_hook_registry_group
+VNS_DIAG_NS_CGROUP
+perf_event_namespaces_fn_t
+hotreload_hook_finit_module
+lkm4ctr_diagfs_hooks_snprintf
+lkm4ctr_diagfs_namespaces_snprintf
+shadow_hook_inflight_count
+shadow_hook_inflight_snprintf
+shadow_hook_install
+shadow_hook_install_all
+shadow_hook_is_quiescing
+shadow_hook_kprobe_api_ready
+shadow_hook_pre_handler
+shadow_hook_quiesce
+shadow_hook_registry_set_active
+shadow_hook_registry_snprintf
+shadow_hook_registry_tag_active
+shadow_hook_remove
+shadow_hook_remove_all
+shadow_hook_resolve
+shadow_hook_resolve_retprobe_ret
+shadow_hook_retprobe_ret
+shadow_hook_teardown_all_retprobes
+vendor_kernel_hook_clone
+vendor_kernel_hook_clone3
+vendor_kernel_hook_copy_creds
+vendor_kernel_hook_copy_namespaces
+vendor_kernel_hook_fork
+vendor_kernel_hook_get_fs_type
+vendor_kernel_hook_getegid
+vendor_kernel_hook_geteuid
+vendor_kernel_hook_getgid
+vendor_kernel_hook_getresgid
+vendor_kernel_hook_getresuid
+vendor_kernel_hook_getuid
+vendor_kernel_hook_nsfs_evict
+vendor_kernel_hook_nsfs_get_path
+vendor_kernel_hook_open
+vendor_kernel_hook_openat
+vendor_kernel_hook_openat2
+vendor_kernel_hook_prepare_creds
+vendor_kernel_hook_prepare_kernel_cred
+vendor_kernel_hook_proc_evict_inode
+vendor_kernel_hook_proc_ns_dir_lookup
+vendor_kernel_hook_proc_pid_make_inode
+vendor_kernel_hook_put_cred_rcu
+vendor_kernel_hook_put_user_ns
+vendor_kernel_hook_reboot
+vendor_kernel_hook_setgid
+vendor_kernel_hook_setns
+vendor_kernel_hook_setregid
+vendor_kernel_hook_setresgid
+vendor_kernel_hook_setresuid
+vendor_kernel_hook_setreuid
+vendor_kernel_hook_setuid
+vendor_kernel_hook_unshare
+vendor_kernel_hook_vfork
+vendor_kernel_hook_wake_up_new_task
+vendor_kernel_required_lifecycle_hooks_ready
+vk_hook_mq_getsetattr
+vk_hook_mq_notify
+vk_hook_mq_open
+vk_hook_mq_timedreceive
+vk_hook_mq_timedsend
+vk_hook_mq_unlink
+vk_hook_msgctl
+vk_hook_msgget
+vk_hook_msgrcv
+vk_hook_msgsnd
+vk_hook_semctl
+vk_hook_semget
+vk_hook_semop
+vk_hook_semtimedop
+vk_hook_shmat
+vk_hook_shmctl
+vk_hook_shmdt
+vk_hook_shmget
+vns_cgroup_default_init
+vns_cgroupns_get
+vns_cgroupns_install
+vns_cgroupns_owner
+vns_cgroupns_put
+vns_copy_cgroup_ns
+vns_copy_namespaces
+vns_exit_hook_exit
+vns_exit_hook_init
+vns_exit_task_namespaces
+vns_exit_task_namespaces_hook
+vns_free_cgroup_ns
+vns_free_nsproxy_hook
+vns_ipc_namespace_flush_work
+vns_ipc_namespace_prepare_exit
+vns_namespace_creation_allowed
+vns_overlay_diag_snprintf
+vns_overlay_exit
+vns_overlay_init
+vns_perf_event_namespaces
+vns_put_cgroup_ns
+vns_semundo_clone_namespace_admitted
+vns_switch_task_namespaces
+vns_unshare_nsproxy_namespaces
+ft_|nfnetlink_|nfnetlink_subsys_register|nf_conntrack|nf_nat)' /proc/kallsyms       <
+0000000000000000 T nf_conntrack_destroy
+0000000000000000 T nfnetlink_subsys_register
+0000000000000000 T nfnetlink_subsys_unregister
+0000000000000000 T nfnetlink_has_listeners
+0000000000000000 T nfnetlink_send
+0000000000000000 T nfnetlink_set_err
+0000000000000000 T nfnetlink_unicast
+0000000000000000 T nfnetlink_broadcast
+0000000000000000 t nfnetlink_net_init
+0000000000000000 t nfnetlink_net_exit_batch
+0000000000000000 t nfnetlink_rcv
+0000000000000000 t nfnetlink_bind
+0000000000000000 t nfnetlink_unbind
+0000000000000000 t nfnetlink_rcv_msg
+0000000000000000 T nf_conntrack_lock
+0000000000000000 T nf_conntrack_free
+0000000000000000 T nf_conntrack_find_get
+0000000000000000 T nf_conntrack_hash_check_insert
+0000000000000000 t nf_conntrack_double_lock
+0000000000000000 t nf_conntrack_double_unlock
+0000000000000000 t nf_conntrack_event_cache
+0000000000000000 T nf_conntrack_tuple_taken
+0000000000000000 T nf_conntrack_alloc
+0000000000000000 T nf_conntrack_in
+0000000000000000 T nf_conntrack_alter_reply
+0000000000000000 T nf_conntrack_cleanup_start
+0000000000000000 T nf_conntrack_cleanup_end
+0000000000000000 T nf_conntrack_cleanup_net
+0000000000000000 T nf_conntrack_cleanup_net_list
+0000000000000000 T nf_conntrack_hash_resize
+0000000000000000 T nf_conntrack_set_hashsize
+0000000000000000 T nf_conntrack_init_start
+0000000000000000 T nf_conntrack_init_end
+0000000000000000 T nf_conntrack_init_net
+0000000000000000 t nf_conntrack_update
+0000000000000000 t nf_conntrack_get_tuple_skb
+0000000000000000 t nf_conntrack_attach
+0000000000000000 t nf_conntrack_set_closing
+0000000000000000 T nf_conntrack_count
+0000000000000000 t nf_conntrack_pernet_init
+0000000000000000 t nf_conntrack_pernet_exit
+0000000000000000 t nf_conntrack_hash_sysctl
+0000000000000000 T nf_conntrack_expect_pernet_init
+0000000000000000 T nf_conntrack_expect_pernet_fini
+0000000000000000 T nf_conntrack_expect_init
+0000000000000000 T nf_conntrack_expect_fini
+0000000000000000 T nf_conntrack_helper_try_module_get
+0000000000000000 T nf_conntrack_helper_put
+0000000000000000 T nf_nat_helper_try_module_get
+0000000000000000 T nf_nat_helper_put
+0000000000000000 T nf_conntrack_helper_register
+0000000000000000 T nf_conntrack_helper_unregister
+0000000000000000 T nf_conntrack_helpers_register
+0000000000000000 T nf_conntrack_helpers_unregister
+0000000000000000 T nf_nat_helper_register
+0000000000000000 T nf_nat_helper_unregister
+0000000000000000 T nf_conntrack_helper_init
+0000000000000000 T nf_conntrack_helper_fini
+0000000000000000 T nf_conntrack_proto_init
+0000000000000000 T nf_conntrack_proto_fini
+0000000000000000 T nf_conntrack_proto_pernet_init
+0000000000000000 T nf_conntrack_generic_init_net
+0000000000000000 T nf_conntrack_tcp_set_closing
+0000000000000000 t nf_conntrack_event_cache
+0000000000000000 T nf_conntrack_tcp_packet
+0000000000000000 T nf_conntrack_tcp_init_net
+0000000000000000 T nf_conntrack_udp_packet
+0000000000000000 T nf_conntrack_udplite_packet
+0000000000000000 T nf_conntrack_udp_init_net
+0000000000000000 T nf_conntrack_invert_icmp_tuple
+0000000000000000 T nf_conntrack_icmp_packet
+0000000000000000 T nf_conntrack_inet_error
+0000000000000000 T nf_conntrack_icmpv4_error
+0000000000000000 T nf_conntrack_icmp_init_net
+0000000000000000 T nf_conntrack_acct_pernet_init
+0000000000000000 T nf_conntrack_invert_icmpv6_tuple
+0000000000000000 T nf_conntrack_icmpv6_packet
+0000000000000000 T nf_conntrack_icmpv6_error
+0000000000000000 t nf_conntrack_icmpv6_redirect
+0000000000000000 T nf_conntrack_icmpv6_init_net
+0000000000000000 T nf_conntrack_eventmask_report
+0000000000000000 T nf_conntrack_register_notifier
+0000000000000000 T nf_conntrack_unregister_notifier
+0000000000000000 T nf_conntrack_ecache_work
+0000000000000000 T nf_conntrack_ecache_pernet_init
+0000000000000000 T nf_conntrack_ecache_pernet_fini
+0000000000000000 T nf_conntrack_dccp_packet
+0000000000000000 T nf_conntrack_dccp_init_net
+0000000000000000 T nf_conntrack_sctp_packet
+0000000000000000 T nf_conntrack_sctp_init_net
+0000000000000000 T nf_conntrack_gre_packet
+0000000000000000 T nf_conntrack_gre_init_net
+0000000000000000 T nf_conntrack_broadcast_help
+0000000000000000 T nf_nat_setup_info
+0000000000000000 T nf_nat_alloc_null_binding
+0000000000000000 T nf_nat_packet
+0000000000000000 T nf_nat_inet_fn
+0000000000000000 T nf_nat_register_fn
+0000000000000000 T nf_nat_unregister_fn
+0000000000000000 t nf_nat_proto_clean
+0000000000000000 t nf_nat_cleanup_conntrack
+0000000000000000 t nfnetlink_parse_nat_setup
+0000000000000000 T nf_nat_manip_pkt
+0000000000000000 t nf_nat_ipv4_manip_pkt
+0000000000000000 T nf_nat_csum_recalc
+0000000000000000 T nf_nat_icmp_reply_translation
+0000000000000000 T nf_nat_ipv4_register_fn
+0000000000000000 T nf_nat_ipv4_unregister_fn
+0000000000000000 T nf_nat_icmpv6_reply_translation
+0000000000000000 T nf_nat_ipv6_register_fn
+0000000000000000 T nf_nat_ipv6_unregister_fn
+0000000000000000 t nf_nat_ipv4_pre_routing
+0000000000000000 t nf_nat_ipv4_out
+0000000000000000 t nf_nat_ipv4_local_fn
+0000000000000000 t nf_nat_ipv4_local_in
+0000000000000000 t nf_nat_ipv6_in
+0000000000000000 t nf_nat_ipv6_out
+0000000000000000 t nf_nat_ipv6_local_fn
+0000000000000000 t nf_nat_ipv6_fn
+0000000000000000 T nf_nat_mangle_udp_packet
+0000000000000000 T nf_nat_follow_master
+0000000000000000 T nf_nat_exp_find_port
+0000000000000000 T nf_nat_redirect_ipv4
+0000000000000000 T nf_nat_redirect_ipv6
+0000000000000000 T nf_nat_masquerade_ipv4
+0000000000000000 T nf_nat_masquerade_ipv6
+0000000000000000 T nf_nat_masquerade_inet_register_notifiers
+0000000000000000 T nf_nat_masquerade_inet_unregister_notifiers
+0000000000000000 t nf_nat_masq_schedule
+0000000000000000 t nf_nat_ftp
+0000000000000000 t nf_conntrack_handle_icmp
+0000000000000000 d nf_conntrack_hook
+0000000000000000 D nf_conntrack_l4proto_generic
+0000000000000000 D nf_conntrack_l4proto_tcp
+0000000000000000 D nf_conntrack_l4proto_udp
+0000000000000000 D nf_conntrack_l4proto_udplite
+0000000000000000 D nf_conntrack_l4proto_icmp
+0000000000000000 D nf_conntrack_l4proto_icmpv6
+0000000000000000 D nf_conntrack_l4proto_dccp
+0000000000000000 D nf_conntrack_l4proto_sctp
+0000000000000000 D nf_conntrack_l4proto_gre
+0000000000000000 d nf_conntrack_kfunc_set
+0000000000000000 d nf_nat_ipv4_ops
+0000000000000000 d nf_nat_ipv6_ops
+0000000000000000 d nf_nat_ipv4_table
+0000000000000000 d nf_nat_ipv4_ops
+0000000000000000 r nf_nat_kfunc_set
+0000000000000000 t nfnetlink_init
+0000000000000000 t nfnetlink_queue_init
+0000000000000000 t nfnetlink_log_init
+0000000000000000 t nf_conntrack_standalone_init
+0000000000000000 t nf_conntrack_amanda_init
+0000000000000000 t nf_conntrack_ftp_init
+0000000000000000 t nf_conntrack_h323_init
+0000000000000000 t nf_conntrack_irc_init
+0000000000000000 t nf_conntrack_netbios_ns_init
+0000000000000000 t nf_conntrack_pptp_init
+0000000000000000 t nf_conntrack_sane_init
+0000000000000000 t nf_conntrack_tftp_init
+0000000000000000 t nf_nat_init
+0000000000000000 t nf_nat_amanda_init
+0000000000000000 t nf_nat_ftp_init
+0000000000000000 t nf_nat_irc_init
+0000000000000000 t nf_nat_tftp_init
+0000000000000000 t nf_nat_h323_init
+0000000000000000 t nf_nat_helper_pptp_init
+0000000000000000 t nfnetlink_exit
+0000000000000000 t nfnetlink_queue_fini
+0000000000000000 t nfnetlink_log_fini
+0000000000000000 t nf_conntrack_standalone_fini
+0000000000000000 t nf_conntrack_amanda_fini
+0000000000000000 t nf_conntrack_ftp_fini
+0000000000000000 t nf_conntrack_h323_fini
+0000000000000000 t nf_conntrack_irc_fini
+0000000000000000 t nf_conntrack_netbios_ns_fini
+0000000000000000 t nf_conntrack_pptp_fini
+0000000000000000 t nf_conntrack_sane_fini
+0000000000000000 t nf_conntrack_tftp_fini
+0000000000000000 t nf_nat_cleanup
+0000000000000000 t nf_nat_amanda_fini
+0000000000000000 t nf_nat_ftp_fini
+0000000000000000 t nf_nat_irc_fini
+0000000000000000 t nf_nat_tftp_fini
+0000000000000000 t nf_nat_h323_fini
+0000000000000000 t nf_nat_helper_pptp_fini
+0000000000000000 D nf_conntrack_expect_lock
+0000000000000000 D nf_conntrack_locks
+0000000000000000 D nf_nat_hook
+0000000000000000 d nfnetlink_pernet_id
+0000000000000000 d nf_conntrack_locks_all
+0000000000000000 D nf_conntrack_generation
+0000000000000000 D nf_conntrack_hash
+0000000000000000 d nf_conntrack_cachep
+0000000000000000 D nf_conntrack_htable_size
+0000000000000000 D nf_conntrack_max
+0000000000000000 D nf_conntrack_net_id
+0000000000000000 d nf_conntrack_htable_size_user
+0000000000000000 D nf_conntrack_ext_genid
+0000000000000000 D nf_nat_amanda_hook
+0000000000000000 d nf_conntrack_helper_h245
+0000000000000000 d nf_conntrack_helper_ras
+0000000000000000 d nf_conntrack_helper_q931
+0000000000000000 D nf_nat_irc_hook
+0000000000000000 D nf_nat_tftp_hook
+0000000000000000 d nf_nat_bysource
+0000000000000000 d nf_nat_htable_size
+0000000000000000 d nfnetlink_net_ops
+0000000000000000 d nf_conntrack_mutex
+0000000000000000 d nf_conntrack_net_ops
+0000000000000000 d nf_nat_proto_mutex
+0000000000000000 b nf_conntrack_locks_all_lock
+0000000000000000 b nf_conntrack_hash_rnd
+0000000000000000 B nf_nat_ftp_hook
+0000000000000000 B nf_nat_pptp_hook
+0000000000000000 b nf_nat_locks
+0000000000000000 b nf_nat_hash_rnd
