@@ -308,6 +308,7 @@ jobs:
       - name: Trace vendor Kleaf configuration path
         run: |
           set -euo pipefail
+          RECIPE="$GITHUB_WORKSPACE/vendor-build-recipe"
           REPORT="$WORK_DIR/vendor-kleaf-trace.txt"
           {
             echo "Infinix X6876 Kleaf configuration trace"
