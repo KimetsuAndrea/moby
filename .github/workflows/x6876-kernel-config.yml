@@ -238,6 +238,50 @@ jobs:
             )
           fi
 
+          # Capture Bazel workspace metadata and repository-rule inputs.
+          for source_root in "$WORK_DIR/common" "$WORK_DIR/modules"; do
+            [[ -d "$source_root" ]] || continue
+            while IFS= read -r -d "" file; do
+              label=modules
+              [[ "$file" == "$WORK_DIR/common/"* ]] && label=common
+              copy_into_recipe "$WORK_DIR" "$label" "$file"
+            done < <(
+              find "$source_root" -maxdepth 5 -type f \(
+                -name WORKSPACE -o -name WORKSPACE.bazel -o
+                -name MODULE.bazel -o -name .bazelrc -o -name REPO.bazel
+              \) -print0
+            )
+          done
+
+          # Capture the missing MTK Bazel rule implementation.
+          for source_root in "$KERNEL" "$MODULES"; do
+            for relative_dir in build/bazel_mgk_rules build/kernel/kleaf; do
+              search_root="$source_root/$relative_dir"
+              [[ -d "$search_root" ]] || continue
+              label=modules
+              [[ "$source_root" == "$KERNEL" ]] && label=common
+              while IFS= read -r -d "" file; do
+                copy_into_recipe "$source_root" "$label" "$file"
+              done < <(
+                find "$search_root" -type f \(
+                  -name BUILD -o -name BUILD.bazel -o -name "*.bzl" -o
+                  -name "*.py" -o -name "*.sh"
+                \) -print0
+              )
+            done
+          done
+
+          # Find declarations and generators for @mgk_info and overlays.
+          while IFS= read -r -d "" file; do
+            label=modules
+            [[ "$file" == "$WORK_DIR/common/"* ]] && label=common
+            copy_into_recipe "$WORK_DIR" "$label" "$file"
+          done < <(
+            grep -RIlE --exclude="*.ko" --exclude="*.o" --exclude="*.a" \
+              --exclude="*.so" --exclude="*.gz" --exclude="*.tar*" \
+              "mgk_info|DEFCONFIG_OVERLAYS" "$WORK_DIR/common" "$WORK_DIR/modules" \
+              2>/dev/null | tr "\n" "\0"
+          )
           {
             echo "Vendor build recipe collection"
             echo "=============================="
@@ -257,118 +301,49 @@ jobs:
           echo "Build-recipe hints:"
           sed -n '1,240p' "$GITHUB_WORKSPACE/vendor-build-recipe-hints.txt" || true
 
-      - name: Generate MTK base configuration
+      - name: Trace vendor Kleaf configuration path
         run: |
           set -euo pipefail
-
-          # The MTK base defconfig is shipped in the separate device-modules
-          # archive, while Kbuild searches the common kernel tree's
-          # arch/arm64/configs directory. Stage it there before invoking make.
-          mkdir -p "$KERNEL/arch/arm64/configs"
-          install -m 0644 "$BASE_DEFCONFIG" \
-            "$KERNEL/arch/arm64/configs/mgk_64_k61_defconfig"
-
-          make -C "$KERNEL" \
-            O="$OUT_DIR" ARCH=arm64 LLVM=1 \
-            KCONFIG_EXT_PREFIX="$MODULES/" \
-            mgk_64_k61_defconfig \
-            2>&1 | tee "$WORK_DIR/base-defconfig.log"
-
-          test -s "$OUT_DIR/.config"
-          cp "$OUT_DIR/.config" "$WORK_DIR/base.config"
-
-      - name: Merge X6876 device configuration
-        run: |
-          set -euo pipefail
-
-          MERGE_SCRIPT="$KERNEL/scripts/kconfig/merge_config.sh"
-          if [[ ! -f "$MERGE_SCRIPT" ]]; then
-            echo "::error::Kconfig merge_config.sh is missing."
-            exit 1
-          fi
-
-          bash "$MERGE_SCRIPT" \
-            -m -O "$OUT_DIR" \
-            "$WORK_DIR/base.config" "$DEVICE_CONFIG" \
-            2>&1 | tee "$WORK_DIR/merge-config.log"
-
-          make -C "$KERNEL" \
-            O="$OUT_DIR" ARCH=arm64 LLVM=1 \
-            KCONFIG_EXT_PREFIX="$MODULES/" \
-            olddefconfig \
-            2>&1 | tee "$WORK_DIR/olddefconfig.log"
-
-          test -s "$OUT_DIR/.config"
-          cp "$OUT_DIR/.config" "$WORK_DIR/x6876-kernel.config"
-
-      - name: Audit networking and container options
-        if: always()
-        run: |
-          set -euo pipefail
-
-          mkdir -p "$WORK_DIR/reports"
-          CONFIG="$OUT_DIR/.config"
-          REPORT="$WORK_DIR/netfilter-config.txt"
-
-          if [[ ! -s "$CONFIG" ]]; then
-            echo "No generated .config was available." > "$REPORT"
-          else
-            {
-              echo "X6876 kernel configuration audit"
-              echo "================================="
-              echo "Kernel source: ${KERNEL:-not found}"
-              echo "Device config: ${DEVICE_CONFIG:-not selected}"
-              echo
-              echo "Enabled or explicitly disabled networking-related symbols:"
-              grep -E '^(# )?CONFIG_(NET|INET|IPV4|IPV6|NETFILTER|NF_|NFT_|IP_NF_|IP6_NF_|BRIDGE|VETH|NAMESPACES|CGROUP|OVERLAY_FS|FUSE_FS)' \
-                "$CONFIG" || true
-              echo
-              echo "Key symbol status:"
-              for symbol in \
-                NET INET NETFILTER NF_TABLES NF_CONNTRACK NF_NAT \
-                NF_NAT_MASQUERADE NFT_COMPAT NFT_CT NFT_NAT NFT_MASQ \
-                IP_NF_IPTABLES IP_NF_NAT IP6_NF_IPTABLES \
-                BRIDGE BRIDGE_NETFILTER VETH NAMESPACES NET_NS
-              do
-                if grep -q "^CONFIG_${symbol}=y$" "$CONFIG"; then
-                  echo "CONFIG_${symbol}=y"
-                elif grep -q "^CONFIG_${symbol}=m$" "$CONFIG"; then
-                  echo "CONFIG_${symbol}=m"
-                else
-                  echo "CONFIG_${symbol} is not enabled"
-                fi
-              done
-            } > "$REPORT"
-          fi
-
-          for file in base-defconfig.log merge-config.log olddefconfig.log \
-                      x6876-kernel.config netfilter-config.txt; do
-            [[ ! -f "$WORK_DIR/$file" ]] || cp "$WORK_DIR/$file" "$WORK_DIR/reports/"
-          done
-
+          REPORT="$WORK_DIR/vendor-kleaf-trace.txt"
+          {
+            echo "Infinix X6876 Kleaf configuration trace"
+            echo "======================================"
+            echo "Kernel source: $KERNEL"
+            echo "Device modules: $MODULES"
+            echo
+            echo "IMPORTANT: This workflow intentionally does not generate a .config."
+            echo "The previous manual make/merge path was not the vendor Kleaf path"
+            echo "and produced a misleading config; do not treat it as stock."
+            echo
+            echo "Bazel workspace metadata:"
+            find "$WORK_DIR/common" "$WORK_DIR/modules" -maxdepth 5 -type f \(
+              -name WORKSPACE -o -name WORKSPACE.bazel -o -name MODULE.bazel -o
+              -name .bazelrc -o -name REPO.bazel \) -print 2>/dev/null | sort
+            echo
+            echo "Collected Kleaf and MTK Bazel rule files:"
+            find "$RECIPE" -type f \(
+              -path "*/build/bazel_mgk_rules/*" -o -path "*/kernel/kleaf/*" \) -print | sort
+            echo
+            echo "mgk_info / DEFCONFIG_OVERLAYS references:"
+            grep -RniE "mgk_info|DEFCONFIG_OVERLAYS" "$RECIPE" || true
+            echo
+            echo "Config generation and kernel rule references:"
+            grep -RniE "define_mgk|kernel_build|kernel_config|defconfig|olddefconfig|merge_config|config_fragments" \
+              "$RECIPE" --include="*.bzl" --include=BUILD --include=BUILD.bazel \
+              --include="*.sh" --include="*.py" || true
+          } > "$REPORT"
           cat "$REPORT"
+          cp "$REPORT" "$WORK_DIR/"
 
-          # This step runs with if: always() so diagnostic logs are retained,
-          # but a missing .config must still make the workflow fail.
-          if [[ ! -s "$CONFIG" ]]; then
-            echo "::error::No generated .config; configuration audit cannot pass."
-            exit 1
-          fi
-
-      - name: Upload configuration and logs
+      - name: Upload vendor build recipe and Kleaf trace
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: x6876-kernel-config-${{ inputs.device_config }}
           path: |
-            ${{ github.workspace }}/.kernel-work/x6876-kernel.config
-            ${{ github.workspace }}/.kernel-work/base-defconfig.log
-            ${{ github.workspace }}/.kernel-work/merge-config.log
-            ${{ github.workspace }}/.kernel-work/olddefconfig.log
-            ${{ github.workspace }}/.kernel-work/netfilter-config.txt
+            ${{ github.workspace }}/.kernel-work/vendor-kleaf-trace.txt
             ${{ github.workspace }}/vendor-build-recipe/
             ${{ github.workspace }}/vendor-build-recipe-manifest.txt
             ${{ github.workspace }}/vendor-build-recipe-hints.txt
-            ${{ github.workspace }}/.kernel-work/reports/
-          if-no-files-found: warn
+          if-no-files-found: error
           retention-days: 14
