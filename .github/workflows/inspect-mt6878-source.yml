@@ -1,241 +1,251 @@
 
-name: Inspect Infinix MT6878 Kernel Source
+name: Infinix X6876 - Kernel Config Inspector
 
 on:
   workflow_dispatch:
+    inputs:
+      defconfig:
+        description: Kernel defconfig to inspect
+        required: true
+        default: mgk_64_k61_defconfig
+        type: string
 
 permissions:
   contents: read
 
 jobs:
-  inspect:
-    runs-on: ubuntu-latest
-    timeout-minutes: 180
+  configure:
+    name: Generate ARM64 kernel configuration
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
 
     steps:
-      - name: Install tools
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install configuration dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y curl python3
+          sudo apt-get install -y \
+            bc \
+            bison \
+            build-essential \
+            clang \
+            flex \
+            libelf-dev \
+            libssl-dev \
+            lld \
+            python3 \
+            rsync
 
-      - name: Download official Infinix sources
+      - name: Download official Infinix kernel sources
+        shell: bash
         run: |
-          mkdir -p source inspection
+          set -euo pipefail
 
-          curl -fL --retry 5 --retry-all-errors \
-            --connect-timeout 30 \
-            -o source/common.tar.gz \
-            https://d1wd32b69guoqm.cloudfront.net/opensource/android15_kernel_common_mt6878.tar.gz
+          mkdir -p "$RUNNER_TEMP/mt6878/common"
+          mkdir -p "$RUNNER_TEMP/mt6878/modules"
+          mkdir -p "$RUNNER_TEMP/mt6878/reports"
 
-          curl -fL --retry 5 --retry-all-errors \
-            --connect-timeout 30 \
-            -o source/modules-dt.tar.gz \
-            https://d1wd32b69guoqm.cloudfront.net/opensource/android15_kernel_modules_and_devicetree_mt6878.tar.gz
+          curl -fL --retry 5 \
+            "https://d1wd32b69guoqm.cloudfront.net/opensource/android15_kernel_common_mt6878.tar.gz" \
+            -o "$RUNNER_TEMP/common.tar.gz"
 
-          echo "Downloaded archives:"
-          ls -lh source/
+          curl -fL --retry 5 \
+            "https://d1wd32b69guoqm.cloudfront.net/opensource/android15_kernel_modules_and_devicetree_mt6878.tar.gz" \
+            -o "$RUNNER_TEMP/modules.tar.gz"
 
-      - name: Inspect archives and extract relevant files
+          tar -xzf "$RUNNER_TEMP/common.tar.gz" \
+            -C "$RUNNER_TEMP/mt6878/common"
+
+          rm "$RUNNER_TEMP/common.tar.gz"
+
+          # Extract the device-module Kconfig and build metadata.
+          # Avoid extracting the entire 1.66 GB compressed archive.
+          tar -tzf "$RUNNER_TEMP/modules.tar.gz" \
+            | grep -E 'kernel_device_modules-6\.1/.*(Kconfig[^/]*|build\.sh|build\.config[^/]*|[^/]*defconfig|[^/]*\.fragment|[^/]*\.cfg)$' \
+            > "$RUNNER_TEMP/module-files.txt" || true
+
+          if [ ! -s "$RUNNER_TEMP/module-files.txt" ]; then
+            echo "ERROR: Could not find device-module configuration files."
+            exit 1
+          fi
+
+          tar -xzf "$RUNNER_TEMP/modules.tar.gz" \
+            -C "$RUNNER_TEMP/mt6878/modules" \
+            -T "$RUNNER_TEMP/module-files.txt"
+
+          rm "$RUNNER_TEMP/modules.tar.gz"
+
+      - name: Locate kernel source and device modules
+        shell: bash
         run: |
-          cat > inspect.py <<'PY'
-          import os
-          import re
-          import tarfile
-          from pathlib import PurePosixPath
+          set -euo pipefail
 
-          OUT = "inspection"
-          os.makedirs(OUT, exist_ok=True)
+          KERNEL="$(find "$RUNNER_TEMP/mt6878/common" \
+            -type f -path '*/kernel-6.1/Makefile' \
+            -print -quit | xargs dirname)"
 
-          report = open(os.path.join(OUT, "source-report.txt"), "w")
+          MODULES="$(find "$RUNNER_TEMP/mt6878/modules" \
+            -type d -name kernel_device_modules-6.1 \
+            -print -quit)"
 
-          def log(s=""):
-              print(s)
-              report.write(s + "\n")
+          if [ -z "$KERNEL" ] || [ -z "$MODULES" ]; then
+            echo "ERROR: Could not locate kernel or device modules."
+            exit 1
+          fi
 
-          def safe_name(name):
-              p = PurePosixPath(name)
-              if p.is_absolute() or ".." in p.parts:
-                  return None
-              return os.path.join(OUT, "files", *p.parts)
+          echo "KERNEL=$KERNEL" >> "$GITHUB_ENV"
+          echo "MODULES=$MODULES" >> "$GITHUB_ENV"
 
-          def is_config_file(path):
-              name = PurePosixPath(path).name.lower()
-              return (
-                  name == ".config"
-                  or name == "makefile"
-                  or name == "kconfig"
-                  or name == "module.symvers"
-                  or name == "kernel.release"
-                  or name.startswith("build.config")
-                  or name.endswith("defconfig")
-                  or name.endswith(".fragment")
-                  or name in ("build.sh", "build_kernel.sh")
-              )
+          echo "Kernel source: $KERNEL"
+          echo "Device modules: $MODULES"
 
-          def should_extract(path, archive_kind):
-              p = path.lower()
-              name = PurePosixPath(path).name.lower()
+          echo "=== Kernel version ==="
+          head -n 5 "$KERNEL/Makefile"
 
-              # Kernel root build/version information
-              if name in (
-                  "makefile", "kconfig", ".config",
-                  "module.symvers", "kernel.release",
-                  "build.sh", "build_kernel.sh"
-              ):
-                  if (
-                      p.startswith("kernel-6.1/")
-                      or p.startswith("kernel/kernel_device_modules-6.1/")
-                  ):
-                      if name != "makefile" or p.count("/") <= 3:
-                          return True
+          echo "=== Device-module build metadata ==="
+          find "$MODULES" -maxdepth 3 \
+            -type f \( -name 'build.sh' -o -name 'build.config*' -o -name 'Kconfig.ext' \) \
+            -print
 
-              # Build configuration scripts
-              if "build.config" in name:
-                  return True
-
-              # ARM64 defconfigs and config fragments
-              if (
-                  "/arch/arm64/configs/" in p
-                  and is_config_file(path)
-              ):
-                  return True
-
-              # X6876 and MT6878 device-tree sources
-              if (
-                  ("x6876" in p or "mt6878" in p)
-                  and name.endswith((".dts", ".dtsi"))
-              ):
-                  return True
-
-              # Makefiles/Kconfig next to matching device-tree files
-              if (
-                  ("x6876" in p or "mt6878" in p)
-                  and name in ("makefile", "kconfig")
-              ):
-                  return True
-
-              # Device-tree build rules
-              if (
-                  "/arch/arm64/boot/dts/mediatek/" in p
-                  and name in ("makefile", "kconfig")
-              ):
-                  return True
-
-              return False
-
-          def inspect_archive(filename, label):
-              log()
-              log("=" * 72)
-              log("ARCHIVE: " + label)
-              log("=" * 72)
-
-              count = 0
-              extracted = 0
-              matching_paths = []
-
-              # Stream the compressed archive to avoid unpacking everything.
-              with tarfile.open(filename, mode="r|gz") as tar:
-                  for member in tar:
-                      count += 1
-                      path = member.name.lstrip("./")
-
-                      if "x6876" in path.lower() or "mt6878" in path.lower():
-                          if path.lower().endswith((".dts", ".dtsi", "makefile", "kconfig")):
-                              matching_paths.append(path)
-
-                      if not member.isfile():
-                          continue
-
-                      if not should_extract(path, label):
-                          continue
-
-                      # Avoid unexpectedly large files.
-                      if member.size > 25 * 1024 * 1024:
-                          log("SKIPPED LARGE FILE: " + path)
-                          continue
-
-                      destination = safe_name(path)
-                      if not destination:
-                          continue
-
-                      os.makedirs(os.path.dirname(destination), exist_ok=True)
-                      src = tar.extractfile(member)
-                      if src is None:
-                          continue
-
-                      with src, open(destination, "wb") as dst:
-                          while True:
-                              chunk = src.read(1024 * 1024)
-                              if not chunk:
-                                  break
-                              dst.write(chunk)
-
-                      extracted += 1
-
-              log("Archive entries scanned: " + str(count))
-              log("Files extracted: " + str(extracted))
-              log()
-              log("Matching X6876 / MT6878 paths:")
-
-              for path in sorted(set(matching_paths)):
-                  log("  " + path)
-
-          inspect_archive(
-              "source/common.tar.gz",
-              "COMMON KERNEL"
-          )
-
-          inspect_archive(
-              "source/modules-dt.tar.gz",
-              "MODULES AND DEVICE TREE"
-          )
-
-          report.close()
-
-          # Search extracted text files for important kernel settings.
-          patterns = re.compile(
-              r"CONFIG_NF_TABLES|CONFIG_NETFILTER|"
-              r"CONFIG_NF_CONNTRACK|CONFIG_NF_NAT|"
-              r"CONFIG_MODULES|CONFIG_LOCALVERSION|"
-              r"VERSION\s*=|PATCHLEVEL\s*=|SUBLEVEL\s*=",
-              re.IGNORECASE
-          )
-
-          with open(os.path.join(OUT, "config-search.txt"), "w") as out:
-              for root, _, files in os.walk(os.path.join(OUT, "files")):
-                  for filename in files:
-                      path = os.path.join(root, filename)
-                      try:
-                          with open(path, "r", errors="replace") as f:
-                              for number, line in enumerate(f, 1):
-                                  if patterns.search(line):
-                                      out.write(
-                                          f"{path}:{number}: {line.rstrip()}\n"
-                                      )
-                      except (OSError, UnicodeError):
-                          pass
-
-          print("Inspection completed.")
-          PY
-
-          python3 inspect.py
-
-      - name: Create inspection bundle
+      - name: Discover build configuration
+        shell: bash
         run: |
-          tar -czf mt6878-kernel-inspection.tar.gz inspection/
-          ls -lh mt6878-kernel-inspection.tar.gz
+          set -euo pipefail
 
-      - name: Upload inspection results
+          REPORT="$RUNNER_TEMP/mt6878/reports"
+
+          {
+            echo "=== Defconfig files ==="
+            find "$KERNEL/arch/arm64/configs" "$MODULES" \
+              -type f \( -name '*defconfig' -o -name '*.fragment' -o -name '*.cfg' \) \
+              -print 2>/dev/null || true
+
+            echo
+            echo "=== Build configuration references ==="
+
+            grep -RInE \
+              'DEFCONFIG|KCONFIG_EXT_PREFIX|FRAGMENT_CONFIG|BUILD_CONFIG|KERNEL_CONFIG|MAKE_GOALS|KLEAF|bazel' \
+              "$KERNEL/build" "$MODULES" \
+              --include='*.sh' \
+              --include='build.config*' \
+              --include='*.mk' \
+              2>/dev/null | head -n 500 || true
+
+            echo
+            echo "=== X6876 device trees ==="
+
+            find "$MODULES" -type f \
+              \( -name 'x6876_h786.dts' -o -name 'x6876_h786_nonfc.dts' \) \
+              -print
+          } > "$REPORT/source-build-hints.txt"
+
+      - name: Prepare requested defconfig
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          DEFCONFIG="${{ inputs.defconfig }}"
+
+          if [[ "$DEFCONFIG" != *.defconfig ]]; then
+            echo "ERROR: Expected a defconfig filename."
+            exit 1
+          fi
+
+          CONFIG_DIR="$KERNEL/arch/arm64/configs"
+
+          # Some MediaTek releases keep device defconfigs
+          # outside the common kernel tree.
+          if [ ! -f "$CONFIG_DIR/$DEFCONFIG" ]; then
+            FOUND="$(find "$MODULES" -type f \
+              -name "$DEFCONFIG" -print -quit)"
+
+            if [ -n "$FOUND" ]; then
+              echo "Found device defconfig: $FOUND"
+              cp "$FOUND" "$CONFIG_DIR/$DEFCONFIG"
+            fi
+          fi
+
+          if [ ! -f "$CONFIG_DIR/$DEFCONFIG" ]; then
+            echo "ERROR: $DEFCONFIG not found."
+            echo "Check source-build-hints.txt."
+            exit 1
+          fi
+
+          echo "DEFCONFIG=$DEFCONFIG" >> "$GITHUB_ENV"
+
+      - name: Generate final configuration for selected defconfig
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          OUT="$RUNNER_TEMP/mt6878/out"
+          REPORT="$RUNNER_TEMP/mt6878/reports"
+
+          mkdir -p "$OUT"
+
+          echo "=== Running $DEFCONFIG ==="
+
+          make -C "$KERNEL" \
+            O="$OUT" \
+            ARCH=arm64 \
+            LLVM=1 \
+            KCONFIG_EXT_PREFIX="$MODULES/" \
+            "$DEFCONFIG" \
+            2>&1 | tee "$REPORT/defconfig.log"
+
+          echo "=== Resolving Kconfig dependencies ==="
+
+          make -C "$KERNEL" \
+            O="$OUT" \
+            ARCH=arm64 \
+            LLVM=1 \
+            KCONFIG_EXT_PREFIX="$MODULES/" \
+            olddefconfig \
+            2>&1 | tee "$REPORT/olddefconfig.log"
+
+          if [ ! -s "$OUT/.config" ]; then
+            echo "ERROR: .config was not generated."
+            exit 1
+          fi
+
+          cp "$OUT/.config" "$REPORT/x6876-kernel.config"
+
+          echo "Configuration generated successfully."
+
+      - name: Extract networking and nftables configuration
+        if: always()
+        shell: bash
+        run: |
+          REPORT="$RUNNER_TEMP/mt6878/reports"
+          CONFIG="$REPORT/x6876-kernel.config"
+
+          if [ ! -f "$CONFIG" ]; then
+            echo "No generated .config available."
+            exit 0
+          fi
+
+          grep -E \
+            '^(CONFIG_(NETFILTER|NF_|NFT_|IP_NF|IP6_NF|BRIDGE_NETFILTER|NETFILTER_XT)[A-Z0-9_]*=|# CONFIG_(NETFILTER|NF_|NFT_|IP_NF|IP6_NF|BRIDGE_NETFILTER|NETFILTER_XT)[A-Z0-9_]* is not set)' \
+            "$CONFIG" \
+            > "$REPORT/netfilter-config.txt" || true
+
+          echo "=== Netfilter configuration ==="
+          cat "$REPORT/netfilter-config.txt"
+
+          echo
+          echo "=== Kernel release ==="
+          make -s -C "$KERNEL" O="$RUNNER_TEMP/mt6878/out" \
+            ARCH=arm64 kernelrelease \
+            > "$REPORT/kernel-release.txt" 2>&1 || true
+
+      - name: Upload kernel configuration reports
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: MT6878-Kernel-Inspection
+          name: X6876-Kernel-Configuration
           path: |
-            inspection/
-            mt6878-kernel-inspection.tar.gz
-          if-no-files-found: error
-          retention-days: 7
-
-      - name: Clean up downloaded source archives
-        if: always()
-        run: |
-          rm -rf source
+            ${{ runner.temp }}/mt6878/reports/
+          if-no-files-found: warn
+          retention-days: 14
