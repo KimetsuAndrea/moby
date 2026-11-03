@@ -1,0 +1,220 @@
+name: X6876 Kernel Config Audit
+
+on:
+  workflow_dispatch:
+    inputs:
+      device_config:
+        description: "X6876 device configuration"
+        required: true
+        type: choice
+        default: x6876_h786_defconfig
+        options:
+          - x6876_h786_defconfig
+          - x6876_h786_nonfc_defconfig
+
+permissions:
+  contents: read
+
+concurrency:
+  group: x6876-kernel-config-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  configure:
+    name: Generate X6876 kernel .config
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+
+    env:
+      COMMON_URL: https://d1wd32b69guoqm.cloudfront.net/opensource/android15_kernel_common_mt6878.tar.gz
+      MODULES_URL: https://d1wd32b69guoqm.cloudfront.net/opensource/android15_kernel_modules_and_devicetree_mt6878.tar.gz
+      WORK_DIR: ${{ runner.temp }}/mt6878
+      OUT_DIR: ${{ runner.temp }}/mt6878/out
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install configuration tools
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y \
+            bc bison build-essential ca-certificates clang curl flex \
+            libelf-dev libssl-dev lld python3 rsync tar xz-utils
+
+      - name: Download official Infinix sources
+        run: |
+          set -euo pipefail
+          mkdir -p "$WORK_DIR/common" "$WORK_DIR/modules" "$OUT_DIR"
+
+          curl --fail --location --retry 3 \
+            "$COMMON_URL" -o "$WORK_DIR/common.tar.gz"
+          curl --fail --location --retry 3 \
+            "$MODULES_URL" -o "$WORK_DIR/modules.tar.gz"
+
+          ls -lh "$WORK_DIR/common.tar.gz" "$WORK_DIR/modules.tar.gz"
+
+      - name: Extract source archives
+        run: |
+          set -euo pipefail
+
+          tar -xzf "$WORK_DIR/common.tar.gz" -C "$WORK_DIR/common"
+          # Extract the complete device-module tree: Kconfig.ext and device
+          # Kconfig files can include dependencies outside the X6876 folder.
+          tar -xzf "$WORK_DIR/modules.tar.gz" -C "$WORK_DIR/modules"
+
+          KERNEL="$(find "$WORK_DIR/common" -type f \
+            -path '*/kernel-6.1/Makefile' -print -quit)"
+          MODULES="$(find "$WORK_DIR/modules" -type d \
+            -name kernel_device_modules-6.1 -print -quit)"
+
+          if [[ -z "$KERNEL" || ! -f "$KERNEL" ]]; then
+            echo "::error::Could not locate common kernel Makefile."
+            exit 1
+          fi
+          if [[ -z "$MODULES" || ! -d "$MODULES" ]]; then
+            echo "::error::Could not locate kernel_device_modules-6.1."
+            exit 1
+          fi
+
+          KERNEL="${KERNEL%/Makefile}"
+          {
+            echo "KERNEL=$KERNEL"
+            echo "MODULES=$MODULES"
+          } >> "$GITHUB_ENV"
+
+          echo "Kernel source: $KERNEL"
+          echo "Device modules: $MODULES"
+          grep -E '^(VERSION|PATCHLEVEL|SUBLEVEL) =' "$KERNEL/Makefile"
+
+      - name: Validate X6876 configuration inputs
+        env:
+          DEVICE_CONFIG_NAME: ${{ inputs.device_config }}
+        run: |
+          set -euo pipefail
+
+          BASE_DEFCONFIG="$MODULES/arch/arm64/configs/mgk_64_k61_defconfig"
+          DEVICE_CONFIG="$MODULES/kernel/configs/$DEVICE_CONFIG_NAME"
+
+          [[ -f "$BASE_DEFCONFIG" ]] || {
+            echo "::error::Missing MTK base defconfig: $BASE_DEFCONFIG"
+            exit 1
+          }
+          [[ -f "$DEVICE_CONFIG" ]] || {
+            echo "::error::Missing X6876 device config: $DEVICE_CONFIG"
+            exit 1
+          }
+          [[ -f "$MODULES/Kconfig.ext" ]] || {
+            echo "::error::Missing Kconfig.ext."
+            exit 1
+          }
+
+          {
+            echo "BASE_DEFCONFIG=$BASE_DEFCONFIG"
+            echo "DEVICE_CONFIG=$DEVICE_CONFIG"
+          } >> "$GITHUB_ENV"
+
+          echo "Base defconfig: $BASE_DEFCONFIG"
+          echo "Device config: $DEVICE_CONFIG"
+          echo "Device config preview:"
+          sed -n '1,160p' "$DEVICE_CONFIG"
+
+      - name: Generate MTK base configuration
+        run: |
+          set -euo pipefail
+
+          make -C "$KERNEL" \
+            O="$OUT_DIR" ARCH=arm64 LLVM=1 \
+            KCONFIG_EXT_PREFIX="$MODULES/" \
+            mgk_64_k61_defconfig \
+            2>&1 | tee "$WORK_DIR/base-defconfig.log"
+
+          test -s "$OUT_DIR/.config"
+          cp "$OUT_DIR/.config" "$WORK_DIR/base.config"
+
+      - name: Merge X6876 device configuration
+        run: |
+          set -euo pipefail
+
+          MERGE_SCRIPT="$KERNEL/scripts/kconfig/merge_config.sh"
+          if [[ ! -f "$MERGE_SCRIPT" ]]; then
+            echo "::error::Kconfig merge_config.sh is missing."
+            exit 1
+          fi
+
+          bash "$MERGE_SCRIPT" \
+            -m -O "$OUT_DIR" \
+            "$WORK_DIR/base.config" "$DEVICE_CONFIG" \
+            2>&1 | tee "$WORK_DIR/merge-config.log"
+
+          make -C "$KERNEL" \
+            O="$OUT_DIR" ARCH=arm64 LLVM=1 \
+            KCONFIG_EXT_PREFIX="$MODULES/" \
+            olddefconfig \
+            2>&1 | tee "$WORK_DIR/olddefconfig.log"
+
+          test -s "$OUT_DIR/.config"
+          cp "$OUT_DIR/.config" "$WORK_DIR/x6876-kernel.config"
+
+      - name: Audit networking and container options
+        if: always()
+        run: |
+          set -euo pipefail
+
+          mkdir -p "$WORK_DIR/reports"
+          CONFIG="$OUT_DIR/.config"
+          REPORT="$WORK_DIR/netfilter-config.txt"
+
+          if [[ ! -s "$CONFIG" ]]; then
+            echo "No generated .config was available." > "$REPORT"
+          else
+            {
+              echo "X6876 kernel configuration audit"
+              echo "================================="
+              echo "Kernel source: ${KERNEL:-not found}"
+              echo "Device config: ${DEVICE_CONFIG:-not selected}"
+              echo
+              echo "Enabled or explicitly disabled networking-related symbols:"
+              grep -E '^(# )?CONFIG_(NET|INET|IPV4|IPV6|NETFILTER|NF_|NFT_|IP_NF_|IP6_NF_|BRIDGE|VETH|NAMESPACES|CGROUP|OVERLAY_FS|FUSE_FS)' \
+                "$CONFIG" || true
+              echo
+              echo "Key symbol status:"
+              for symbol in \
+                NET INET NETFILTER NF_TABLES NF_CONNTRACK NF_NAT \
+                NF_NAT_MASQUERADE NFT_COMPAT NFT_CT NFT_NAT NFT_MASQ \
+                IP_NF_IPTABLES IP_NF_NAT IP6_NF_IPTABLES \
+                BRIDGE BRIDGE_NETFILTER VETH NAMESPACES NET_NS
+              do
+                if grep -q "^CONFIG_${symbol}=y$" "$CONFIG"; then
+                  echo "CONFIG_${symbol}=y"
+                elif grep -q "^CONFIG_${symbol}=m$" "$CONFIG"; then
+                  echo "CONFIG_${symbol}=m"
+                else
+                  echo "CONFIG_${symbol} is not enabled"
+                fi
+              done
+            } > "$REPORT"
+          fi
+
+          for file in base-defconfig.log merge-config.log olddefconfig.log \
+                      x6876-kernel.config netfilter-config.txt; do
+            [[ ! -f "$WORK_DIR/$file" ]] || cp "$WORK_DIR/$file" "$WORK_DIR/reports/"
+          done
+
+          cat "$REPORT"
+
+      - name: Upload configuration and logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: x6876-kernel-config-${{ inputs.device_config }}
+          path: |
+            ${{ runner.temp }}/mt6878/x6876-kernel.config
+            ${{ runner.temp }}/mt6878/base-defconfig.log
+            ${{ runner.temp }}/mt6878/merge-config.log
+            ${{ runner.temp }}/mt6878/olddefconfig.log
+            ${{ runner.temp }}/mt6878/netfilter-config.txt
+            ${{ runner.temp }}/mt6878/reports/
+          if-no-files-found: warn
+          retention-days: 14
