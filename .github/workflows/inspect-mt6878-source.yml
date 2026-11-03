@@ -1,0 +1,100 @@
+
+name: Inspect Infinix MT6878 Kernel Source
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: Prepare workspace
+        run: |
+          mkdir -p output
+          sudo apt-get update
+          sudo apt-get install -y tar gzip
+
+      - name: Download kernel common source
+        run: |
+          URL="https://d1wd32b69guoqm.cloudfront.net/opensource/android15_kernel_common_mt6878.tar.gz"
+
+          curl -L --fail --show-error \
+            --retry 5 \
+            --retry-delay 10 \
+            "$URL" \
+            -o android15_kernel_common_mt6878.tar.gz
+
+          ls -lh android15_kernel_common_mt6878.tar.gz
+
+      - name: Download modules and device tree source
+        run: |
+          URL="https://d1wd32b69guoqm.cloudfront.net/opensource/android15_kernel_modules_and_devicetree_mt6878.tar.gz"
+
+          curl -L --fail --show-error \
+            --retry 5 \
+            --retry-delay 10 \
+            "$URL" \
+            -o android15_kernel_modules_and_devicetree_mt6878.tar.gz
+
+          ls -lh android15_kernel_modules_and_devicetree_mt6878.tar.gz
+
+      - name: List common kernel source tree
+        run: |
+          set -o pipefail
+
+          tar -tzf android15_kernel_common_mt6878.tar.gz \
+            | tee output/common-kernel-tree.txt
+
+          echo "Common archive entries: $(wc -l < output/common-kernel-tree.txt)"
+
+      - name: List modules and device tree
+        run: |
+          set -o pipefail
+
+          tar -tzf android15_kernel_modules_and_devicetree_mt6878.tar.gz \
+            | tee output/modules-devicetree-tree.txt
+
+          echo "Modules/DT entries: $(wc -l < output/modules-devicetree-tree.txt)"
+
+      - name: Generate archive summary
+        run: |
+          {
+            echo "# MT6878 Kernel Source Inspection"
+            echo
+            echo "## Archive sizes"
+            du -h android15_kernel_common_mt6878.tar.gz
+            du -h android15_kernel_modules_and_devicetree_mt6878.tar.gz
+            echo
+            echo "## File tree entry counts"
+            wc -l output/common-kernel-tree.txt
+            wc -l output/modules-devicetree-tree.txt
+            echo
+            echo "## Top-level common source directories"
+            awk -F/ 'NF > 1 {print $1}' output/common-kernel-tree.txt | sort -u
+            echo
+            echo "## Top-level modules/device-tree directories"
+            awk -F/ 'NF > 1 {print $1}' output/modules-devicetree-tree.txt | sort -u
+          } | tee output/summary.txt
+
+          cat output/summary.txt >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload source tree listings
+        uses: actions/upload-artifact@v4
+        with:
+          name: MT6878-kernel-source-file-trees
+          path: output/
+          if-no-files-found: error
+          compression-level: 6
+          retention-days: 7
+
+      - name: Cleanup downloaded archives
+        if: always()
+        run: |
+          rm -f android15_kernel_common_mt6878.tar.gz
+          rm -f android15_kernel_modules_and_devicetree_mt6878.tar.gz
+          
