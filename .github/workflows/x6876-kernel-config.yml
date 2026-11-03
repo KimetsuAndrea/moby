@@ -244,7 +244,7 @@ jobs:
             while IFS= read -r -d "" file; do
               label=modules
               [[ "$file" == "$WORK_DIR/common/"* ]] && label=common
-              copy_into_recipe "$WORK_DIR" "$label" "$file"
+              copy_into_recipe "$source_root" "$label" "$file"
             done < <(
               find "$source_root" -maxdepth 5 -type f \(
                 -name WORKSPACE -o -name WORKSPACE.bazel -o
@@ -274,8 +274,12 @@ jobs:
           # Find declarations and generators for @mgk_info and overlays.
           while IFS= read -r -d "" file; do
             label=modules
-            [[ "$file" == "$WORK_DIR/common/"* ]] && label=common
-            copy_into_recipe "$WORK_DIR" "$label" "$file"
+            source_root="$WORK_DIR/modules"
+            if [[ "$file" == "$WORK_DIR/common/"* ]]; then
+              label=common
+              source_root="$WORK_DIR/common"
+            fi
+            copy_into_recipe "$source_root" "$label" "$file"
           done < <(
             grep -RIlE --exclude="*.ko" --exclude="*.o" --exclude="*.a" \
               --exclude="*.so" --exclude="*.gz" --exclude="*.tar*" \
