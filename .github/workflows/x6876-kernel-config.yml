@@ -28,8 +28,8 @@ jobs:
     env:
       COMMON_URL: https://d1wd32b69guoqm.cloudfront.net/opensource/android15_kernel_common_mt6878.tar.gz
       MODULES_URL: https://d1wd32b69guoqm.cloudfront.net/opensource/android15_kernel_modules_and_devicetree_mt6878.tar.gz
-      WORK_DIR: ${{ runner.temp }}/mt6878
-      OUT_DIR: ${{ runner.temp }}/mt6878/out
+      WORK_DIR: ${{ github.workspace }}/.kernel-work
+      OUT_DIR: ${{ github.workspace }}/.kernel-work/out
 
     steps:
       - name: Checkout repository
@@ -210,11 +210,11 @@ jobs:
         with:
           name: x6876-kernel-config-${{ inputs.device_config }}
           path: |
-            ${{ runner.temp }}/mt6878/x6876-kernel.config
-            ${{ runner.temp }}/mt6878/base-defconfig.log
-            ${{ runner.temp }}/mt6878/merge-config.log
-            ${{ runner.temp }}/mt6878/olddefconfig.log
-            ${{ runner.temp }}/mt6878/netfilter-config.txt
-            ${{ runner.temp }}/mt6878/reports/
+            ${{ github.workspace }}/.kernel-work/x6876-kernel.config
+            ${{ github.workspace }}/.kernel-work/base-defconfig.log
+            ${{ github.workspace }}/.kernel-work/merge-config.log
+            ${{ github.workspace }}/.kernel-work/olddefconfig.log
+            ${{ github.workspace }}/.kernel-work/netfilter-config.txt
+            ${{ github.workspace }}/.kernel-work/reports/
           if-no-files-found: warn
           retention-days: 14
