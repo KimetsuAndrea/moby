@@ -186,6 +186,48 @@ jobs:
             find "$KERNEL" -maxdepth 2 -type f -name 'build.config*' -print0
           )
 
+          # The MTK project is Kleaf-supported, so its real config path is
+          # described by Bazel BUILD files and .bzl rules, not only the
+          # legacy build-config generator. Capture the narrowly relevant
+          # Kleaf graph and config fragments for offline inspection.
+          for relative_dir in \
+            "kernel/kleaf" \
+            "kernel/configs" \
+            "arch/arm64"; do
+            search_root="$MODULES/$relative_dir"
+            [[ -d "$search_root" ]] || continue
+            while IFS= read -r -d '' file; do
+              copy_into_recipe "$MODULES" modules "$file"
+            done < <(
+              find "$search_root" -type f \( \
+                -name 'BUILD' -o -name 'BUILD.bazel' -o \
+                -name '*.bzl' -o -name '*.config' \
+              \) -print0
+            )
+          done
+
+          for relative_dir in \
+            "build/kernel/kleaf" \
+            "arch/arm64/kleaf"; do
+            search_root="$KERNEL/$relative_dir"
+            [[ -d "$search_root" ]] || continue
+            while IFS= read -r -d '' file; do
+              copy_into_recipe "$KERNEL" common "$file"
+            done < <(
+              find "$search_root" -type f \( \
+                -name 'BUILD' -o -name 'BUILD.bazel' -o \
+                -name '*.bzl' -o -name '*.config' \
+              \) -print0
+            )
+          done
+
+          # Root BUILD files often define the @mgk_info repository used by
+          # Kleaf's project rules; keep these alongside the module recipe.
+          for file in "$MODULES/BUILD" "$MODULES/BUILD.bazel" "$KERNEL/BUILD" "$KERNEL/BUILD.bazel"; do
+            [[ ! -f "$file" ]] || copy_into_recipe "${file%/*}" \
+              "$([[ "$file" == "$MODULES/"* ]] && echo modules || echo common)" "$file"
+          done
+
           if [[ -d "$KERNEL/build" ]]; then
             while IFS= read -r -d '' file; do
               copy_into_recipe "$KERNEL" common "$file"
