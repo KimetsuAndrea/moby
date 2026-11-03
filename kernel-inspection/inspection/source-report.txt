@@ -1,0 +1,144 @@
+
+========================================================================
+ARCHIVE: COMMON KERNEL
+========================================================================
+Archive entries scanned: 83947
+Files extracted: 2161
+
+Matching X6876 / MT6878 paths:
+
+========================================================================
+ARCHIVE: MODULES AND DEVICE TREE
+========================================================================
+Archive entries scanned: 33901
+Files extracted: 433
+
+Matching X6876 / MT6878 paths:
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/bat_setting/mt6878_78t_28sd_battery_prop.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/bat_setting/mt6878_78t_28sd_battery_prop_dim2_ext.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/bat_setting/mt6878_78t_28sd_battery_table.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/bat_setting/mt6878_battery_prop.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/bat_setting/mt6878_battery_prop_dim2_ext.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/bat_setting/mt6878_battery_prop_dim2_ext_sdc32.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/bat_setting/mt6878_battery_prop_dim2_ext_sdc34.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/bat_setting/mt6878_battery_prop_sdc32.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/bat_setting/mt6878_battery_prop_sdc34.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/bat_setting/mt6878_battery_table.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/bat_setting/mt6878_battery_table_sdc32.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/bat_setting/mt6878_battery_table_sdc34.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/camera/cm7/cust_mt6878_camera_v4l2.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/camera/km10/cust_mt6878_camera_v4l2.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/camera/lj7/cust_mt6878_camera_v4l2.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/camera/lj8/cust_mt6878_camera_v4l2.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/camera/lj8k/cust_mt6878_camera_v4l2.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/camera/x6857/cust_mt6878_camera_v4l2.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/camera/x6857b/cust_mt6878_camera_v4l2.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/camera/x6870/cust_mt6878_camera_v4l2.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/camera/x6870_h781_nonfc/cust_mt6878_camera_v4l2.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/camera/x6876/cust_mt6878_camera_v4l2.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/camera/x6876_h786_nonfc/cust_mt6878_camera_v4l2.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/cm7_h781/bat_setting/mt6878_battery_prop.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/cm7_h781/bat_setting/mt6878_battery_prop_dim2_ext.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/cm7_h781/bat_setting/mt6878_battery_table.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/km10_h781/bat_setting/mt6878_battery_prop.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/km10_h781/bat_setting/mt6878_battery_prop_dim2_ext.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/km10_h781/bat_setting/mt6878_battery_table.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/lj7_h782/bat_setting/mt6878_battery_prop.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/lj7_h782/bat_setting/mt6878_battery_prop_dim2_ext.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/lj7_h782/bat_setting/mt6878_battery_table.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/lj8_h781/bat_setting/mt6878_battery_prop.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/lj8_h781/bat_setting/mt6878_battery_prop_dim2_ext.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/lj8_h781/bat_setting/mt6878_battery_table.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/lj8k_h781/bat_setting/mt6878_battery_prop.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/lj8k_h781/bat_setting/mt6878_battery_prop_dim2_ext.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/lj8k_h781/bat_setting/mt6878_battery_table.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6857_h782/bat_setting/mt6878_battery_prop.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6857_h782/bat_setting/mt6878_battery_prop_dim2_ext.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6857_h782/bat_setting/mt6878_battery_table.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6857b_h782/bat_setting/mt6878_battery_prop.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6857b_h782/bat_setting/mt6878_battery_prop_dim2_ext.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6857b_h782/bat_setting/mt6878_battery_table.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6870_h781/bat_setting/mt6878_battery_prop.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6870_h781/bat_setting/mt6878_battery_prop_dim2_ext.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6870_h781/bat_setting/mt6878_battery_table.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6870_h781_nonfc/bat_setting/mt6878_battery_prop.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6870_h781_nonfc/bat_setting/mt6878_battery_prop_dim2_ext.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6870_h781_nonfc/bat_setting/mt6878_battery_table.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6876_h786/bat_setting/mt6878_battery_prop.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6876_h786/bat_setting/mt6878_battery_prop_dim2_ext.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6876_h786/bat_setting/mt6878_battery_table.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6876_h786/mt6375_typec.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6876_h786/protocol_ta.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6876_h786/tc_charger.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6876_h786/tc_charger_lk.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6876_h786/tc_hl7139a.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6876_h786/tc_pe50.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6876_h786/tran_usb_ctrl.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6876_h786_nonfc/bat_setting/mt6878_battery_prop.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6876_h786_nonfc/bat_setting/mt6878_battery_prop_dim2_ext.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6876_h786_nonfc/bat_setting/mt6878_battery_table.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6876_h786_nonfc/mt6375_typec.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6876_h786_nonfc/protocol_ta.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6876_h786_nonfc/tc_charger.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6876_h786_nonfc/tc_charger_lk.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6876_h786_nonfc/tc_hl7139a.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6876_h786_nonfc/tc_pe50.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/charge/x6876_h786_nonfc/tran_usb_ctrl.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/cust_mt6878_alpha_camera_v4l2.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/cust_mt6878_camera_v4l2.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/cust_mt6878_connfem.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/cust_mt6878_msdc.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/cust_mt6878_touch_1080x2280.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/cust_mt6878_touch_1080x2400.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/cust_mt6878_touch_1k5.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/cust_mt6878_touch_1k5v2.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/cust_mt6878_touch_alpha.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/cust_mt6878_touch_cmd.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/cust_mt6878_touch_flip.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/led/x6876_h786/aw210xx_x6876.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/led/x6876_h786/hk32f0301_x6876.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/led/x6876_h786_nonfc/aw210xx_x6876.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/led/x6876_h786_nonfc/hk32f0301_x6876.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/msdc/cm7_h781/cust_mt6878_msdc.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/msdc/km10_h781/cust_mt6878_msdc.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/msdc/lj7_h782/cust_mt6878_msdc.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/msdc/lj8_h781/cust_mt6878_msdc.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/msdc/lj8k_h781/cust_mt6878_msdc.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/msdc/x6857_h782/cust_mt6878_msdc.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/msdc/x6857b_h782/cust_mt6878_msdc.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/msdc/x6870_h781/cust_mt6878_msdc.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/msdc/x6870_h781_nonfc/cust_mt6878_msdc.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/msdc/x6876_h786/cust_mt6878_msdc.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/msdc/x6876_h786_nonfc/cust_mt6878_msdc.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/mt6878-clkitg.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/mt6878-disable-unused.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/mt6878.dts
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/sensor/tran_mt6881_x6876_h786_sensor.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/touch/cm7_h781/tran_mt6878_touch.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/touch/km10_h781/tran_mt6878_touch.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/touch/lj7_h782/tran_mt6878_touch_lj7.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/touch/lj8_h781/tran_mt6878_touch_lj8.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/touch/lj8k_h781/tran_mt6878_touch.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/touch/x6857_h782/tran_mt6878_touch_x6857.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/touch/x6857b_h782/tran_mt6878_touch_x6857.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/touch/x6870_h781/tran_mt6878_touch_x6870.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/touch/x6870_h781_nonfc/tran_mt6878_touch_x6870.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/touch/x6876_h786/tran_mt6878_touch_x6876.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/touch/x6876_h786_nonfc/tran_mt6878_touch_x6876.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/tran_mt6878_tee.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/tran_mt6878_touch_cm7.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/tran_mt6878_touch_km10.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/tran_mt6878_touch_lj7.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/tran_mt6878_touch_lj8.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/tran_mt6878_touch_lj8k.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/tran_mt6878_touch_x6857.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/tran_mt6878_touch_x6870.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/tran_mt6878_touch_x6876.dtsi
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/x6876_h786.dts
+  kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/x6876_h786_nonfc.dts
+  kernel/kernel_device_modules-6.1/drivers/misc/mediatek/lpm/modules/debug/mt6878/Makefile
+  kernel/kernel_device_modules-6.1/sound/soc/mediatek/mt6878/Makefile
+  vendor/mediatek/kernel_modules/gpu/mt6878/Makefile
+  vendor/mediatek/kernel_modules/mtkcam/imgsensor/src-v4l2/camera_project/tran_x6876/gc08a8wide_mipi_raw/Makefile
+  vendor/mediatek/kernel_modules/mtkcam/imgsensor/src-v4l2/camera_project/tran_x6876/gc13a0ff_mipi_raw/Makefile
+  vendor/mediatek/kernel_modules/mtkcam/imgsensor/src-v4l2/camera_project/tran_x6876/imx682_mipi_raw/Makefile

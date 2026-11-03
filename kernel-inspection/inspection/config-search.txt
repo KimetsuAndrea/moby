@@ -1,0 +1,252 @@
+inspection/files/kernel-6.1/Makefile:2: VERSION = 6
+inspection/files/kernel-6.1/Makefile:3: PATCHLEVEL = 1
+inspection/files/kernel-6.1/Makefile:4: SUBLEVEL = 157
+inspection/files/kernel-6.1/Makefile:5: EXTRAVERSION =
+inspection/files/kernel-6.1/Makefile:398: KERNELVERSION = $(VERSION)$(if $(PATCHLEVEL),.$(PATCHLEVEL)$(if $(SUBLEVEL),.$(SUBLEVEL)))$(EXTRAVERSION)
+inspection/files/kernel-6.1/Makefile:596: 		    -Csymbol-mangling-version=v0 \
+inspection/files/kernel-6.1/Makefile:1268: ifdef CONFIG_MODULES
+inspection/files/kernel-6.1/Makefile:1576: ifdef CONFIG_MODULES
+inspection/files/kernel-6.1/Makefile:1639: endif # CONFIG_MODULES
+inspection/files/kernel-6.1/Makefile:1974: ifdef CONFIG_MODULES
+inspection/files/kernel-6.1/Makefile:2000: else # CONFIG_MODULES
+inspection/files/kernel-6.1/Makefile:2009: 	@echo >&2 '*** to enable CONFIG_MODULES.'
+inspection/files/kernel-6.1/Makefile:2015: endif # CONFIG_MODULES
+inspection/files/kernel-6.1/Makefile:2124: 	$(if $(CONFIG_MODULES), $(MODORDER)) FORCE
+inspection/files/kernel-6.1/build.config.constants:2: CLANG_VERSION=r487747c
+inspection/files/kernel-6.1/tools/firewire/Makefile:3: nosy-dump-version = 0.4
+inspection/files/kernel-6.1/tools/firewire/Makefile:10: nosy-dump : CPPFLAGS = -DVERSION=\"$(nosy-dump-version)\" -I../../drivers/firewire
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:99: CONFIG_MODULES=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:102: CONFIG_MODULE_SCMVERSION=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:173: CONFIG_NETFILTER=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:174: CONFIG_NF_CONNTRACK=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:175: CONFIG_NF_CONNTRACK_SECMARK=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:176: CONFIG_NF_CONNTRACK_PROCFS=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:177: CONFIG_NF_CONNTRACK_EVENTS=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:178: CONFIG_NF_CONNTRACK_AMANDA=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:179: CONFIG_NF_CONNTRACK_FTP=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:180: CONFIG_NF_CONNTRACK_H323=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:181: CONFIG_NF_CONNTRACK_IRC=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:182: CONFIG_NF_CONNTRACK_NETBIOS_NS=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:183: CONFIG_NF_CONNTRACK_PPTP=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:184: CONFIG_NF_CONNTRACK_SANE=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:185: CONFIG_NF_CONNTRACK_TFTP=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:187: CONFIG_NETFILTER_XT_TARGET_CLASSIFY=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:188: CONFIG_NETFILTER_XT_TARGET_CONNMARK=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:189: CONFIG_NETFILTER_XT_TARGET_CONNSECMARK=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:190: CONFIG_NETFILTER_XT_TARGET_DSCP=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:191: CONFIG_NETFILTER_XT_TARGET_IDLETIMER=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:192: CONFIG_NETFILTER_XT_TARGET_MARK=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:193: CONFIG_NETFILTER_XT_TARGET_NFLOG=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:194: CONFIG_NETFILTER_XT_TARGET_NFQUEUE=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:195: CONFIG_NETFILTER_XT_TARGET_NOTRACK=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:196: CONFIG_NETFILTER_XT_TARGET_TEE=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:197: CONFIG_NETFILTER_XT_TARGET_TPROXY=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:198: CONFIG_NETFILTER_XT_TARGET_TRACE=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:199: CONFIG_NETFILTER_XT_TARGET_SECMARK=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:200: CONFIG_NETFILTER_XT_TARGET_TCPMSS=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:201: CONFIG_NETFILTER_XT_MATCH_BPF=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:202: CONFIG_NETFILTER_XT_MATCH_COMMENT=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:203: CONFIG_NETFILTER_XT_MATCH_CONNBYTES=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:204: CONFIG_NETFILTER_XT_MATCH_CONNLIMIT=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:205: CONFIG_NETFILTER_XT_MATCH_CONNMARK=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:206: CONFIG_NETFILTER_XT_MATCH_CONNTRACK=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:207: CONFIG_NETFILTER_XT_MATCH_DSCP=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:208: CONFIG_NETFILTER_XT_MATCH_ESP=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:209: CONFIG_NETFILTER_XT_MATCH_HASHLIMIT=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:210: CONFIG_NETFILTER_XT_MATCH_HELPER=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:211: CONFIG_NETFILTER_XT_MATCH_IPRANGE=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:212: CONFIG_NETFILTER_XT_MATCH_L2TP=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:213: CONFIG_NETFILTER_XT_MATCH_LENGTH=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:214: CONFIG_NETFILTER_XT_MATCH_LIMIT=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:215: CONFIG_NETFILTER_XT_MATCH_MAC=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:216: CONFIG_NETFILTER_XT_MATCH_MARK=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:217: CONFIG_NETFILTER_XT_MATCH_MULTIPORT=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:218: CONFIG_NETFILTER_XT_MATCH_OWNER=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:219: CONFIG_NETFILTER_XT_MATCH_POLICY=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:220: CONFIG_NETFILTER_XT_MATCH_PKTTYPE=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:221: CONFIG_NETFILTER_XT_MATCH_QUOTA=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:222: CONFIG_NETFILTER_XT_MATCH_QUOTA2=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:223: CONFIG_NETFILTER_XT_MATCH_QUOTA2_LOG=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:224: CONFIG_NETFILTER_XT_MATCH_SOCKET=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:225: CONFIG_NETFILTER_XT_MATCH_STATE=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:226: CONFIG_NETFILTER_XT_MATCH_STATISTIC=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:227: CONFIG_NETFILTER_XT_MATCH_STRING=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:228: CONFIG_NETFILTER_XT_MATCH_TIME=y
+inspection/files/kernel-6.1/arch/arm64/configs/gki_defconfig:229: CONFIG_NETFILTER_XT_MATCH_U32=y
+inspection/files/kernel-6.1/arch/arm64/configs/microdroid_defconfig:41: CONFIG_MODULES=y
+inspection/files/kernel-6.1/arch/arm64/configs/defconfig:127: CONFIG_MODULES=y
+inspection/files/kernel-6.1/arch/arm64/configs/defconfig:145: CONFIG_NETFILTER=y
+inspection/files/kernel-6.1/arch/arm64/configs/defconfig:147: CONFIG_NF_CONNTRACK=m
+inspection/files/kernel-6.1/arch/arm64/configs/defconfig:148: CONFIG_NF_CONNTRACK_EVENTS=y
+inspection/files/kernel-6.1/arch/arm64/configs/defconfig:149: CONFIG_NETFILTER_XT_MARK=m
+inspection/files/kernel-6.1/arch/arm64/configs/defconfig:150: CONFIG_NETFILTER_XT_TARGET_CHECKSUM=m
+inspection/files/kernel-6.1/arch/arm64/configs/defconfig:151: CONFIG_NETFILTER_XT_TARGET_LOG=m
+inspection/files/kernel-6.1/arch/arm64/configs/defconfig:152: CONFIG_NETFILTER_XT_MATCH_ADDRTYPE=m
+inspection/files/kernel-6.1/arch/arm64/configs/defconfig:153: CONFIG_NETFILTER_XT_MATCH_CONNTRACK=m
+inspection/files/kernel-6.1/arch/arm64/configs/defconfig:154: CONFIG_NETFILTER_XT_MATCH_IPVS=m
+inspection/files/kernel-6.1/arch/arm64/configs/crashdump_defconfig:2: # CONFIG_LOCALVERSION_AUTO is not set
+inspection/files/kernel-6.1/fs/ntfs/Makefile:12: ccflags-y := -DNTFS_VERSION=\"2.1.32\"
+inspection/files/kernel-6.1/net/Makefile:16: obj-$(CONFIG_NETFILTER)		+= netfilter/
+inspection/files/kernel-6.1/net/ipv4/Makefile:43: obj-$(CONFIG_NETFILTER)	+= netfilter.o netfilter/
+inspection/files/kernel-6.1/net/ipv4/netfilter/Kconfig:150: 	CONFIG_NETFILTER_XT_MATCH_ECN.
+inspection/files/kernel-6.1/net/ipv4/netfilter/Kconfig:170: 	CONFIG_NETFILTER_XT_MATCH_HL.
+inspection/files/kernel-6.1/net/ipv4/netfilter/Kconfig:238: 	CONFIG_NETFILTER_XT_TARGET_NETMAP.
+inspection/files/kernel-6.1/net/ipv4/netfilter/Kconfig:247: 	CONFIG_NETFILTER_XT_TARGET_REDIRECT.
+inspection/files/kernel-6.1/net/ipv4/netfilter/Kconfig:298: 	CONFIG_NETFILTER_XT_TARGET_HL.
+inspection/files/kernel-6.1/net/bridge/Makefile:27: obj-$(CONFIG_NETFILTER) += netfilter/
+inspection/files/kernel-6.1/net/openvswitch/Makefile:21: ifneq ($(CONFIG_NF_CONNTRACK),)
+inspection/files/kernel-6.1/net/netfilter/Kconfig:103: 	  CONFIG_NETFILTER_NETLINK_LOG.
+inspection/files/kernel-6.1/net/netfilter/Kconfig:853: 	CONFIG_NETFILTER_XT_CONNMARK (combined connmark/CONNMARK module).
+inspection/files/kernel-6.1/net/netfilter/Kconfig:978: 	CONFIG_NETFILTER_XT_MARK (combined mark/MARK module).
+inspection/files/kernel-6.1/net/netfilter/Kconfig:1254: 	CONFIG_NETFILTER_XT_CONNMARK (combined connmark/CONNMARK module).
+inspection/files/kernel-6.1/net/netfilter/Kconfig:1439: 	CONFIG_NETFILTER_XT_MARK (combined mark/MARK module).
+inspection/files/kernel-6.1/net/netfilter/Makefile:10: nf_conntrack-$(CONFIG_NF_CONNTRACK_TIMEOUT) += nf_conntrack_timeout.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:11: nf_conntrack-$(CONFIG_NF_CONNTRACK_TIMESTAMP) += nf_conntrack_timestamp.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:12: nf_conntrack-$(CONFIG_NF_CONNTRACK_EVENTS) += nf_conntrack_ecache.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:13: nf_conntrack-$(CONFIG_NF_CONNTRACK_LABELS) += nf_conntrack_labels.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:17: ifeq ($(CONFIG_NF_CONNTRACK),m)
+inspection/files/kernel-6.1/net/netfilter/Makefile:19: else ifeq ($(CONFIG_NF_CONNTRACK),y)
+inspection/files/kernel-6.1/net/netfilter/Makefile:23: obj-$(CONFIG_NETFILTER) = netfilter.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:25: obj-$(CONFIG_NETFILTER_NETLINK) += nfnetlink.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:26: obj-$(CONFIG_NETFILTER_NETLINK_ACCT) += nfnetlink_acct.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:27: obj-$(CONFIG_NETFILTER_NETLINK_QUEUE) += nfnetlink_queue.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:28: obj-$(CONFIG_NETFILTER_NETLINK_LOG) += nfnetlink_log.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:29: obj-$(CONFIG_NETFILTER_NETLINK_OSF) += nfnetlink_osf.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:30: obj-$(CONFIG_NETFILTER_NETLINK_HOOK) += nfnetlink_hook.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:33: obj-$(CONFIG_NF_CONNTRACK) += nf_conntrack.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:43: obj-$(CONFIG_NF_CONNTRACK_AMANDA) += nf_conntrack_amanda.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:44: obj-$(CONFIG_NF_CONNTRACK_FTP) += nf_conntrack_ftp.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:45: obj-$(CONFIG_NF_CONNTRACK_H323) += nf_conntrack_h323.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:46: obj-$(CONFIG_NF_CONNTRACK_IRC) += nf_conntrack_irc.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:47: obj-$(CONFIG_NF_CONNTRACK_BROADCAST) += nf_conntrack_broadcast.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:48: obj-$(CONFIG_NF_CONNTRACK_NETBIOS_NS) += nf_conntrack_netbios_ns.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:49: obj-$(CONFIG_NF_CONNTRACK_SNMP) += nf_conntrack_snmp.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:50: obj-$(CONFIG_NF_CONNTRACK_PPTP) += nf_conntrack_pptp.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:51: obj-$(CONFIG_NF_CONNTRACK_SANE) += nf_conntrack_sane.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:52: obj-$(CONFIG_NF_CONNTRACK_SIP) += nf_conntrack_sip.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:53: obj-$(CONFIG_NF_CONNTRACK_TFTP) += nf_conntrack_tftp.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:59: obj-$(CONFIG_NF_NAT) += nf_nat.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:60: nf_nat-$(CONFIG_NF_NAT_REDIRECT) += nf_nat_redirect.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:61: nf_nat-$(CONFIG_NF_NAT_MASQUERADE) += nf_nat_masquerade.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:63: ifeq ($(CONFIG_NF_NAT),m)
+inspection/files/kernel-6.1/net/netfilter/Makefile:65: else ifeq ($(CONFIG_NF_NAT),y)
+inspection/files/kernel-6.1/net/netfilter/Makefile:70: obj-$(CONFIG_NF_NAT_AMANDA) += nf_nat_amanda.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:71: obj-$(CONFIG_NF_NAT_FTP) += nf_nat_ftp.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:72: obj-$(CONFIG_NF_NAT_IRC) += nf_nat_irc.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:73: obj-$(CONFIG_NF_NAT_SIP) += nf_nat_sip.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:74: obj-$(CONFIG_NF_NAT_TFTP) += nf_nat_tftp.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:77: obj-$(CONFIG_NETFILTER_SYNPROXY) += nf_synproxy_core.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:79: obj-$(CONFIG_NETFILTER_CONNCOUNT) += nf_conncount.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:99: obj-$(CONFIG_NF_TABLES)		+= nf_tables.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:142: obj-$(CONFIG_NETFILTER_XTABLES) += x_tables.o xt_tcpudp.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:145: obj-$(CONFIG_NETFILTER_XT_MARK) += xt_mark.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:146: obj-$(CONFIG_NETFILTER_XT_CONNMARK) += xt_connmark.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:147: obj-$(CONFIG_NETFILTER_XT_SET) += xt_set.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:148: obj-$(CONFIG_NETFILTER_XT_NAT) += xt_nat.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:151: obj-$(CONFIG_NETFILTER_XT_TARGET_AUDIT) += xt_AUDIT.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:152: obj-$(CONFIG_NETFILTER_XT_TARGET_CHECKSUM) += xt_CHECKSUM.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:153: obj-$(CONFIG_NETFILTER_XT_TARGET_CLASSIFY) += xt_CLASSIFY.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:154: obj-$(CONFIG_NETFILTER_XT_TARGET_CONNSECMARK) += xt_CONNSECMARK.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:155: obj-$(CONFIG_NETFILTER_XT_TARGET_CT) += xt_CT.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:156: obj-$(CONFIG_NETFILTER_XT_TARGET_DSCP) += xt_DSCP.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:157: obj-$(CONFIG_NETFILTER_XT_TARGET_HL) += xt_HL.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:158: obj-$(CONFIG_NETFILTER_XT_TARGET_HMARK) += xt_HMARK.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:159: obj-$(CONFIG_NETFILTER_XT_TARGET_LED) += xt_LED.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:160: obj-$(CONFIG_NETFILTER_XT_TARGET_LOG) += xt_LOG.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:161: obj-$(CONFIG_NETFILTER_XT_TARGET_NETMAP) += xt_NETMAP.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:162: obj-$(CONFIG_NETFILTER_XT_TARGET_NFLOG) += xt_NFLOG.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:163: obj-$(CONFIG_NETFILTER_XT_TARGET_NFQUEUE) += xt_NFQUEUE.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:164: obj-$(CONFIG_NETFILTER_XT_TARGET_RATEEST) += xt_RATEEST.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:165: obj-$(CONFIG_NETFILTER_XT_TARGET_REDIRECT) += xt_REDIRECT.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:166: obj-$(CONFIG_NETFILTER_XT_TARGET_MASQUERADE) += xt_MASQUERADE.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:167: obj-$(CONFIG_NETFILTER_XT_TARGET_SECMARK) += xt_SECMARK.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:168: obj-$(CONFIG_NETFILTER_XT_TARGET_TPROXY) += xt_TPROXY.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:169: obj-$(CONFIG_NETFILTER_XT_TARGET_TCPMSS) += xt_TCPMSS.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:170: obj-$(CONFIG_NETFILTER_XT_TARGET_TCPOPTSTRIP) += xt_TCPOPTSTRIP.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:171: obj-$(CONFIG_NETFILTER_XT_TARGET_TEE) += xt_TEE.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:172: obj-$(CONFIG_NETFILTER_XT_TARGET_TRACE) += xt_TRACE.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:173: obj-$(CONFIG_NETFILTER_XT_TARGET_IDLETIMER) += xt_IDLETIMER.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:176: obj-$(CONFIG_NETFILTER_XT_MATCH_ADDRTYPE) += xt_addrtype.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:177: obj-$(CONFIG_NETFILTER_XT_MATCH_BPF) += xt_bpf.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:178: obj-$(CONFIG_NETFILTER_XT_MATCH_CLUSTER) += xt_cluster.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:179: obj-$(CONFIG_NETFILTER_XT_MATCH_COMMENT) += xt_comment.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:180: obj-$(CONFIG_NETFILTER_XT_MATCH_CONNBYTES) += xt_connbytes.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:181: obj-$(CONFIG_NETFILTER_XT_MATCH_CONNLABEL) += xt_connlabel.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:182: obj-$(CONFIG_NETFILTER_XT_MATCH_CONNLIMIT) += xt_connlimit.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:183: obj-$(CONFIG_NETFILTER_XT_MATCH_CONNTRACK) += xt_conntrack.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:184: obj-$(CONFIG_NETFILTER_XT_MATCH_CPU) += xt_cpu.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:185: obj-$(CONFIG_NETFILTER_XT_MATCH_DCCP) += xt_dccp.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:186: obj-$(CONFIG_NETFILTER_XT_MATCH_DEVGROUP) += xt_devgroup.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:187: obj-$(CONFIG_NETFILTER_XT_MATCH_DSCP) += xt_dscp.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:188: obj-$(CONFIG_NETFILTER_XT_MATCH_ECN) += xt_ecn.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:189: obj-$(CONFIG_NETFILTER_XT_MATCH_ESP) += xt_esp.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:190: obj-$(CONFIG_NETFILTER_XT_MATCH_HASHLIMIT) += xt_hashlimit.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:191: obj-$(CONFIG_NETFILTER_XT_MATCH_HELPER) += xt_helper.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:192: obj-$(CONFIG_NETFILTER_XT_MATCH_HL) += xt_hl.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:193: obj-$(CONFIG_NETFILTER_XT_MATCH_IPCOMP) += xt_ipcomp.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:194: obj-$(CONFIG_NETFILTER_XT_MATCH_IPRANGE) += xt_iprange.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:195: obj-$(CONFIG_NETFILTER_XT_MATCH_IPVS) += xt_ipvs.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:196: obj-$(CONFIG_NETFILTER_XT_MATCH_L2TP) += xt_l2tp.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:197: obj-$(CONFIG_NETFILTER_XT_MATCH_LENGTH) += xt_length.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:198: obj-$(CONFIG_NETFILTER_XT_MATCH_LIMIT) += xt_limit.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:199: obj-$(CONFIG_NETFILTER_XT_MATCH_MAC) += xt_mac.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:200: obj-$(CONFIG_NETFILTER_XT_MATCH_MULTIPORT) += xt_multiport.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:201: obj-$(CONFIG_NETFILTER_XT_MATCH_NFACCT) += xt_nfacct.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:202: obj-$(CONFIG_NETFILTER_XT_MATCH_OSF) += xt_osf.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:203: obj-$(CONFIG_NETFILTER_XT_MATCH_OWNER) += xt_owner.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:204: obj-$(CONFIG_NETFILTER_XT_MATCH_CGROUP) += xt_cgroup.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:205: obj-$(CONFIG_NETFILTER_XT_MATCH_PHYSDEV) += xt_physdev.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:206: obj-$(CONFIG_NETFILTER_XT_MATCH_PKTTYPE) += xt_pkttype.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:207: obj-$(CONFIG_NETFILTER_XT_MATCH_POLICY) += xt_policy.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:208: obj-$(CONFIG_NETFILTER_XT_MATCH_QUOTA) += xt_quota.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:209: obj-$(CONFIG_NETFILTER_XT_MATCH_QUOTA2) += xt_quota2.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:210: obj-$(CONFIG_NETFILTER_XT_MATCH_RATEEST) += xt_rateest.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:211: obj-$(CONFIG_NETFILTER_XT_MATCH_REALM) += xt_realm.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:212: obj-$(CONFIG_NETFILTER_XT_MATCH_RECENT) += xt_recent.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:213: obj-$(CONFIG_NETFILTER_XT_MATCH_SCTP) += xt_sctp.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:214: obj-$(CONFIG_NETFILTER_XT_MATCH_SOCKET) += xt_socket.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:215: obj-$(CONFIG_NETFILTER_XT_MATCH_STATE) += xt_state.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:216: obj-$(CONFIG_NETFILTER_XT_MATCH_STATISTIC) += xt_statistic.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:217: obj-$(CONFIG_NETFILTER_XT_MATCH_STRING) += xt_string.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:218: obj-$(CONFIG_NETFILTER_XT_MATCH_TCPMSS) += xt_tcpmss.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:219: obj-$(CONFIG_NETFILTER_XT_MATCH_TIME) += xt_time.o
+inspection/files/kernel-6.1/net/netfilter/Makefile:220: obj-$(CONFIG_NETFILTER_XT_MATCH_U32) += xt_u32.o
+inspection/files/kernel-6.1/net/ipv6/Makefile:20: ipv6-$(CONFIG_NETFILTER) += netfilter.o
+inspection/files/kernel-6.1/net/ipv6/Makefile:38: obj-$(CONFIG_NETFILTER)	+= netfilter/
+inspection/files/kernel-6.1/net/ipv6/netfilter/Kconfig:128: 	  CONFIG_NETFILTER_XT_MATCH_HL.
+inspection/files/kernel-6.1/net/ipv6/netfilter/Kconfig:184: 	  CONFIG_NETFILTER_XT_TARGET_HL.
+inspection/files/kernel-6.1/drivers/base/Makefile:18: obj-$(CONFIG_MODULES)	+= module.o
+inspection/files/kernel-6.1/Documentation/Makefile:86: 	-D version=$(KERNELVERSION) -D release=$(KERNELRELEASE) \
+inspection/files/kernel-6.1/init/Kconfig:212: 	  set in CONFIG_LOCALVERSION.
+inspection/files/kernel-6.1/init/Makefile:31: build-version = $(or $(KBUILD_BUILD_VERSION), $(build-version-auto))
+inspection/files/kernel-6.1/init/Makefile:35: filechk_uts_version = \
+inspection/files/kernel-6.1/scripts/gcc-plugins/Makefile:31: 		  -DPLUGIN_VERSION=$(call stringify,$(KERNELVERSION)) \
+inspection/files/kernel-6.1/kernel/Makefile:16: obj-$(CONFIG_MODULES) += kmod.o
+inspection/files/kernel-6.1/kernel/Makefile:53: obj-$(CONFIG_MODULES) += module/
+inspection/files/kernel-6.1/kernel/module/Makefile:15: obj-$(CONFIG_MODULES_TREE_LOOKUP) += tree_lookup.o
+inspection/files/kernel/kernel_device_modules-6.1/build.sh:32: 	--//build/bazel_mgk_rules:kernel_version=${KERNEL_VERSION_NUM}")
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/mt6878.dts:1313: 		sw-version = <1>;
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/mt6878.dts:1430: 		hw-version = <35>;
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/mt6878.dts:1431: 		sw-version = <1>;
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/mt6878.dts:1522: 		gpufreq-version = <2>;
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/mt6878.dts:2826: 		debug-version = <2>;
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/mt6878.dts:3458: 		version = <0x68780305>;
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/mt6878.dts:3629: 			ccu_version = <74>;
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/mt6878.dts:3860: 			version = <600>;
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/mt6878.dts:4229: 			mediatek,pwm-version = <0x3>;
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/mt6878.dts:4423: 			mr4-version = <0>;
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/mt6878.dts:4425: 			fmeter-version = <3>;
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/mt6878.dts:8980: 			sram-version = <3>;
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/mt6878.dts:12670: 		power-version = <1>;
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/cust_mt6878_touch_1080x2280.dtsi:45: 		goodix,firmware-version = "6893v05";
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/cust_mt6878_touch_1080x2280.dtsi:46: 		goodix,config-version = "6893v05";
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/cust_mt6878_touch_cmd.dtsi:46: 		goodix,firmware-version = "6983v01";
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/cust_mt6878_touch_cmd.dtsi:47: 		goodix,config-version = "6983v01";
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/cust_mt6878_touch_1080x2400.dtsi:45: 		goodix,firmware-version = "6878v01";
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/cust_mt6878_touch_1080x2400.dtsi:46: 		goodix,config-version = "6878v01";
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/cust_mt6878_touch_flip.dtsi:44: 		goodix,firmware-version = "6983v01";
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/cust_mt6878_touch_flip.dtsi:45: 		goodix,config-version = "6983v01";
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/led/x6876_h786_nonfc/hk32f0301_x6876.dtsi:21: 		hk320fxxxx_fwversion = /bits/ 8 <0x0F>;
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/boot/dts/mediatek/led/x6876_h786/hk32f0301_x6876.dtsi:21: 		hk320fxxxx_fwversion = /bits/ 8 <0x0F>;
+inspection/files/kernel/kernel_device_modules-6.1/arch/arm64/configs/mgk_64_k61_defconfig:505: CONFIG_MTK_VOW_DSP_VERSION="ver02"
+inspection/files/kernel/kernel_device_modules-6.1/drivers/misc/mediatek/lpm/modules/debug/mt6878/Makefile:4: MTK_LPM_DBG_VERSION = v2
