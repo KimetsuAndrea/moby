@@ -1,0 +1,120 @@
+=== Defconfig files ===
+/home/runner/work/_temp/mt6878/common/kernel-6.1/arch/arm64/configs/amlogic_gki.fragment
+/home/runner/work/_temp/mt6878/common/kernel-6.1/arch/arm64/configs/gki_defconfig
+/home/runner/work/_temp/mt6878/common/kernel-6.1/arch/arm64/configs/rockpi4_gki.fragment
+/home/runner/work/_temp/mt6878/common/kernel-6.1/arch/arm64/configs/rockchip_gki.fragment
+/home/runner/work/_temp/mt6878/common/kernel-6.1/arch/arm64/configs/db845c_gki.fragment
+/home/runner/work/_temp/mt6878/common/kernel-6.1/arch/arm64/configs/fips140_gki.fragment
+/home/runner/work/_temp/mt6878/common/kernel-6.1/arch/arm64/configs/microdroid_defconfig
+/home/runner/work/_temp/mt6878/common/kernel-6.1/arch/arm64/configs/defconfig
+/home/runner/work/_temp/mt6878/common/kernel-6.1/arch/arm64/configs/crashdump_defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/arch/arm64/configs/mgk_64_k61_defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/kernel/configs/lj7_h782_defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/kernel/configs/x6876_h786_defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/kernel/configs/lj9_h972_defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/kernel/configs/x6856b_h971_defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/kernel/configs/lj8k_h781_defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/kernel/configs/x6856_h971_defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/kernel/configs/km10_h781_defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/kernel/configs/tf3_h890b_defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/kernel/configs/x6870_h781_defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/kernel/configs/x6875_h8919_defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/kernel/configs/d9300evb_h890a_defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/kernel/configs/x6876_h786_nonfc_defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/kernel/configs/d8300evb_h973a_defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/kernel/configs/x6857_h782_defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/kernel/configs/cm8_h973_defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/kernel/configs/x6873_h972_defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/kernel/configs/lj8_h781_defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/kernel/configs/cm7_h781_defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/kernel/configs/x6870_h781_nonfc_defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/kernel/configs/x6857b_h782_defconfig
+
+=== Build configuration references ===
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.config.mtk_kernel_device_modules:8:KCONFIG_EXT_PREFIX=${DEVICE_MODULES_DIR}
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.config.mtk_kernel_device_modules:12:MAKE_GOALS="$MAKE_GOALS
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.sh:10:result=$(echo ${KLEAF_SUPPORTED_PROJECTS} | grep -wo ${PROJECT}) || result=""
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.sh:23:  KLEAF_BUILD_TARGET=//${DEVICE_MODULES_DIR}:${PROJECT}_${TARGET}.${MODE}
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.sh:25:  KLEAF_BUILD_TARGET=${TARGET}.${MODE}
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.sh:27:KLEAF_DIST_TARGET=//${DEVICE_MODULES_DIR}:${PROJECT}_${build_scope}_dist.${MODE}
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.sh:29:KLEAF_OUT=("--output_user_root=${OUT_DIR} --output_base=${OUT_DIR}/bazel/output_user_root/output_base")
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.sh:30:KLEAF_ARGS=("${DEBUG_ARGS} ${SANDBOX_ARGS} \
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.sh:32:	--//build/bazel_mgk_rules:kernel_version=${KERNEL_VERSION_NUM}")
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.sh:37:	tools/bazel ${KLEAF_OUT} build ${KLEAF_ARGS} ${KLEAF_BUILD_TARGET}
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.sh:39:	tools/bazel ${KLEAF_OUT} run ${KLEAF_ARGS} \
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.sh:40:	--nokmi_symbol_list_violations_check ${KLEAF_DIST_TARGET} -- --dist_dir=${OUT_DIR}/dist
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.sh:44:if [[ ${MODE} == "user" && ${KLEAF_GKI_CHECKER} != "no" ]]
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.sh:46:  KLEAF_GKI_CHECKER_COMMANDS=("${KLEAF_GKI_CHECKER_COMMANDS} \
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.sh:50:    ${KLEAF_GKI_CHECKER_COMMANDS} -o file
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.sh:51:    ${KLEAF_GKI_CHECKER_COMMANDS} -o config
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.sh:52:    ${KLEAF_GKI_CHECKER_COMMANDS} -o symbol
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.sh:61:	-o ${BUILD_CONFIG}.legacy -m ${MODE} --kernel-defconfig-overlays "${DEFCONFIG_OVERLAYS}"
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.sh:62:  OUT_DIR=${OUT_DIR} BUILD_CONFIG=${BUILD_CONFIG}.legacy CC_WRAPPER=${CC_WRAPPER} build/build.sh
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.config.mtk.arm:4:# DEFCONFIG=defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.config.mtk.aarch64.mgk:10:MAKE_GOALS=
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.config.mtk.aarch64.mgk:12:if [ -n "${GKI_DEFCONFIG_FRAGMENT}" ]; then
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.config.mtk.aarch64.mgk:13:source ${GKI_DEFCONFIG_FRAGMENT}
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.config.mtk.aarch64.ubsan:5:# DEFCONFIG=defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.config.mtk.aarch64:5:# DEFCONFIG=defconfig
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:23:#     BUILD_CONFIG=<path to the build.config> <make options>*
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:29:#     BUILD_CONFIG=common/build.config.gki.aarch64 build/build.sh -j24 V=1
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:33:#   BUILD_CONFIG
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:38:#   BUILD_CONFIG_FRAGMENTS
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:59:#   MAKE_GOALS
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:72:#   KCONFIG_EXT_PREFIX
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:75:#     set, kbuild will source ${KCONFIG_EXT_PREFIX}Kconfig.ext which can be
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:132:#   SKIP_DEFCONFIG
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:142:#   PRE_DEFCONFIG_CMDS
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:145:#   POST_DEFCONFIG_CMDS
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:354:#   GKI_BUILD_CONFIG
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:355:#     If set, builds a second set of kernel images using GKI_BUILD_CONFIG to
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:369:#     perform a "mixed build," as with GKI_BUILD_CONFIG. This allows you to
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:372:#     This is incompatible with GKI_BUILD_CONFIG.
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:389:#     by adding each *.dtbo to the MAKE_GOALS.
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:397:#     So be sure to set DTC_INCLUDE in the BUILD_CONFIG file to the include path
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:400:#     Update the MAKE_GOALS variable and the FILES variable to specify
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:404:#         MAKE_GOALS="${MAKE_GOALS} k3399-rock-pi-4b.dtb"
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:472:    [[ "$KLEAF_SUPPRESS_BUILD_SH_DEPRECATION_WARNING" == "1" ]] && exit 0 || true
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:474:    bazel_command_code=0
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:475:    eq_bazel_command=$(
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:476:        ${ROOT_DIR}/build/kernel/kleaf/convert_to_bazel.sh # error messages goes to stderr
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:477:    ) || bazel_command_code=$?
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:481:    if [[ $bazel_command_code -eq 0 ]]; then
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:484:        echo "*   \$ $eq_bazel_command" >&2
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:489:    echo     "* To suppress this warning, set KLEAF_SUPPRESS_BUILD_SH_DEPRECATION_WARNING=1" >&2
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:493:# Suppress deprecation warning for recursive build.sh invocation with GKI_BUILD_CONFIG
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:494:export KLEAF_SUPPRESS_BUILD_SH_DEPRECATION_WARNING=1
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:511:if [ -n "${GKI_BUILD_CONFIG}" ]; then
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:513:      echo "ERROR: GKI_BUILD_CONFIG is incompatible with GKI_PREBUILTS_DIR." >&2
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:520:  if [[ "${MAKE_GOALS}" =~ image|Image|vmlinux ]]; then
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:525:  # Inherit SKIP_MRPROPER, LTO, SKIP_DEFCONFIG unless overridden by corresponding GKI_* variables
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:526:  GKI_ENVIRON=("SKIP_MRPROPER=${SKIP_MRPROPER}" "LTO=${LTO}" "SKIP_DEFCONFIG=${SKIP_DEFCONFIG}" "SKIP_IF_VERSION_MATCHES=${SKIP_IF_VERSION_MATCHES}")
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:529:  # Explicitly unset GKI_BUILD_CONFIG in case it was set by in the old environment
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:530:  # e.g. GKI_BUILD_CONFIG=common/build.config.gki.x86 ./build/build.sh would cause
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:532:  GKI_ENVIRON+=("GKI_BUILD_CONFIG=")
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:533:  # Explicitly unset KCONFIG_EXT_PREFIX in case it was set by the older environment.
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:534:  GKI_ENVIRON+=("KCONFIG_EXT_PREFIX=")
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:536:  # e.g. GKI_BUILD_CONFIG=common/build.config.gki.aarch64 -> BUILD_CONFIG=common/build.config.gki.aarch64
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:548:if [ -n "${KCONFIG_EXT_PREFIX}" ]; then
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:550:  if [[ ! "${KCONFIG_EXT_PREFIX}" =~ \/$ ]]; then
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:551:    KCONFIG_EXT_PREFIX=${KCONFIG_EXT_PREFIX}/
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:554:  # KCONFIG_EXT_PREFIX needs to be relative to KERNEL_DIR but we allow one to set
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:556:  if [ -f "${ROOT_DIR}/${KCONFIG_EXT_PREFIX}Kconfig.ext" ]; then
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:557:    # KCONFIG_EXT_PREFIX is currently relative to ROOT_DIR. So recalculate it to be
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:559:    KCONFIG_EXT_PREFIX=$(realpath ${ROOT_DIR}/${KCONFIG_EXT_PREFIX} --relative-to ${KERNEL_DIR})
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:560:  elif [ ! -f "${KERNEL_DIR}/${KCONFIG_EXT_PREFIX}Kconfig.ext" ]; then
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:561:    echo "Couldn't find the Kconfig.ext in ${KCONFIG_EXT_PREFIX}" >&2
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:566:  if [[ ! "${KCONFIG_EXT_PREFIX}" =~ \/$ ]]; then
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:567:    KCONFIG_EXT_PREFIX=${KCONFIG_EXT_PREFIX}/
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:569:  MAKE_ARGS+=("KCONFIG_EXT_PREFIX=${KCONFIG_EXT_PREFIX}")
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:573:  if [[ "${MAKE_GOALS}" =~ dtbs|\.dtb|\.dtbo ]]; then
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:631:if [ -n "${PRE_DEFCONFIG_CMDS}" ]; then
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:635:  eval ${PRE_DEFCONFIG_CMDS}
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:639:if [ "${SKIP_DEFCONFIG}" != "1" ] ; then
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:641:  (cd ${KERNEL_DIR} && make ${TOOL_ARGS} O=${OUT_DIR} "${MAKE_ARGS[@]}" ${DEFCONFIG})
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:644:  if [ -n "${POST_DEFCONFIG_CMDS}" ]; then
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:648:    eval ${POST_DEFCONFIG_CMDS}
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/scripts/legacy_build.sh:778:(cd ${OUT_DIR} && make O=${OUT_DIR} ${TOOL_ARGS} "${MAKE_ARGS[@]}" ${MAKE_GOALS})
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/build.config.mtk.aarch64.kasan:5:# DEFCONFIG=defconfig
+
+=== X6876 device trees ===

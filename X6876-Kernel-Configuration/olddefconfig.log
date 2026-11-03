@@ -1,0 +1,149 @@
+make: Entering directory '/home/runner/work/_temp/mt6878/common/kernel-6.1'
+make[1]: Entering directory '/home/runner/work/_temp/mt6878/out'
+  GEN     Makefile
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/drivers/power/supply/transsion/leds/tran_leds_aw20144/Kconfig:1:warning: ignoring unsupported character ''
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/drivers/power/supply/transsion/leds/tran_leds_aw20144/Kconfig:2:warning: ignoring unsupported character ''
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/drivers/power/supply/transsion/leds/tran_leds_aw20144/Kconfig:3:warning: ignoring unsupported character ''
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/drivers/power/supply/transsion/leds/tran_leds_aw20144/Kconfig:4:warning: ignoring unsupported character ''
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/drivers/power/supply/transsion/leds/tran_leds_aw20144/Kconfig:8:warning: ignoring unsupported character ''
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/drivers/power/supply/transsion/leds/tran_leds_aw210xx/Kconfig:1:warning: ignoring unsupported character ''
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/drivers/power/supply/transsion/leds/tran_leds_aw210xx/Kconfig:2:warning: ignoring unsupported character ''
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/drivers/power/supply/transsion/leds/tran_leds_aw210xx/Kconfig:3:warning: ignoring unsupported character ''
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/drivers/power/supply/transsion/leds/tran_leds_aw210xx/Kconfig:7:warning: ignoring unsupported character ''
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/drivers/power/supply/transsion/leds/Kconfig:11:warning: no new line at end of file
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/drivers/power/supply/transsion/leds/tran_leds_hk32f0301/Kconfig:1:warning: ignoring unsupported character ''
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/drivers/power/supply/transsion/leds/tran_leds_hk32f0301/Kconfig:2:warning: ignoring unsupported character ''
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/drivers/power/supply/transsion/leds/tran_leds_hk32f0301/Kconfig:3:warning: ignoring unsupported character ''
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/drivers/power/supply/transsion/leds/tran_leds_hk32f0301/Kconfig:4:warning: ignoring unsupported character ''
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/drivers/power/supply/transsion/leds/tran_leds_hk32f0301/Kconfig:8:warning: ignoring unsupported character ''
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/drivers/misc/mediatek/aw95016/Kconfig:1:warning: ignoring unsupported character ''
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/drivers/misc/mediatek/aw95016/Kconfig:2:warning: ignoring unsupported character ''
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/drivers/misc/mediatek/aw95016/Kconfig:3:warning: ignoring unsupported character ''
+/home/runner/work/_temp/mt6878/modules/kernel/kernel_device_modules-6.1/sound/soc/transsion/Kconfig:22: warning: 'SND_SOC_FS1589_FW' defined with blank help text
+
+WARNING: unmet direct dependencies detected for MEDIA_CONTROLLER
+  Depends on [n]: MEDIA_SUPPORT [=n]
+  Selected by [y]:
+  - MTK_V4L2_IMGSENSOR [=y]
+
+WARNING: unmet direct dependencies detected for ASYNC_TX_ENABLE_CHANNEL_SWITCH
+  Depends on [n]: DMADEVICES [=n]
+  Selected by [y]:
+  - DEVICE_MODULES_MTK_CQDMA [=y] && (ARCH_MEDIATEK [=y] || COMPILE_TEST [=n])
+
+WARNING: unmet direct dependencies detected for DMA_ENGINE
+  Depends on [n]: DMADEVICES [=n]
+  Selected by [y]:
+  - DEVICE_MODULES_MTK_CQDMA [=y] && (ARCH_MEDIATEK [=y] || COMPILE_TEST [=n])
+
+WARNING: unmet direct dependencies detected for WIRELESS_EXT
+  Depends on [n]: NET [=n] && WIRELESS [=n]
+  Selected by [y]:
+  - MTK_COMBO_WIFI [=y] && MTK_COMBO [=y]
+
+WARNING: unmet direct dependencies detected for IIO_BUFFER
+  Depends on [n]: IIO [=n]
+  Selected by [y]:
+  - MEDIATEK_MT6375_ADC [=y] && MFD_MT6375 [=y]
+
+WARNING: unmet direct dependencies detected for IIO_TRIGGERED_BUFFER
+  Depends on [n]: IIO [=n] && IIO_BUFFER [=y]
+  Selected by [y]:
+  - MEDIATEK_MT6375_ADC [=y] && MFD_MT6375 [=y]
+
+WARNING: unmet direct dependencies detected for VIDEO_V4L2_SUBDEV_API
+  Depends on [n]: MEDIA_SUPPORT [=n] && VIDEO_DEV [=n] && MEDIA_CONTROLLER [=y]
+  Selected by [y]:
+  - MTK_V4L2_IMGSENSOR [=y]
+
+WARNING: unmet direct dependencies detected for SND_SOC_COMPRESS
+  Depends on [n]: SOUND [=n] && !UML && SND [=n] && SND_SOC [=n]
+  Selected by [y]:
+  - SND_SOC_MTK_AUDIO_DSP [=y] && MTK_AUDIODSP_SUPPORT [=y]
+
+WARNING: unmet direct dependencies detected for V4L2_FWNODE
+  Depends on [n]: MEDIA_SUPPORT [=n]
+  Selected by [y]:
+  - VIDEO_MTK_ISP_CAMSYS [=y]
+  - MTK_V4L2_IMGSENSOR [=y]
+
+WARNING: unmet direct dependencies detected for DMA_VIRTUAL_CHANNELS
+  Depends on [n]: DMADEVICES [=n]
+  Selected by [y]:
+  - DEVICE_MODULES_MTK_CQDMA [=y] && (ARCH_MEDIATEK [=y] || COMPILE_TEST [=n])
+
+WARNING: unmet direct dependencies detected for PAGE_POOL
+  Depends on [n]: NET [=n]
+  Selected by [y]:
+  - MTK_ECCCI_DRIVER [=y] && MTK_CCCI_DEVICES [=y]
+
+WARNING: unmet direct dependencies detected for WEXT_PRIV
+  Depends on [n]: NET [=n] && WIRELESS [=n]
+  Selected by [y]:
+  - MTK_COMBO_WIFI [=y] && MTK_COMBO [=y]
+
+WARNING: unmet direct dependencies detected for IIO_BUFFER
+  Depends on [n]: IIO [=n]
+  Selected by [y]:
+  - MEDIATEK_MT6375_ADC [=y] && MFD_MT6375 [=y]
+
+WARNING: unmet direct dependencies detected for IIO_TRIGGERED_BUFFER
+  Depends on [n]: IIO [=n] && IIO_BUFFER [=y]
+  Selected by [y]:
+  - MEDIATEK_MT6375_ADC [=y] && MFD_MT6375 [=y]
+
+WARNING: unmet direct dependencies detected for MEDIA_CONTROLLER
+  Depends on [n]: MEDIA_SUPPORT [=n]
+  Selected by [y]:
+  - MTK_V4L2_IMGSENSOR [=y]
+
+WARNING: unmet direct dependencies detected for WIRELESS_EXT
+  Depends on [n]: NET [=n] && WIRELESS [=n]
+  Selected by [y]:
+  - MTK_COMBO_WIFI [=y] && MTK_COMBO [=y]
+
+WARNING: unmet direct dependencies detected for WEXT_PRIV
+  Depends on [n]: NET [=n] && WIRELESS [=n]
+  Selected by [y]:
+  - MTK_COMBO_WIFI [=y] && MTK_COMBO [=y]
+
+WARNING: unmet direct dependencies detected for ASYNC_TX_ENABLE_CHANNEL_SWITCH
+  Depends on [n]: DMADEVICES [=n]
+  Selected by [y]:
+  - DEVICE_MODULES_MTK_CQDMA [=y] && (ARCH_MEDIATEK [=y] || COMPILE_TEST [=n])
+
+WARNING: unmet direct dependencies detected for DMA_ENGINE
+  Depends on [n]: DMADEVICES [=n]
+  Selected by [y]:
+  - DEVICE_MODULES_MTK_CQDMA [=y] && (ARCH_MEDIATEK [=y] || COMPILE_TEST [=n])
+
+WARNING: unmet direct dependencies detected for PAGE_POOL
+  Depends on [n]: NET [=n]
+  Selected by [y]:
+  - MTK_ECCCI_DRIVER [=y] && MTK_CCCI_DEVICES [=y]
+
+WARNING: unmet direct dependencies detected for VIDEO_V4L2_SUBDEV_API
+  Depends on [n]: MEDIA_SUPPORT [=n] && VIDEO_DEV [=n] && MEDIA_CONTROLLER [=y]
+  Selected by [y]:
+  - MTK_V4L2_IMGSENSOR [=y]
+
+WARNING: unmet direct dependencies detected for V4L2_FWNODE
+  Depends on [n]: MEDIA_SUPPORT [=n]
+  Selected by [y]:
+  - VIDEO_MTK_ISP_CAMSYS [=y]
+  - MTK_V4L2_IMGSENSOR [=y]
+
+WARNING: unmet direct dependencies detected for SND_SOC_COMPRESS
+  Depends on [n]: SOUND [=n] && !UML && SND [=n] && SND_SOC [=n]
+  Selected by [y]:
+  - SND_SOC_MTK_AUDIO_DSP [=y] && MTK_AUDIODSP_SUPPORT [=y]
+
+WARNING: unmet direct dependencies detected for DMA_VIRTUAL_CHANNELS
+  Depends on [n]: DMADEVICES [=n]
+  Selected by [y]:
+  - DEVICE_MODULES_MTK_CQDMA [=y] && (ARCH_MEDIATEK [=y] || COMPILE_TEST [=n])
+#
+# No change to .config
+#
+make[1]: Leaving directory '/home/runner/work/_temp/mt6878/out'
+make: Leaving directory '/home/runner/work/_temp/mt6878/common/kernel-6.1'
