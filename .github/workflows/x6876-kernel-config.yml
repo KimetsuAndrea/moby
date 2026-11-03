@@ -124,6 +124,13 @@ jobs:
         run: |
           set -euo pipefail
 
+          # The MTK base defconfig is shipped in the separate device-modules
+          # archive, while Kbuild searches the common kernel tree's
+          # arch/arm64/configs directory. Stage it there before invoking make.
+          mkdir -p "$KERNEL/arch/arm64/configs"
+          install -m 0644 "$BASE_DEFCONFIG" \
+            "$KERNEL/arch/arm64/configs/mgk_64_k61_defconfig"
+
           make -C "$KERNEL" \
             O="$OUT_DIR" ARCH=arm64 LLVM=1 \
             KCONFIG_EXT_PREFIX="$MODULES/" \
@@ -203,6 +210,13 @@ jobs:
           done
 
           cat "$REPORT"
+
+          # This step runs with if: always() so diagnostic logs are retained,
+          # but a missing .config must still make the workflow fail.
+          if [[ ! -s "$CONFIG" ]]; then
+            echo "::error::No generated .config; configuration audit cannot pass."
+            exit 1
+          fi
 
       - name: Upload configuration and logs
         if: always()
