@@ -126,7 +126,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          RECIPE="$WORK_DIR/vendor-build-recipe"
+          RECIPE="$GITHUB_WORKSPACE/vendor-build-recipe"
           mkdir -p "$RECIPE"
 
           # Preserve the actual vendor build entry points and configuration
@@ -171,16 +171,16 @@ jobs:
             echo
             echo "Collected files:"
             find "$RECIPE" -type f -printf '%P\n' | sort
-          } > "$WORK_DIR/vendor-build-recipe-manifest.txt"
+          } > "$GITHUB_WORKSPACE/vendor-build-recipe-manifest.txt"
 
           # Highlight references that determine the actual config merge path.
           grep -RniE 'DEFCONFIG_OVERLAYS|KCONFIG_EXT_PREFIX|KERNEL_DEFCONFIG|defconfig|olddefconfig|merge_config|make.*(Image|modules)' \
-            "$RECIPE" > "$WORK_DIR/vendor-build-recipe-hints.txt" || true
+            "$RECIPE" > "$GITHUB_WORKSPACE/vendor-build-recipe-hints.txt" || true
 
-          cat "$WORK_DIR/vendor-build-recipe-manifest.txt"
+          cat "$GITHUB_WORKSPACE/vendor-build-recipe-manifest.txt"
           echo
           echo "Build-recipe hints:"
-          sed -n '1,240p' "$WORK_DIR/vendor-build-recipe-hints.txt" || true
+          sed -n '1,240p' "$GITHUB_WORKSPACE/vendor-build-recipe-hints.txt" || true
 
       - name: Generate MTK base configuration
         run: |
@@ -291,9 +291,9 @@ jobs:
             ${{ github.workspace }}/.kernel-work/merge-config.log
             ${{ github.workspace }}/.kernel-work/olddefconfig.log
             ${{ github.workspace }}/.kernel-work/netfilter-config.txt
-            ${{ github.workspace }}/.kernel-work/vendor-build-recipe/
-            ${{ github.workspace }}/.kernel-work/vendor-build-recipe-manifest.txt
-            ${{ github.workspace }}/.kernel-work/vendor-build-recipe-hints.txt
+            ${{ github.workspace }}/vendor-build-recipe/
+            ${{ github.workspace }}/vendor-build-recipe-manifest.txt
+            ${{ github.workspace }}/vendor-build-recipe-hints.txt
             ${{ github.workspace }}/.kernel-work/reports/
           if-no-files-found: warn
           retention-days: 14
