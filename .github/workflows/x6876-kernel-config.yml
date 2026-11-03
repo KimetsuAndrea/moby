@@ -129,35 +129,41 @@ jobs:
           RECIPE="$GITHUB_WORKSPACE/vendor-build-recipe"
           mkdir -p "$RECIPE"
 
-          # Preserve the actual vendor build entry points and configuration
-          # inputs so we can inspect the intended defconfig/overlay sequence.
-          copy_if_present() {
-            local source="$1"
-            if [[ -f "$source" ]]; then
-              cp --parents "$source" "$RECIPE/"
-            fi
+          # Keep paths relative to the two source roots. Do not use cp --parents
+          # with absolute paths: that preserves the hidden .kernel-work segment,
+          # which actions/upload-artifact excludes by default.
+          copy_into_recipe() {
+            local source_root="$1"
+            local label="$2"
+            local source="$3"
+            [[ -f "$source" ]] || return 0
+            local relative_path="${source#"$source_root"/}"
+            local destination="$RECIPE/$label/$relative_path"
+            mkdir -p "$(dirname "$destination")"
+            cp "$source" "$destination"
           }
 
-          copy_if_present "$KERNEL/Makefile"
-          copy_if_present "$KERNEL/arch/arm64/configs/gki_defconfig"
-          copy_if_present "$KERNEL/arch/arm64/configs/defconfig"
-          copy_if_present "$MODULES/Makefile"
-          copy_if_present "$MODULES/Kconfig.ext"
-          copy_if_present "$MODULES/arch/arm64/configs/mgk_64_k61_defconfig"
-          copy_if_present "$MODULES/kernel/configs/$DEVICE_CONFIG_NAME"
+          copy_into_recipe "$KERNEL" common "$KERNEL/Makefile"
+          copy_into_recipe "$KERNEL" common "$KERNEL/arch/arm64/configs/gki_defconfig"
+          copy_into_recipe "$KERNEL" common "$KERNEL/arch/arm64/configs/defconfig"
+          copy_into_recipe "$MODULES" modules "$MODULES/Makefile"
+          copy_into_recipe "$MODULES" modules "$MODULES/Kconfig.ext"
+          copy_into_recipe "$MODULES" modules "$MODULES/arch/arm64/configs/mgk_64_k61_defconfig"
+          copy_into_recipe "$MODULES" modules "$MODULES/kernel/configs/$DEVICE_CONFIG_NAME"
 
           # Vendor build scripts/configs may live at different levels in
-          # this source drop. Capture them with their original relative paths.
+          # this source drop. Capture them with paths relative to MODULES.
           while IFS= read -r -d '' file; do
-            cp --parents "$file" "$RECIPE/"
+            copy_into_recipe "$MODULES" modules "$file"
           done < <(
             find "$MODULES" -type f \( \
               -name 'build.config*' -o -name 'build.sh' -o \
               -name 'legacy_build.sh' -o -name '*defconfig*' \) -print0
           )
 
+          # Keep the common-tree defconfigs in their own non-hidden subtree.
           while IFS= read -r -d '' file; do
-            cp --parents "$file" "$RECIPE/"
+            copy_into_recipe "$KERNEL" common "$file"
           done < <(
             find "$KERNEL/arch/arm64/configs" -maxdepth 1 -type f \( \
               -name '*defconfig*' -o -name 'defconfig' \) -print0
