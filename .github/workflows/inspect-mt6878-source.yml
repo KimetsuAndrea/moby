@@ -10,91 +10,232 @@ permissions:
 jobs:
   inspect:
     runs-on: ubuntu-latest
-    timeout-minutes: 360
+    timeout-minutes: 180
 
     steps:
-      - name: Prepare workspace
+      - name: Install tools
         run: |
-          mkdir -p output
           sudo apt-get update
-          sudo apt-get install -y tar gzip
+          sudo apt-get install -y curl python3
 
-      - name: Download kernel common source
+      - name: Download official Infinix sources
         run: |
-          URL="https://d1wd32b69guoqm.cloudfront.net/opensource/android15_kernel_common_mt6878.tar.gz"
+          mkdir -p source inspection
 
-          curl -L --fail --show-error \
-            --retry 5 \
-            --retry-delay 10 \
-            "$URL" \
-            -o android15_kernel_common_mt6878.tar.gz
+          curl -fL --retry 5 --retry-all-errors \
+            --connect-timeout 30 \
+            -o source/common.tar.gz \
+            https://d1wd32b69guoqm.cloudfront.net/opensource/android15_kernel_common_mt6878.tar.gz
 
-          ls -lh android15_kernel_common_mt6878.tar.gz
+          curl -fL --retry 5 --retry-all-errors \
+            --connect-timeout 30 \
+            -o source/modules-dt.tar.gz \
+            https://d1wd32b69guoqm.cloudfront.net/opensource/android15_kernel_modules_and_devicetree_mt6878.tar.gz
 
-      - name: Download modules and device tree source
+          echo "Downloaded archives:"
+          ls -lh source/
+
+      - name: Inspect archives and extract relevant files
         run: |
-          URL="https://d1wd32b69guoqm.cloudfront.net/opensource/android15_kernel_modules_and_devicetree_mt6878.tar.gz"
+          cat > inspect.py <<'PY'
+          import os
+          import re
+          import tarfile
+          from pathlib import PurePosixPath
 
-          curl -L --fail --show-error \
-            --retry 5 \
-            --retry-delay 10 \
-            "$URL" \
-            -o android15_kernel_modules_and_devicetree_mt6878.tar.gz
+          OUT = "inspection"
+          os.makedirs(OUT, exist_ok=True)
 
-          ls -lh android15_kernel_modules_and_devicetree_mt6878.tar.gz
+          report = open(os.path.join(OUT, "source-report.txt"), "w")
 
-      - name: List common kernel source tree
+          def log(s=""):
+              print(s)
+              report.write(s + "\n")
+
+          def safe_name(name):
+              p = PurePosixPath(name)
+              if p.is_absolute() or ".." in p.parts:
+                  return None
+              return os.path.join(OUT, "files", *p.parts)
+
+          def is_config_file(path):
+              name = PurePosixPath(path).name.lower()
+              return (
+                  name == ".config"
+                  or name == "makefile"
+                  or name == "kconfig"
+                  or name == "module.symvers"
+                  or name == "kernel.release"
+                  or name.startswith("build.config")
+                  or name.endswith("defconfig")
+                  or name.endswith(".fragment")
+                  or name in ("build.sh", "build_kernel.sh")
+              )
+
+          def should_extract(path, archive_kind):
+              p = path.lower()
+              name = PurePosixPath(path).name.lower()
+
+              # Kernel root build/version information
+              if name in (
+                  "makefile", "kconfig", ".config",
+                  "module.symvers", "kernel.release",
+                  "build.sh", "build_kernel.sh"
+              ):
+                  if (
+                      p.startswith("kernel-6.1/")
+                      or p.startswith("kernel/kernel_device_modules-6.1/")
+                  ):
+                      if name != "makefile" or p.count("/") <= 3:
+                          return True
+
+              # Build configuration scripts
+              if "build.config" in name:
+                  return True
+
+              # ARM64 defconfigs and config fragments
+              if (
+                  "/arch/arm64/configs/" in p
+                  and is_config_file(path)
+              ):
+                  return True
+
+              # X6876 and MT6878 device-tree sources
+              if (
+                  ("x6876" in p or "mt6878" in p)
+                  and name.endswith((".dts", ".dtsi"))
+              ):
+                  return True
+
+              # Makefiles/Kconfig next to matching device-tree files
+              if (
+                  ("x6876" in p or "mt6878" in p)
+                  and name in ("makefile", "kconfig")
+              ):
+                  return True
+
+              # Device-tree build rules
+              if (
+                  "/arch/arm64/boot/dts/mediatek/" in p
+                  and name in ("makefile", "kconfig")
+              ):
+                  return True
+
+              return False
+
+          def inspect_archive(filename, label):
+              log()
+              log("=" * 72)
+              log("ARCHIVE: " + label)
+              log("=" * 72)
+
+              count = 0
+              extracted = 0
+              matching_paths = []
+
+              # Stream the compressed archive to avoid unpacking everything.
+              with tarfile.open(filename, mode="r|gz") as tar:
+                  for member in tar:
+                      count += 1
+                      path = member.name.lstrip("./")
+
+                      if "x6876" in path.lower() or "mt6878" in path.lower():
+                          if path.lower().endswith((".dts", ".dtsi", "makefile", "kconfig")):
+                              matching_paths.append(path)
+
+                      if not member.isfile():
+                          continue
+
+                      if not should_extract(path, label):
+                          continue
+
+                      # Avoid unexpectedly large files.
+                      if member.size > 25 * 1024 * 1024:
+                          log("SKIPPED LARGE FILE: " + path)
+                          continue
+
+                      destination = safe_name(path)
+                      if not destination:
+                          continue
+
+                      os.makedirs(os.path.dirname(destination), exist_ok=True)
+                      src = tar.extractfile(member)
+                      if src is None:
+                          continue
+
+                      with src, open(destination, "wb") as dst:
+                          while True:
+                              chunk = src.read(1024 * 1024)
+                              if not chunk:
+                                  break
+                              dst.write(chunk)
+
+                      extracted += 1
+
+              log("Archive entries scanned: " + str(count))
+              log("Files extracted: " + str(extracted))
+              log()
+              log("Matching X6876 / MT6878 paths:")
+
+              for path in sorted(set(matching_paths)):
+                  log("  " + path)
+
+          inspect_archive(
+              "source/common.tar.gz",
+              "COMMON KERNEL"
+          )
+
+          inspect_archive(
+              "source/modules-dt.tar.gz",
+              "MODULES AND DEVICE TREE"
+          )
+
+          report.close()
+
+          # Search extracted text files for important kernel settings.
+          patterns = re.compile(
+              r"CONFIG_NF_TABLES|CONFIG_NETFILTER|"
+              r"CONFIG_NF_CONNTRACK|CONFIG_NF_NAT|"
+              r"CONFIG_MODULES|CONFIG_LOCALVERSION|"
+              r"VERSION\s*=|PATCHLEVEL\s*=|SUBLEVEL\s*=",
+              re.IGNORECASE
+          )
+
+          with open(os.path.join(OUT, "config-search.txt"), "w") as out:
+              for root, _, files in os.walk(os.path.join(OUT, "files")):
+                  for filename in files:
+                      path = os.path.join(root, filename)
+                      try:
+                          with open(path, "r", errors="replace") as f:
+                              for number, line in enumerate(f, 1):
+                                  if patterns.search(line):
+                                      out.write(
+                                          f"{path}:{number}: {line.rstrip()}\n"
+                                      )
+                      except (OSError, UnicodeError):
+                          pass
+
+          print("Inspection completed.")
+          PY
+
+          python3 inspect.py
+
+      - name: Create inspection bundle
         run: |
-          set -o pipefail
+          tar -czf mt6878-kernel-inspection.tar.gz inspection/
+          ls -lh mt6878-kernel-inspection.tar.gz
 
-          tar -tzf android15_kernel_common_mt6878.tar.gz \
-            | tee output/common-kernel-tree.txt
-
-          echo "Common archive entries: $(wc -l < output/common-kernel-tree.txt)"
-
-      - name: List modules and device tree
-        run: |
-          set -o pipefail
-
-          tar -tzf android15_kernel_modules_and_devicetree_mt6878.tar.gz \
-            | tee output/modules-devicetree-tree.txt
-
-          echo "Modules/DT entries: $(wc -l < output/modules-devicetree-tree.txt)"
-
-      - name: Generate archive summary
-        run: |
-          {
-            echo "# MT6878 Kernel Source Inspection"
-            echo
-            echo "## Archive sizes"
-            du -h android15_kernel_common_mt6878.tar.gz
-            du -h android15_kernel_modules_and_devicetree_mt6878.tar.gz
-            echo
-            echo "## File tree entry counts"
-            wc -l output/common-kernel-tree.txt
-            wc -l output/modules-devicetree-tree.txt
-            echo
-            echo "## Top-level common source directories"
-            awk -F/ 'NF > 1 {print $1}' output/common-kernel-tree.txt | sort -u
-            echo
-            echo "## Top-level modules/device-tree directories"
-            awk -F/ 'NF > 1 {print $1}' output/modules-devicetree-tree.txt | sort -u
-          } | tee output/summary.txt
-
-          cat output/summary.txt >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Upload source tree listings
+      - name: Upload inspection results
         uses: actions/upload-artifact@v4
         with:
-          name: MT6878-kernel-source-file-trees
-          path: output/
+          name: MT6878-Kernel-Inspection
+          path: |
+            inspection/
+            mt6878-kernel-inspection.tar.gz
           if-no-files-found: error
-          compression-level: 6
           retention-days: 7
 
-      - name: Cleanup downloaded archives
+      - name: Clean up downloaded source archives
         if: always()
         run: |
-          rm -f android15_kernel_common_mt6878.tar.gz
-          rm -f android15_kernel_modules_and_devicetree_mt6878.tar.gz
-          
+          rm -rf source
