@@ -169,6 +169,33 @@ jobs:
               -name '*defconfig*' -o -name 'defconfig' \) -print0
           )
 
+          # Capture the missing orchestration files needed to reproduce the
+          # vendor's own config-generation path, not just its config fragments.
+          while IFS= read -r -d '' file; do
+            copy_into_recipe "$MODULES" modules "$file"
+          done < <(
+            find "$MODULES" -type f \( \
+              -path '*/kernel/kleaf/*' -o \
+              -path '*/scripts/*.py' \
+            \) -print0
+          )
+
+          while IFS= read -r -d '' file; do
+            copy_into_recipe "$KERNEL" common "$file"
+          done < <(
+            find "$KERNEL" -maxdepth 2 -type f -name 'build.config*' -print0
+          )
+
+          if [[ -d "$KERNEL/build" ]]; then
+            while IFS= read -r -d '' file; do
+              copy_into_recipe "$KERNEL" common "$file"
+            done < <(
+              find "$KERNEL/build" -maxdepth 2 -type f \( \
+                -name '*.sh' -o -name '*.py' \
+              \) -print0
+            )
+          fi
+
           {
             echo "Vendor build recipe collection"
             echo "=============================="
