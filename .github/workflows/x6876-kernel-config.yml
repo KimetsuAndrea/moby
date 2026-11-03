@@ -120,6 +120,68 @@ jobs:
           echo "Device config preview:"
           sed -n '1,160p' "$DEVICE_CONFIG"
 
+      - name: Collect Infinix vendor build recipe
+        env:
+          DEVICE_CONFIG_NAME: ${{ inputs.device_config }}
+        run: |
+          set -euo pipefail
+
+          RECIPE="$WORK_DIR/vendor-build-recipe"
+          mkdir -p "$RECIPE"
+
+          # Preserve the actual vendor build entry points and configuration
+          # inputs so we can inspect the intended defconfig/overlay sequence.
+          copy_if_present() {
+            local source="$1"
+            if [[ -f "$source" ]]; then
+              cp --parents "$source" "$RECIPE/"
+            fi
+          }
+
+          copy_if_present "$KERNEL/Makefile"
+          copy_if_present "$KERNEL/arch/arm64/configs/gki_defconfig"
+          copy_if_present "$KERNEL/arch/arm64/configs/defconfig"
+          copy_if_present "$MODULES/Makefile"
+          copy_if_present "$MODULES/Kconfig.ext"
+          copy_if_present "$MODULES/arch/arm64/configs/mgk_64_k61_defconfig"
+          copy_if_present "$MODULES/kernel/configs/$DEVICE_CONFIG_NAME"
+
+          # Vendor build scripts/configs may live at different levels in
+          # this source drop. Capture them with their original relative paths.
+          while IFS= read -r -d '' file; do
+            cp --parents "$file" "$RECIPE/"
+          done < <(
+            find "$MODULES" -type f \\( \
+              -name 'build.config*' -o -name 'build.sh' -o \
+              -name 'legacy_build.sh' -o -name '*defconfig*' \\) -print0
+          )
+
+          while IFS= read -r -d '' file; do
+            cp --parents "$file" "$RECIPE/"
+          done < <(
+            find "$KERNEL/arch/arm64/configs" -maxdepth 1 -type f \\( \
+              -name '*defconfig*' -o -name 'defconfig' \\) -print0
+          )
+
+          {
+            echo "Vendor build recipe collection"
+            echo "=============================="
+            echo "Kernel: $KERNEL"
+            echo "Modules: $MODULES"
+            echo
+            echo "Collected files:"
+            find "$RECIPE" -type f -printf '%P\\n' | sort
+          } > "$WORK_DIR/vendor-build-recipe-manifest.txt"
+
+          # Highlight references that determine the actual config merge path.
+          grep -RniE 'DEFCONFIG_OVERLAYS|KCONFIG_EXT_PREFIX|KERNEL_DEFCONFIG|defconfig|olddefconfig|merge_config|make.*(Image|modules)' \\
+            "$RECIPE" > "$WORK_DIR/vendor-build-recipe-hints.txt" || true
+
+          cat "$WORK_DIR/vendor-build-recipe-manifest.txt"
+          echo
+          echo "Build-recipe hints:"
+          sed -n '1,240p' "$WORK_DIR/vendor-build-recipe-hints.txt" || true
+
       - name: Generate MTK base configuration
         run: |
           set -euo pipefail
@@ -229,6 +291,9 @@ jobs:
             ${{ github.workspace }}/.kernel-work/merge-config.log
             ${{ github.workspace }}/.kernel-work/olddefconfig.log
             ${{ github.workspace }}/.kernel-work/netfilter-config.txt
+            ${{ github.workspace }}/.kernel-work/vendor-build-recipe/
+            ${{ github.workspace }}/.kernel-work/vendor-build-recipe-manifest.txt
+            ${{ github.workspace }}/.kernel-work/vendor-build-recipe-hints.txt
             ${{ github.workspace }}/.kernel-work/reports/
           if-no-files-found: warn
           retention-days: 14
