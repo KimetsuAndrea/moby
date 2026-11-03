@@ -151,16 +151,16 @@ jobs:
           while IFS= read -r -d '' file; do
             cp --parents "$file" "$RECIPE/"
           done < <(
-            find "$MODULES" -type f \\( \
+            find "$MODULES" -type f \( \
               -name 'build.config*' -o -name 'build.sh' -o \
-              -name 'legacy_build.sh' -o -name '*defconfig*' \\) -print0
+              -name 'legacy_build.sh' -o -name '*defconfig*' \) -print0
           )
 
           while IFS= read -r -d '' file; do
             cp --parents "$file" "$RECIPE/"
           done < <(
-            find "$KERNEL/arch/arm64/configs" -maxdepth 1 -type f \\( \
-              -name '*defconfig*' -o -name 'defconfig' \\) -print0
+            find "$KERNEL/arch/arm64/configs" -maxdepth 1 -type f \( \
+              -name '*defconfig*' -o -name 'defconfig' \) -print0
           )
 
           {
@@ -170,11 +170,11 @@ jobs:
             echo "Modules: $MODULES"
             echo
             echo "Collected files:"
-            find "$RECIPE" -type f -printf '%P\\n' | sort
+            find "$RECIPE" -type f -printf '%P\n' | sort
           } > "$WORK_DIR/vendor-build-recipe-manifest.txt"
 
           # Highlight references that determine the actual config merge path.
-          grep -RniE 'DEFCONFIG_OVERLAYS|KCONFIG_EXT_PREFIX|KERNEL_DEFCONFIG|defconfig|olddefconfig|merge_config|make.*(Image|modules)' \\
+          grep -RniE 'DEFCONFIG_OVERLAYS|KCONFIG_EXT_PREFIX|KERNEL_DEFCONFIG|defconfig|olddefconfig|merge_config|make.*(Image|modules)' \
             "$RECIPE" > "$WORK_DIR/vendor-build-recipe-hints.txt" || true
 
           cat "$WORK_DIR/vendor-build-recipe-manifest.txt"
