@@ -148,15 +148,14 @@ jobs:
 
           DEFCONFIG="${{ inputs.defconfig }}"
 
-          if [[ "$DEFCONFIG" != *.defconfig ]]; then
-            echo "ERROR: Expected a defconfig filename."
+          if [[ ! "$DEFCONFIG" =~ ^[A-Za-z0-9_-]+_defconfig$ ]]; then
+            echo "ERROR: Invalid defconfig filename: $DEFCONFIG"
             exit 1
           fi
 
           CONFIG_DIR="$KERNEL/arch/arm64/configs"
 
-          # Some MediaTek releases keep device defconfigs
-          # outside the common kernel tree.
+          # Search common kernel configs first.
           if [ ! -f "$CONFIG_DIR/$DEFCONFIG" ]; then
             FOUND="$(find "$MODULES" -type f \
               -name "$DEFCONFIG" -print -quit)"
@@ -169,11 +168,14 @@ jobs:
 
           if [ ! -f "$CONFIG_DIR/$DEFCONFIG" ]; then
             echo "ERROR: $DEFCONFIG not found."
-            echo "Check source-build-hints.txt."
+            echo "Available matching configurations:"
+            find "$KERNEL/arch/arm64/configs" "$MODULES" \
+              -type f -name '*defconfig' -print
             exit 1
           fi
 
           echo "DEFCONFIG=$DEFCONFIG" >> "$GITHUB_ENV"
+          echo "Selected defconfig: $DEFCONFIG"
 
       - name: Generate final configuration for selected defconfig
         shell: bash
