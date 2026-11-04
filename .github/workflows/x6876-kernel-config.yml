@@ -342,7 +342,7 @@ jobs:
             grep -RniE "define_mgk|mgk_build_config|PRE_DEFCONFIG_CMDS|merge_config|gki_defconfig" "$RECIPE" --include="*.bzl" --include=BUILD --include=BUILD.bazel --include="*.mk" --include="*.py" || true
           } > "$REPORT"
           cat "$REPORT"
-          cp "$REPORT" "$WORK_DIR/"
+          # REPORT already lives under WORK_DIR; do not copy it onto itself.
 
       - name: Upload vendor build recipe and Kleaf trace
         if: always()
